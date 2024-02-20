@@ -57,7 +57,7 @@ const Contacts = () => {
   return (
     <div>
       <div className="flex justify-between mb-3 ">
-        <Search />
+        {/* <Search /> */}
         <div className="flex items-center">
           <button
             type="button"
@@ -117,7 +117,7 @@ const Contacts = () => {
                   // } hover:bg-slate-100 hover:shadow-md`}
                   className="hover:bg-slate-100 border-y-2 hover:shadow-md"
                 >
-                  <td className="px-6 py-4">{index}</td>
+                  <td className="px-6 py-4">{index + 1}</td>
                   <td className="py-4">
                     <img
                       src={row.image_url}

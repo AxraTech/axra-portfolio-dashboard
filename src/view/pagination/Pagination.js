@@ -3,7 +3,7 @@ import React from "react";
 const Pagination = ({ currentPage, totalPages, onNextPage, onPrevPage }) => {
   //console.log("object", currentPage, totalPages, onNextPage, onPrevPage);
   return (
-    <div className="flex items-center justify-center mt-4">
+    <div className="flex items-center justify-center mt-4 mb-10">
       <button
         className="px-3 py-1 mx-2 bg-blue-500 hover:bg-blue-600 text-white rounded"
         onClick={onPrevPage}

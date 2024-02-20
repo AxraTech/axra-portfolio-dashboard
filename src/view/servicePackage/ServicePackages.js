@@ -26,6 +26,10 @@ const ServicePackage = () => {
     }
   }, [resultService]);
 
+  const handleRemove = (row) => {
+    navigate(`/delete_service_detail/${row.id}`);
+  };
+
   // Calculate total number of pages
   const totalPages = Math.ceil(
     resultService?.data?.service_package_aggregate?.aggregate.count /
@@ -54,7 +58,7 @@ const ServicePackage = () => {
   return (
     <div>
       <div className="flex justify-between mb-3 ">
-        <Search />
+        {/* <Search /> */}
         <div className="flex items-center">
           <button
             type="button"
@@ -114,7 +118,7 @@ const ServicePackage = () => {
                   // } hover:bg-slate-100 hover:shadow-md`}
                   className="hover:bg-slate-100 border-y-2 hover:shadow-md"
                 >
-                  <td className="px-6 py-4">{index}</td>
+                  <td className="px-6 py-4">{index + 1}</td>
                   <td className="py-4">{row?.service_package_type}</td>
                   <td className="py-4">{row?.one_time_package_price}</td>
                   <td className="py-4">{row?.recurrently_service_fee}</td>
@@ -130,9 +134,7 @@ const ServicePackage = () => {
                       Detail
                     </button>
                     <button
-                      // onClick={navigate(
-                      //   `/delete_product/${product.product_model_by_pk.id}`
-                      // )}
+                      onClick={() => navigate(`/delete_service/${row.id}`)}
                       className="font-medium text-md rounded text-white py-2 px-4 ml-8  bg-red-600 hover:bg-red-700"
                     >
                       Delete

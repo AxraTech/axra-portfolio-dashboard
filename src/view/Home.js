@@ -18,6 +18,7 @@ import CreateService from "./servicePackage/CreateService";
 import ServicePackages from "./servicePackage/ServicePackages";
 import ServicePackage from "./servicePackage/ServicePackage";
 import UpdateService from "./servicePackage/UpdateService";
+import DeleteService from "./servicePackage/DeleteServicePackage";
 
 import ServiceDetail from "./serviceDetail/ServiceDetail";
 import CreateServiceDetail from "./serviceDetail/CreateServiceDetail";
@@ -54,29 +55,27 @@ import CreateWebsiteProject from "./websiteProject/CreateWebsiteProject";
 import UpdateWebsiteProject from "./websiteProject/UpdateWebsiteProject";
 import DeleteWebsiteProject from "./websiteProject/DeleteWebsiteProject";
 
+import Homes from "./homes.js/Homes";
+import Home from "./homes.js/Home";
+import CreateHome from "./homes.js/CreateHome";
+import UpdateHome from "./homes.js/UpdateHome";
+import DeleteHome from "./homes.js/DeleteHome";
+
 import Contacts from "./contactForm/Contacts";
 import Contact from "./contactForm/Contact";
 import CreateContact from "./contactForm/CreateContact";
 import UpdateContact from "./contactForm/UpdateContact";
 import DeleteContact from "./contactForm/DeleteContact";
-
+import UpdateLogin from "./login/UpdateLogin";
 import UserForm from "./dashboard/UserForm";
-
-import { DELETE_CONTACT } from "../gql/contact";
-
-const Home = () => {
+import DeleteUserForm from "./dashboard/DeleteUserForm";
+import UserFormPk from "./dashboard/UserFormpk";
+const Homee = () => {
   const AdminContext = createContext();
-  const [showAlert, setShowAlert] = useState({ message: "", isError: false });
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
   const [auth, setAuth] = useState(null);
-
-  // const homeAlert = (message, isError = false) => {
-  //   setShowAlert({ message: message, isError: isError });
-  //   setTimeout(() => {
-  //     setShowAlert({ message: "", isError: false });
-  //   }, 3000);
-  // };
 
   useEffect(() => {
     const loggedUser = window.localStorage.getItem("loggedUser");
@@ -84,31 +83,57 @@ const Home = () => {
       const parsedLoggedUser = JSON.parse(loggedUser);
       setAuth(parsedLoggedUser);
     } else {
-      navigate("*");
+      navigate("/login");
     }
   }, []);
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
+
+  const updateAuth = (data) => {
+    setAuth(data);
+  };
+
   return (
     <div>
-      <Header />
-      <Sidebar />
+      <Header
+        open={open}
+        handleDrawerOpen={handleDrawerOpen}
+        user={auth}
+        updateUser={updateAuth}
+      />
+      <Sidebar auth={auth} />
       <main className="ml-64 h-full px-5 ">
         <AdminContext.Provider value={auth}>
           <Routes>
             <Route path="/dashboard" element={<UserForm />} />
+            <Route path="/delete_userForm/:id" element={<DeleteUserForm />} />
+            <Route path="/dashboard/:id" element={<UserFormPk />} />
             <Route path="/signup" element={<Signup />} />
-
+            <Route path="/updateLogin" element={<UpdateLogin />} />
             {/* product */}
             <Route path="/products" element={<Products />} />
             <Route path="/products/:id" element={<Product />} />
             <Route path="/create_product" element={<CreateProduct />} />
             <Route path="/update_product/:id" element={<UpdateProduct />} />
             <Route path="/delete_product/:id" element={<DeleteProduct />} />
-
+            {/* home */}
+            <Route path="/home" element={<Homes />} />
+            <Route path="/home/:id" element={<Home />} />
+            <Route path="/create_home" element={<CreateHome />} />
+            <Route path="/update_home/:id" element={<UpdateHome />} />
+            <Route path="/delete_home/:id" element={<DeleteHome />} />
+            {/* service package */}
             <Route path="/service_package" element={<ServicePackages />} />
             <Route path="/service_package/:id" element={<ServicePackage />} />
             <Route path="/create_service" element={<CreateService />} />
             <Route path="/update_service/:id" element={<UpdateService />} />
-
+            <Route path="/delete_service/:id" element={<DeleteService />} />
+            {/* serivce detail */}
             <Route path="/service_detail" element={<ServiceDetails />} />
             <Route path="/service_detail/:id" element={<ServiceDetail />} />
             <Route
@@ -123,7 +148,6 @@ const Home = () => {
               path="/update_service_detail/:id"
               element={<UpdateServiceDetial />}
             />
-
             {/* product brand */}
             <Route path="/product_brand" element={<ProductBrands />} />
             <Route path="/product_brand/:id" element={<ProductBrand />} />
@@ -204,4 +228,4 @@ const Home = () => {
     </div>
   );
 };
-export default Home;
+export default Homee;

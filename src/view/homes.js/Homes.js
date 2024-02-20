@@ -3,53 +3,52 @@ import Pagination from "../pagination/Pagination";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 
 import { useNavigate, useParams } from "react-router-dom";
-import { ALL_ARTICLES, ARTICLE_PK, DELETE_ARTICLE } from "../../gql/articles";
+import { ALL_HOMES, ARTICLE_PK, DELETE_ARTICLE } from "../../gql/home";
 
-const Articles = () => {
+const Homes = () => {
   const navigate = useNavigate();
   const [search, setSearch] = useState();
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 10; // Number of items per page
 
-  const [articles, setArticles] = useState();
-  const [loadProduct, resulteArticles] = useLazyQuery(ALL_ARTICLES);
+  const [home, setHome] = useState();
+  const [loadProduct, resHome] = useLazyQuery(ALL_HOMES);
 
   useEffect(() => {
     loadProduct({
-      variables: { search: `%${searchValue}%` },
       fetchPolicy: "network-only",
     });
-  }, [loadProduct, searchValue]);
+  }, [loadProduct]);
   useEffect(() => {
-    if (resulteArticles.data) {
-      setArticles(resulteArticles?.data.article);
+    if (resHome.data) {
+      setHome(resHome?.data.home);
     }
-  }, [resulteArticles]);
+  }, [resHome]);
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    setSearchValue(searchValue);
-    if (searchValue === "") {
-      loadProduct(
-        {
-          variables: {
-            search: `%${searchValue}%`,
-          },
-          fetchPolicy: "network-only",
-        },
-        [loadProduct, searchValue]
-      );
-    }
-  };
+  //   const handleSearch = (e) => {
+  //     e.preventDefault();
+  //     setSearchValue(searchValue);
+  //     if (searchValue === "") {
+  //       loadProduct(
+  //         {
+  //           variables: {
+  //             search: `%${searchValue}%`,
+  //           },
+  //           fetchPolicy: "network-only",
+  //         },
+  //         [loadProduct, searchValue]
+  //       );
+  //     }
+  //   };
 
   // Calculate total number of pages
   const totalPages = Math.ceil(
-    resulteArticles?.data?.article_aggregate?.aggregate.count / itemsPerPage
+    resHome?.data?.home_aggregate?.aggregate.count / itemsPerPage
   );
 
   // Get the current page's data
-  const currentData = articles?.slice(
+  const currentData = home?.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
@@ -65,17 +64,17 @@ const Articles = () => {
   };
 
   const handleRemove = (row) => {
-    navigate(`/delete_article/${row.id}`);
+    navigate(`/delete_home/${row.id}`);
   };
 
-  if (!articles) {
+  if (!home) {
     return;
   }
 
   return (
     <div>
       <div className="flex justify-between mb-3 ">
-        {/* Search */}
+        {/* Search
         <div className="w-full md:w-1/3 my-5">
           <form className="flex items-center" onSubmit={handleSearch}>
             <label for="simple-search" className="sr-only">
@@ -108,13 +107,12 @@ const Articles = () => {
               />
             </div>
           </form>
-        </div>
-
-        <div className="flex items-center">
+        </div> */}
+        <div className="flex justify-end items-center">
           <button
             type="button"
             className="flex items-center py-2 px-4 bg-blue-700 text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-md"
-            onClick={() => navigate("/create_article")}
+            onClick={() => navigate("/create_home")}
           >
             <svg
               className="h-3.5 w-3.5 mr-2"
@@ -129,11 +127,11 @@ const Articles = () => {
                 d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
               />
             </svg>
-            Add Article
+            Add Home Data
           </button>
         </div>
       </div>
-      <div className="relative bg-white_color overflow-y-scroll max-h-fit overflow-x-auto  border-2 ">
+      <div className="relative bg-white_color overflow-y-scroll max-h-96 overflow-x-auto  border-2 ">
         <table className="w-full text-md text-left  text-gray-500">
           <thead className="text-md sticky top-0  text-gray-700 bg-gray-200">
             <tr>
@@ -147,9 +145,6 @@ const Articles = () => {
                 Title
               </th>
 
-              <th scope="col" className="py-4">
-                Category
-              </th>
               <th scope="col" className="py-4">
                 Description
               </th>
@@ -186,7 +181,7 @@ const Articles = () => {
                       ></img>
                     </td>
                     <td className="py-4">{row.title}</td>
-                    <td className="py-4">{row.category}</td>
+
                     <td className="py-4">{row.description.substring(0, 20)}</td>
 
                     <td className="py-4">
@@ -218,4 +213,4 @@ const Articles = () => {
     </div>
   );
 };
-export default Articles;
+export default Homes;

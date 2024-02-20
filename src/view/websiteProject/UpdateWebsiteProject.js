@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { AiOutlineCloudUpload, AiOutlineDelete } from "react-icons/ai";
-import RichTextEditor from "../../components/RichTextEditor";
+
 import { IMAGE_UPLOAD, DELETE_IMAGE } from "../../gql/imageupload";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import { useParams, useNavigate } from "react-router-dom";
 import imageService from "../../imageService/image";
 
-import { EDIT_PRODCUT_BRAND, PRODUCT_BRAND_PK } from "../../gql/productBrand";
-import { APP_PROJECT_PK, EDIT_APP_PROJECT } from "../../gql/appProject";
 import { EDIT_WEB_PROJECT, WEB_PROJECT_PK } from "../../gql/webProject";
 const imageType = ["image/jpeg", "image/png"];
 const UpdateWebProject = () => {
@@ -50,7 +48,7 @@ const UpdateWebProject = () => {
       // setImageFileUrl(data.getImageUploadUrl.imageUploadUrl);
       // setValues({
       //   ...values,
-      //   image_url: `https://axra.sgp1.digitaloceanspaces.com/Mula/${data.getImageUploadUrl.imageName}`,
+      //   image_url: `https://axra.sgp1.digitaloceanspaces.com/AxraPortFo/${data.getImageUploadUrl.imageName}`,
       // });
     },
   });
@@ -152,7 +150,7 @@ const UpdateWebProject = () => {
           res.data.getImageUploadUrl.imageUploadUrl,
           selectedReplacementImage
         );
-        updatedValues.image_url = `https://axra.sgp1.digitaloceanspaces.com/Mula/${res.data.getImageUploadUrl.imageName}`;
+        updatedValues.image_url = `https://axra.sgp1.digitaloceanspaces.com/AxraPortFo/${res.data.getImageUploadUrl.imageName}`;
       } else if (selectedImage) {
         const res = await getImageUrl({
           variables: { contentType: "image/*" },
@@ -161,7 +159,7 @@ const UpdateWebProject = () => {
           res.data.getImageUploadUrl.imageUploadUrl,
           selectedImage
         );
-        updatedValues.image_url = `https://axra.sgp1.digitaloceanspaces.com/Mula/${res.data.getImageUploadUrl.imageName}`;
+        updatedValues.image_url = `https://axra.sgp1.digitaloceanspaces.com/AxraPortFo/${res.data.getImageUploadUrl.imageName}`;
       }
 
       await edit_web({ variables: updatedValues });
@@ -231,7 +229,7 @@ const UpdateWebProject = () => {
             <div>
               <label
                 for="base-input"
-                className="block  mb-2 text-md font-medium text-gray-900 dark:text-white"
+                className="block  mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
               >
                 Website Link
               </label>

@@ -1,22 +1,19 @@
 import { useState, useEffect } from "react";
 import Pagination from "../pagination/Pagination";
-import { useLazyQuery, useQuery } from "@apollo/client";
-
-import Search from "../../components/Search";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 
 import { useNavigate, useParams } from "react-router-dom";
 
 import { ALL_APP_PROJECT } from "../../gql/appProject";
+import { UPDATE_POSITION } from "../../gql/appProject";
 const AppProjects = () => {
   const navigate = useNavigate();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // Number of items per page
+  const itemsPerPage = 10;
 
   const [app, setApp] = useState();
   const [loadService, resApp] = useLazyQuery(ALL_APP_PROJECT);
-
-  const [searchValue, setSearchValue] = useState();
 
   useEffect(() => {
     loadService({
@@ -69,6 +66,18 @@ const AppProjects = () => {
   const handleRemove = (row) => {
     navigate(`/delete_app_project/${row.id}`);
   };
+
+  //update position
+  const [updatePosition] = useMutation(UPDATE_POSITION, {
+    onError: (error) => {
+      console.log("error: ", error);
+    },
+    onCompleted: (res) => {
+      // homeAlert(`Products have been put to the top.`);
+    },
+    refetchQueries: [ALL_APP_PROJECT],
+  });
+
   if (!app) {
     return;
   }
@@ -78,7 +87,7 @@ const AppProjects = () => {
       <div className="flex justify-between mb-3 ">
         {/* search */}
 
-        <div className="w-full md:w-1/3 my-5">
+        {/* <div className="w-full md:w-1/3 my-5">
           <form className="flex items-center">
             <label for="simple-search" className="sr-only">
               Search
@@ -110,7 +119,7 @@ const AppProjects = () => {
               />
             </div>
           </form>
-        </div>
+        </div> */}
         <div className="flex items-center">
           <button
             type="button"
@@ -221,7 +230,7 @@ const AppProjects = () => {
                   // } hover:bg-slate-100 hover:shadow-md`}
                   className="hover:bg-slate-100 border-y-2 hover:shadow-md"
                 >
-                  <td className="px-6 py-4">{index}</td>
+                  <td className="px-6 py-4">{index + 1}</td>
 
                   <td className="py-4">
                     <img
@@ -236,14 +245,27 @@ const AppProjects = () => {
 
                   <td className="py-4">
                     <button
+                      className="font-medium text-md rounded text-white py-2 px-4  bg-blue-600 hover:bg-blue-700"
+                      onClick={() =>
+                        updatePosition({
+                          variables: {
+                            id: row.id,
+                            updateAt: new Date().toISOString(),
+                          },
+                        })
+                      }
+                    >
+                      Top
+                    </button>
+                    <button
                       onClick={() => navigate(`${row.id}`)}
-                      className="font-medium text-md rounded text-white py-2 px-4  bg-green-600 hover:bg-green-700"
+                      className="font-medium text-md rounded text-white py-2 px-4 ml-5 bg-green-600 hover:bg-green-700"
                     >
                       Detail
                     </button>
                     <button
                       onClick={() => handleRemove(row)}
-                      className="font-medium text-md rounded text-white py-2 px-4 ml-8  bg-red-600 hover:bg-red-700"
+                      className="font-medium text-md rounded text-white py-2 px-4 ml-5  bg-red-600 hover:bg-red-700"
                     >
                       Delete
                     </button>

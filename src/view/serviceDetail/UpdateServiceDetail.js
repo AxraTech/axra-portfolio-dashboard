@@ -6,7 +6,6 @@ import RichTextEditor from "../../components/RichTextEditor";
 import imageService from "../../imageService/image";
 import { DELETE_IMAGE, IMAGE_UPLOAD } from "../../gql/imageupload";
 import {
-  ADD_SERVICE_DETAIL,
   EDIT_SERVICE_DETAIL,
   SERVICE_DETAIL_PK,
 } from "../../gql/serviceDetail";
@@ -22,8 +21,6 @@ const UpdateServiceDetail = () => {
   const [errors, setErrors] = useState({});
 
   const [description, setDescription] = useState("");
-  const [selectedBannerImage, setSelectedBannerImage] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null);
   const [newBannerImage, setNewBannerImage] = useState(null);
   const [newImage, setNewImage] = useState(null);
 
@@ -194,7 +191,7 @@ const UpdateServiceDetail = () => {
         );
         setValues({
           ...values,
-          banner_image_url: `https://axra.sgp1.digitaloceanspaces.com/Mula/${bannerImageUrl.data.getImageUploadUrl.imageName}`,
+          banner_image_url: `https://axra.sgp1.digitaloceanspaces.com/AxraPortFo/${bannerImageUrl.data.getImageUploadUrl.imageName}`,
         });
       }
 
@@ -209,7 +206,7 @@ const UpdateServiceDetail = () => {
         );
         setValues({
           ...values,
-          image_url: `https://axra.sgp1.digitaloceanspaces.com/Mula/${imageUrl.data.getImageUploadUrl.imageName}`,
+          image_url: `https://axra.sgp1.digitaloceanspaces.com/AxraPortFo/${imageUrl.data.getImageUploadUrl.imageName}`,
         });
       }
 
@@ -310,7 +307,7 @@ const UpdateServiceDetail = () => {
           <div className="w-full">
             <label
               for="base-input"
-              className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
             >
               Service Name
             </label>
@@ -333,7 +330,7 @@ const UpdateServiceDetail = () => {
           <div className="w-full">
             <label
               for="base-input"
-              className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
             >
               Service Description
             </label>

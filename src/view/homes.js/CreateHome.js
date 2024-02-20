@@ -6,17 +6,20 @@ import { AiOutlineCloudUpload, AiOutlineDelete } from "react-icons/ai";
 import RichTextEditor from "../../components/RichTextEditor";
 import { DELETE_IMAGE, IMAGE_UPLOAD } from "../../gql/imageupload";
 import { useNavigate } from "react-router-dom";
-import { ADD_ARTICLE } from "../../gql/articles";
+
+import { ADD_HOME } from "../../gql/home";
 const imageType = ["image/jpeg", "image/png"];
-const CreateArticle = () => {
+const CreateHome = () => {
   const navigate = useNavigate();
   // const { data } = useQuery(PRODUCT_MODEL);
 
   const [values, setValues] = useState({});
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [imageFileUrl, setImageFileUrl] = useState();
 
   const [description, setDescription] = useState("");
+
   const [selectedImage, setSelectedImage] = useState(null);
 
   //RTE
@@ -38,14 +41,14 @@ const CreateArticle = () => {
   });
 
   //create products
-  const [add_article] = useMutation(ADD_ARTICLE, {
+  const [add_home] = useMutation(ADD_HOME, {
     onError: (err) => {
-      console.log("article upload error", err);
-      alert("Article Upload Error");
+      console.log("home data upload error", err);
+      alert("Home data Upload Error");
       setLoading(false);
     },
     onCompleted: (data) => {
-      alert("New Article has been added");
+      alert("New Home Data has been added");
       console.log("result", data);
       setValues({});
       setLoading(false);
@@ -126,10 +129,6 @@ const CreateArticle = () => {
       tempErrors.title = "Title field is required.";
       errorExist = true;
     }
-    if (!values.category) {
-      tempErrors.category = "Category field is required.";
-      errorExist = true;
-    }
 
     if (errorExist) {
       setErrors({ ...tempErrors });
@@ -145,13 +144,13 @@ const CreateArticle = () => {
         selectedImage
       );
 
-      await add_article({
+      await add_home({
         variables: {
           ...values,
           image_url: `https://axra.sgp1.digitaloceanspaces.com/AxraPortFo/${res.data.getImageUploadUrl.imageName}`,
         },
       });
-      navigate("/article");
+      navigate("/home");
     } catch (err) {
       console.log("Error", err);
     }
@@ -200,30 +199,7 @@ const CreateArticle = () => {
           )}
         </div>
         <div className="w-full gap-x-20 gap-y-3 grid grid-cols-2 mt-10">
-          {/* Category */}
-          <div>
-            <label
-              for="base-input"
-              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
-            >
-              Category
-            </label>
-
-            <select
-              id="default"
-              value={values.category}
-              onChange={handleChange("category")}
-              className="bg-white border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            >
-              <option selected>Choose Category</option>
-              <option value="Knowledge Sharing">Knowledge Sharing</option>
-            </select>
-            {errors.category && (
-              <p className="text-red-500 mt-1 text-sm">{errors.category}</p>
-            )}
-          </div>
-
-          {/* product model */}
+          {/* title */}
           <div>
             <label
               for="base-input"
@@ -245,7 +221,7 @@ const CreateArticle = () => {
             )}
           </div>
 
-          {/* product description */}
+          {/* description */}
           <div>
             <label
               for="base-input"
@@ -282,4 +258,4 @@ const CreateArticle = () => {
     </>
   );
 };
-export default CreateArticle;
+export default CreateHome;

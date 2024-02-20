@@ -39,6 +39,9 @@ const ServiceDetails = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
+  const handleRemove = (row) => {
+    navigate(`/delete_service_detail/${row.id}`);
+  };
 
   // Handle next page click
   const handleNextPage = () => {
@@ -56,7 +59,7 @@ const ServiceDetails = () => {
   return (
     <div>
       <div className="flex justify-between mb-3 ">
-        <Search />
+        {/* <Search /> */}
         <div className="flex items-center">
           <button
             type="button"
@@ -116,7 +119,7 @@ const ServiceDetails = () => {
                   // } hover:bg-slate-100 hover:shadow-md`}
                   className="hover:bg-slate-100 border-y-2 hover:shadow-md"
                 >
-                  <td className="px-6 py-4">{index}</td>
+                  <td className="px-6 py-4">{index + 1}</td>
                   <td className="py-4">
                     <img
                       src={row.banner_image_url}
@@ -142,10 +145,8 @@ const ServiceDetails = () => {
                       Detail
                     </button>
                     <button
-                      // onClick={navigate(
-                      //   `/delete_product/${product.product_model_by_pk.id}`
-                      // )}
-                      className="font-medium text-md rounded text-white py-2 px-4 ml-8  bg-red-600 hover:bg-red-700"
+                      onClick={() => handleRemove(row)}
+                      className="font-medium text-md rounded text-white py-2 px-4 ml-5  bg-red-600 hover:bg-red-700"
                     >
                       Delete
                     </button>

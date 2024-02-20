@@ -175,7 +175,7 @@ const ProductCategorys = () => {
                     // } hover:bg-slate-100 hover:shadow-md`}
                     className="hover:bg-slate-100 border-y-2 hover:shadow-md"
                   >
-                    <td className="px-6 py-4">{index}</td>
+                    <td className="px-6 py-4">{index + 1}</td>
 
                     <td className="py-4">
                       <img

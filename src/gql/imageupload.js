@@ -1,20 +1,21 @@
 import { gql } from "@apollo/client";
-export const IMAGE_UPLOAD = gql`
-  mutation MyMutation($contentType: String!) {
-    getImageUploadUrl(contentType: $contentType) {
-      contentType
+
+export const DELETE_IMAGE = gql`
+  mutation MyMutation($image_name: String!) {
+    deleteImage(imageName: $image_name) {
       error
-      imageName
-      imageUploadUrl
       message
     }
   }
 `;
 
-export const DELETE_IMAGE = gql`
-  mutation delete_image($image_name: String!) {
-    deleteImage(imageName: $image_name) {
+export const IMAGE_UPLOAD = gql`
+  mutation MyMutation($contentType: String!) {
+    getImageUploadUrl(contentType: $contentType) {
       error
+      contentType
+      imageName
+      imageUploadUrl
       message
     }
   }

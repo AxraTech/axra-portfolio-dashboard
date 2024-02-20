@@ -2,11 +2,8 @@ import { useMutation, useQuery } from "@apollo/client";
 import imageService from "../../imageService/image";
 import {
   ADD_PRODUCUT,
-  MAIN_PRODUCT,
   PRODUCT_BRAND,
   PRODUCT_CATEGORY,
-  PRODUCT_MODEL,
-  SUB_PRODUCT,
 } from "../../gql/product";
 import { useState } from "react";
 import { AiOutlineCloudUpload, AiOutlineDelete } from "react-icons/ai";
@@ -22,7 +19,6 @@ const CreateProduct = () => {
   const [values, setValues] = useState({});
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
-  const [imageFileUrl, setImageFileUrl] = useState();
 
   const [description, setDescription] = useState("");
   const [specification, setSpecification] = useState("");
@@ -104,11 +100,10 @@ const CreateProduct = () => {
   // };
 
   const handleImageDelete = async () => {
-    // If there's an existing image, delete it
     if (values.product_image_url) {
       try {
         setLoading(true);
-        // Extract the imageName from the product_image_url
+
         const imageName = values.product_image_url.split("/").pop();
         console.log("image name", imageName);
         await deleteImage({ variables: { image_name: imageName } });
@@ -140,10 +135,7 @@ const CreateProduct = () => {
       tempErrors.model_name = "Product Model field is required.";
       errorExist = true;
     }
-    // if (!values.product_description) {
-    //   tempErrors.product_description = "Product Description field is required.";
-    //   errorExist = true;
-    // }
+
     if (!values.product_specification) {
       tempErrors.product_specification =
         "Product Specification field is required.";
@@ -163,7 +155,7 @@ const CreateProduct = () => {
 
     try {
       const res = await getImageUrl({ variables: { contentType: "image/*" } });
-      console.log("response ", res);
+      console.log("res", res);
       await imageService.uploadImage(
         res.data.getImageUploadUrl.imageUploadUrl,
         selectedImage
@@ -172,17 +164,14 @@ const CreateProduct = () => {
       await add_product({
         variables: {
           ...values,
-          product_image_url: `https://axra.sgp1.digitaloceanspaces.com/Mula/${res.data.getImageUploadUrl.imageName}`,
+          product_image_url: `https://axra.sgp1.digitaloceanspaces.com/AxraPortFo/${res.data.getImageUploadUrl.imageName}`,
         },
       });
       navigate("/products");
-      console.log("after create");
     } catch (err) {
       console.log("Error", err);
-      console.log("errrrrrrror");
     }
   };
-  console.log("values", values);
 
   if (!category || !brand) {
     return;
@@ -235,7 +224,7 @@ const CreateProduct = () => {
           <div>
             <label
               for="base-input"
-              className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
             >
               Product Category
             </label>
@@ -265,7 +254,7 @@ const CreateProduct = () => {
           <div>
             <label
               for="base-input"
-              className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700 "
             >
               Product Model
             </label>
@@ -303,7 +292,7 @@ const CreateProduct = () => {
           <div>
             <label
               for="base-input"
-              className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
             >
               Product Brand
             </label>
@@ -336,7 +325,7 @@ const CreateProduct = () => {
           <div>
             <label
               for="base-input"
-              className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
             >
               Product Description
             </label>
@@ -352,7 +341,7 @@ const CreateProduct = () => {
           <div>
             <label
               for="base-input"
-              className="block  mb-2 text-md font-medium text-gray-900 dark:text-white"
+              className="block  mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
             >
               Product Specification
             </label>

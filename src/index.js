@@ -34,12 +34,13 @@ const authLink = setContext((_, { headers }) => {
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     console.log("graphql", graphQLErrors);
+
     graphQLErrors.forEach(({ extensions }) => {
       if (
         extensions.code === "invalid-headers" ||
         extensions.code === "invalid-jwt"
       ) {
-        window.location.assign(`${window.location.origin}/`);
+        // window.location.assign(`${window.location.origin}/`);
       }
     });
   }

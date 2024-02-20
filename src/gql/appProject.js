@@ -90,3 +90,16 @@ export const DELETE_APP_PROJECT = gql`
     }
   }
 `;
+
+//top to put
+export const UPDATE_POSITION = gql`
+  mutation Update_App_By_Id($id: Int!, $updateAt: timestamptz!) {
+    update_application_project_by_pk(
+      pk_columns: { id: $id }
+      _set: { updated_at: $updateAt }
+    ) {
+      created_at
+      id
+    }
+  }
+`;

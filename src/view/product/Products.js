@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import Pagination from "../pagination/Pagination";
-import { useLazyQuery, useQuery } from "@apollo/client";
-import { ALL_PRODUCTS, PRODUCT_PK } from "../../gql/product";
-import Search from "../../components/Search";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { ALL_PRODUCTS, UPDATE_POSITION } from "../../gql/product";
 
 import { useNavigate, useParams } from "react-router-dom";
 const Products = () => {
@@ -10,7 +9,7 @@ const Products = () => {
   const { id } = useParams();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
 
   const [products, setProducts] = useState();
   const [loadProduct, resultProduct] = useLazyQuery(ALL_PRODUCTS);
@@ -68,9 +67,20 @@ const Products = () => {
   };
 
   const handleRemove = (row) => {
-    // setRemoveItem(row);
     navigate(`/delete_product/${row.id}`);
   };
+
+  //update position
+  const [updatePosition] = useMutation(UPDATE_POSITION, {
+    onError: (error) => {
+      console.log("error: ", error);
+    },
+    onCompleted: (res) => {
+      // homeAlert(`Products have been put to the top.`);
+    },
+    refetchQueries: [ALL_PRODUCTS],
+  });
+
   if (!products) {
     return;
   }
@@ -135,7 +145,7 @@ const Products = () => {
           </button>
         </div>
       </div>
-      <div className="relative bg-white_color overflow-y-scroll max-h-96 overflow-x-auto  border-2 ">
+      <div className="relative bg-white_color overflow-y-scroll max-h-fit overflow-x-auto  border-2 ">
         <table className="w-full text-md text-left  text-gray-500">
           <thead className="text-md sticky top-0  text-gray-700 bg-gray-200">
             <tr>
@@ -180,7 +190,7 @@ const Products = () => {
                     // } hover:bg-slate-100 hover:shadow-md`}
                     className="hover:bg-slate-100 border-y-2 hover:shadow-md"
                   >
-                    <td className="px-6 py-4">{index}</td>
+                    <td className="px-6 py-4">{index + 1}</td>
                     <td className="py-4">
                       <img
                         src={row.product_image_url}
@@ -197,14 +207,27 @@ const Products = () => {
 
                     <td className="py-4">
                       <button
+                        className="font-medium text-md rounded text-white py-2 px-4  bg-blue-600 hover:bg-blue-700"
+                        onClick={() =>
+                          updatePosition({
+                            variables: {
+                              id: row.id,
+                              updateAt: new Date().toISOString(),
+                            },
+                          })
+                        }
+                      >
+                        Top
+                      </button>
+                      <button
                         onClick={() => navigate(`${row.id}`)}
-                        className="font-medium text-md rounded text-white py-2 px-4  bg-green-600 hover:bg-green-700"
+                        className="font-medium text-md rounded text-white py-2 px-4 ml-5 bg-green-600 hover:bg-green-700"
                       >
                         Detail
                       </button>
                       <button
                         onClick={() => handleRemove(row)}
-                        className="font-medium text-md rounded text-white py-2 px-4 ml-8  bg-red-600 hover:bg-red-700"
+                        className="font-medium text-md rounded text-white py-2 px-4 ml-5  bg-red-600 hover:bg-red-700"
                       >
                         Delete
                       </button>

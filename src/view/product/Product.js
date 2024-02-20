@@ -2,8 +2,6 @@ import { useMutation, useQuery } from "@apollo/client";
 import { DELETE_PRODUCT, PRODUCT_PK } from "../../gql/product";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
-import ModalBox from "../../components/ModalBox";
-import DeleteProduct from "./DeleteProduct";
 
 const Product = () => {
   const { id } = useParams();
@@ -14,8 +12,6 @@ const Product = () => {
   const [Modelopen, setModelOpen] = useState(false);
 
   const handleDescription = () => {
-    console.log("object");
-
     setDesOpen(true);
     setSpeOpen(false);
   };

@@ -97,3 +97,12 @@ export const SERVICE_PACKAGE = gql`
     }
   }
 `;
+
+//delete service package
+export const DELETE_SERVICE_PACKAGE = gql`
+  mutation MyMutation($id: Int!) {
+    delete_service_package_by_pk(id: $id) {
+      id
+    }
+  }
+`;

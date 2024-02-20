@@ -1,19 +1,12 @@
 import { useMutation, useQuery } from "@apollo/client";
 import imageService from "../../imageService/image";
-import {
-  ADD_PRODUCUT,
-  MAIN_PRODUCT,
-  PRODUCT_BRAND,
-  PRODUCT_CATEGORY,
-  PRODUCT_MODEL,
-  SUB_PRODUCT,
-} from "../../gql/product";
+
 import { useState } from "react";
 import { AiOutlineCloudUpload, AiOutlineDelete } from "react-icons/ai";
-import RichTextEditor from "../../components/RichTextEditor";
+
 import { DELETE_IMAGE, IMAGE_UPLOAD } from "../../gql/imageupload";
 import { useNavigate } from "react-router-dom";
-import { ADD_PRODUCT_BRAND } from "../../gql/productBrand";
+
 import { ADD_APP_PROJECT } from "../../gql/appProject";
 const imageType = ["image/jpeg", "image/png"];
 const CreateAppProject = () => {
@@ -146,7 +139,7 @@ const CreateAppProject = () => {
       await add_app({
         variables: {
           ...values,
-          image_url: `https://axra.sgp1.digitaloceanspaces.com/Mula/${res.data.getImageUploadUrl.imageName}`,
+          image_url: `https://axra.sgp1.digitaloceanspaces.com/AxraPortFo/${res.data.getImageUploadUrl.imageName}`,
         },
       });
       navigate("/app_project");
@@ -204,7 +197,7 @@ const CreateAppProject = () => {
             <div>
               <label
                 for="base-input"
-                className="block  mb-2 text-md font-medium text-gray-900 dark:text-white"
+                className="block  mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
               >
                 Android App Link
               </label>
@@ -228,7 +221,7 @@ const CreateAppProject = () => {
             <div className="my-2">
               <label
                 for="base-input"
-                className="block  mb-2 text-md font-medium text-gray-900 dark:text-white"
+                className="block  mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
               >
                 IOS App Link
               </label>

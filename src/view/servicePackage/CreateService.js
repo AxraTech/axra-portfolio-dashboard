@@ -123,13 +123,10 @@ const CreateService = () => {
         },
       });
       navigate("/service_package");
-      console.log("after create");
     } catch (err) {
       console.log("Error", err);
-      console.log("errrrrrrror");
     }
   };
-  console.log("values", values);
 
   return (
     <>
@@ -178,7 +175,7 @@ const CreateService = () => {
           <div>
             <label
               for="base-input"
-              className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
             >
               Package Type
             </label>
@@ -201,7 +198,7 @@ const CreateService = () => {
           <div>
             <label
               for="base-input"
-              className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
             >
               Package Price
             </label>
@@ -241,7 +238,7 @@ const CreateService = () => {
           <div>
             <label
               for="base-input"
-              className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
             >
               Service Fee
             </label>
@@ -264,7 +261,7 @@ const CreateService = () => {
           <div>
             <label
               for="base-input"
-              className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
             >
               Service Package Description
             </label>

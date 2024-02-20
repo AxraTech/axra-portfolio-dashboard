@@ -36,19 +36,19 @@ const ProductBrand = () => {
   return (
     <>
       <div className="grid grid-cols-3 gap-x-10">
-        <div className="col-span-1 bg-gray-200 p-4 shadow-sm w-auto h-auto">
+        {/* <div className="col-span-1 bg-gray-200 p-4 shadow-sm w-auto h-auto">
           <img
             src={product?.product_brand_by_pk?.image_url}
             className="w-auto h-auto"
           ></img>
-        </div>
+        </div> */}
         {/* <div className="col-span-1 bg-gray-200 p-4 shadow-sm w-auto h-auto">
           <img
             src={service?.service_detail_by_pk?.image_url}
             className="w-auto h-auto"
           ></img>
         </div> */}
-        <div className=" col-span-1 p-4 px-10 ">
+        <div className=" col-span-2 p-4 px-10 ">
           {/* category */}
           <div className="flex gap-x-3 ">
             <p className="w-36">Service Name</p>

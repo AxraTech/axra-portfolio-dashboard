@@ -24,7 +24,7 @@ const ProductBrand = () => {
       },
       fetchPolicy: "network-only",
     });
-  }, [loadService]);
+  }, [loadService, searchValue]);
   useEffect(() => {
     if (resultProduct.data) {
       setProduct(resultProduct?.data.product_brand);
@@ -136,16 +136,12 @@ const ProductBrand = () => {
           </button>
         </div>
       </div>
-      <div className="relative bg-white_color overflow-y-scroll max-h-96 overflow-x-auto  border-2 ">
+      <div className="relative bg-white_color overflow-y-scroll max-h-fit overflow-x-auto  border-2 ">
         <table className="w-full text-md text-left  text-gray-500">
           <thead className="text-md sticky top-0  text-gray-700 bg-gray-200">
             <tr>
               <th scope="col" className="px-6 py-4">
                 ID
-              </th>
-
-              <th scope="col" className="py-4">
-                Image
               </th>
 
               <th scope="col" className="py-4">
@@ -176,14 +172,14 @@ const ProductBrand = () => {
                     // } hover:bg-slate-100 hover:shadow-md`}
                     className="hover:bg-slate-100 border-y-2 hover:shadow-md"
                   >
-                    <td className="px-6 py-4">{index}</td>
+                    <td className="px-6 py-4">{index + 1}</td>
 
-                    <td className="py-4">
+                    {/* <td className="py-4">
                       <img
                         src={row.image_url}
                         className="rounded-full w-12 h-12"
                       ></img>
-                    </td>
+                    </td> */}
                     <td className="py-4">{row?.brand_name}</td>
 
                     <td className="py-4">

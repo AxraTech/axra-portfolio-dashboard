@@ -6,9 +6,9 @@ import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import { useParams, useNavigate } from "react-router-dom";
 import imageService from "../../imageService/image";
 
-import { ARTICLE_PK, EDIT_ARTICLE } from "../../gql/articles";
+import { UPDATE_HOME, HOME_PK } from "../../gql/home";
 const imageType = ["image/jpeg", "image/png"];
-const UpdateArticle = () => {
+const UpdateHome = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -22,25 +22,25 @@ const UpdateArticle = () => {
   const [selectedReplacementImage, setSelectedReplacementImage] =
     useState(null);
 
-  const [loadProduct, resArticle] = useLazyQuery(ARTICLE_PK);
+  const [loadProduct, resHome] = useLazyQuery(HOME_PK);
 
   useEffect(() => {
     loadProduct({ variables: { id: id } });
   }, [loadProduct]);
 
   useEffect(() => {
-    if (resArticle.data) {
+    if (resHome.data) {
       setValues({
-        id: resArticle.data.article_by_pk.id ?? "",
-        title: resArticle.data.article_by_pk.title ?? "",
-        category: resArticle.data.article_by_pk.category ?? "",
-        description: resArticle.data.article_by_pk.description ?? "",
+        id: resHome.data.home_by_pk.id ?? "",
+        title: resHome.data.home_by_pk.title ?? "",
 
-        image_url: resArticle.data.article_by_pk.image_url ?? "",
+        description: resHome.data.home_by_pk.description ?? "",
+
+        image_url: resHome.data.home_by_pk.image_url ?? "",
       });
-      setDescription(resArticle.data.article_by_pk.description ?? "");
+      setDescription(resHome.data.home_by_pk.description ?? "");
     }
-  }, [resArticle]);
+  }, [resHome]);
 
   // RTE
   const descriptionChange = (value) => {
@@ -56,23 +56,18 @@ const UpdateArticle = () => {
     },
     onCompleted: (data) => {
       setLoading(false);
-      // setImageFileUrl(data.getImageUploadUrl.imageUploadUrl);
-      // setValues({
-      //   ...values,
-      //   image_url: `https://axra.sgp1.digitaloceanspaces.com/AxraPortFo/${data.getImageUploadUrl.imageName}`,
-      // });
     },
   });
 
-  // Create products
-  const [edit_article] = useMutation(EDIT_ARTICLE, {
+  // Create home data
+  const [edit_article] = useMutation(UPDATE_HOME, {
     onError: (err) => {
-      console.log("Article upload error", err);
-      alert("Article Update Error");
+      console.log("home data upload error", err);
+      alert("Hone Data Update Error");
       setLoading(false);
     },
     onCompleted: (data) => {
-      alert("Article has been updated");
+      alert("New Home Data has been updated");
       setValues({});
       setLoading(false);
     },
@@ -129,25 +124,6 @@ const UpdateArticle = () => {
     setValues({ ...values, image_url: "" });
   };
 
-  // const handleImageDelete = async () => {
-  //   // If there's an existing image, delete it
-  //   if (values.image_url) {
-  //     try {
-  //       setLoading(true);
-  //       // Extract the imageName from the image_url
-  //       const imageName = values.image_url.split("/").pop();
-  //       console.log("image name", imageName);
-  //       await deleteImage({ variables: { image_name: imageName } });
-  //       setValues({ ...values, image_url: "" });
-  //       setLoading(false);
-  //     } catch (error) {
-  //       console.log("Error deleting image:", error);
-  //       setLoading(false);
-  //     }
-
-  //   }
-  // };
-
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
@@ -175,7 +151,7 @@ const UpdateArticle = () => {
 
       await edit_article({ variables: updatedValues });
 
-      navigate("/article");
+      navigate("/home");
     } catch (err) {
       console.log("Error", err);
       console.log("Error occurred during update");
@@ -235,26 +211,6 @@ const UpdateArticle = () => {
 
         {/* Rest of the form fields */}
         <div className="w-full gap-x-20 gap-y-3 grid grid-cols-2 mt-10">
-          {/* Category */}
-          <div>
-            <label
-              for="base-input"
-              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
-            >
-              Category
-            </label>
-
-            <select
-              id="default"
-              value={values.category}
-              onChange={handleChange("category")}
-              className="bg-white border border-gray-300 text-gray-900 mb-6 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            >
-              <option selected>Choose Category</option>
-              <option value="Knowledge Sharing">Knowledge Sharing</option>
-            </select>
-          </div>
-
           {/* title */}
           <div>
             <label
@@ -299,4 +255,4 @@ const UpdateArticle = () => {
   );
 };
 
-export default UpdateArticle;
+export default UpdateHome;

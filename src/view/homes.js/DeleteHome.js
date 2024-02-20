@@ -1,34 +1,38 @@
 import { useState } from "react";
-
+// import { DELETE_PRODUCT, PRODUCT_PK } from "../../gql/product";
 import { useMutation, useQuery } from "@apollo/client";
 import { useNavigate, useParams } from "react-router-dom";
-import { SERVICE_PACKAGE_PK } from "../../gql/servicePackage";
-import { DELETE_SERVICE_PACKAGE } from "../../gql/serivce";
+import { ADD_HOME, DELETE_HOME, HOME_PK } from "../../gql/home";
 
-const DeleteServicePackage = () => {
+const DeleteHome = () => {
   const [Modelopen, setModelOpen] = useState(true);
   const navigate = useNavigate();
   const { id } = useParams();
-  const { data: service } = useQuery(SERVICE_PACKAGE_PK, {
+  const [loading, setLoading] = useState(false);
+  const { data: home } = useQuery(HOME_PK, {
     variables: { id: id },
   });
-  const [delete_product] = useMutation(DELETE_SERVICE_PACKAGE, {
+  const [delete_home] = useMutation(DELETE_HOME, {
     onError: (err) => {
-      console.log("Delete Error");
+      alert("Delete Error", err);
     },
-    onCompleted: (data) => {
-      alert("Deleted Successfull ");
+    onCompleted: () => {
+      setLoading(false);
+      alert("Delete Successfull");
     },
   });
 
   const handleDelete = async () => {
-    if (service) {
-      await delete_product({
-        variables: { id: service?.service_package_by_pk.id },
+    try {
+      await delete_home({
+        variables: { id: home?.home_by_pk.id },
       });
+    } catch (err) {
+      console.log("Delete Error", err);
     }
 
-    navigate("/service_package");
+    // setModelOpen(false);
+    navigate("/home");
   };
   return (
     <>
@@ -102,4 +106,4 @@ const DeleteServicePackage = () => {
     </>
   );
 };
-export default DeleteServicePackage;
+export default DeleteHome;

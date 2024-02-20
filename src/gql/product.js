@@ -165,3 +165,15 @@ export const PRODUCT_CATEGORY = gql`
     }
   }
 `;
+
+export const UPDATE_POSITION = gql`
+  mutation Update_Product_By_Id($id: Int!, $updateAt: timestamptz!) {
+    update_product_model_by_pk(
+      pk_columns: { id: $id }
+      _set: { updated_at: $updateAt }
+    ) {
+      created_at
+      id
+    }
+  }
+`;

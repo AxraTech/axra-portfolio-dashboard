@@ -1,15 +1,23 @@
-import { useState } from "react";
-import { ADMIN_LOGIN } from "../../gql/admin";
-import { useMutation } from "@apollo/client";
+import { useState, useEffect } from "react";
+import { ADMIN_LOGIN, ADMIN_PK } from "../../gql/admin";
+import { useMutation, useQuery } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import * as jose from "jose";
-const Login = () => {
+const UpdateLogin = () => {
+  const loggedUser = window.localStorage.getItem("loggedUser");
+  const parsedLoggedUser = JSON.parse(loggedUser);
+  const { data: admin } = useQuery(ADMIN_PK, {
+    variables: { id: parsedLoggedUser.userID },
+  });
+  console.log("admin", admin);
   const [values, setValues] = useState({
     username: "",
     password: "",
+    phone: "",
   });
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({
+    phone: "",
     password: "",
     username: "",
   });
@@ -18,15 +26,61 @@ const Login = () => {
   const navigate = useNavigate();
 
   /*Part of gql */
+  const [postLogin] = useMutation(ADMIN_LOGIN, {
+    method: "POST",
+    onError: (error) => {
+      console.log("login Error");
+      console.log("Error", error);
+      setShowAlert({ message: "Error on server", isError: true });
+      setTimeout(() => {
+        setShowAlert({ message: "", isError: false });
+      }, 3000);
+    },
+    onCompleted: (result) => {
+      setValues({
+        username: "",
+        password: "",
+      });
+      alert("Login Successful");
+      setLoading(false);
+      if (result.AdminLogIn.error) {
+        setShowAlert({ message: result.AdminLogIn.message, isError: true });
+        setTimeout(() => {
+          setShowAlert({ message: "", isError: false });
+        }, 3000);
+        return;
+      }
+      const decodedToken = jose.decodeJwt(result.AdminLogIn.accessToken);
+      // if (decodedToken.exp * 1000 < Date.now()) {
+      //   navigate("/login");
+      // }
 
-  const [postLogin] = useMutation(ADMIN_LOGIN);
+      const data = JSON.stringify({
+        token: result.AdminLogIn.accessToken,
+        userID: decodedToken.user_id,
+      });
+
+      window.localStorage.setItem("loggedUser", data);
+      navigate("/");
+    },
+  });
+
+  // const handleClickShowPassword = () => {
+  //   setValues({
+  //     ...values,
+  //     showPassword: !values.showPassword,
+  //   });
+  // };
+
+  // const handleMouseDownPassword = (event) => {
+  //   event.preventDefault();
+  // };
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
   };
 
-  const handleClick = async (e) => {
-    e.preventDefault();
+  const handleClick = async () => {
     setErrors({
       username: "",
       password: "",
@@ -49,50 +103,28 @@ const Login = () => {
     }
 
     try {
-      const result = await postLogin({
+      await postLogin({
         variables: {
           username: values.username,
           password: values.password,
+          phone: "",
           role: "admin",
         },
       });
-      console.log("result ", result);
-      setValues({
-        username: "",
-        password: "",
-      });
-      setLoading(false);
-
-      if (result.data.AdminLogIn.error == 1) {
-        alert(result.data.AdminLogIn.message);
-        return;
-      } else alert("Login Successfull");
-
-      const decodedToken = jose.decodeJwt(result.data.AdminLogIn.accessToken);
-      if (decodedToken.exp * 1000 < Date.now()) {
-        navigate("/login");
-      }
-
-      const data = JSON.stringify({
-        token: result.data.AdminLogIn.accessToken,
-        userID: decodedToken.user_id,
-      });
-
-      window.localStorage.setItem("loggedUser", data);
-      navigate("/dashboard");
     } catch (err) {
-      console.log(err);
+      console.log("catch errrorr");
+      alert("Error ", err);
     }
   };
 
   return (
     <>
-      <section className="bg-gray-50 dark:bg-gray-900">
-        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-          <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+      <section className="bg-secondaryColor">
+        <div className="flex flex-col items-center justify-center mx-auto md:h-screen lg:py-0">
+          <div className="w-full bg-white rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                Sign in to your account
+              <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl ">
+                Update Profile
               </h1>
               <form
                 // method="get"
@@ -136,8 +168,8 @@ const Login = () => {
                     value={values.password}
                     onChange={handleChange("password")}
                     id="password"
-                    placeholder="Enter Password"
-                    className={`bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5`}
+                    placeholder="••••••••"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     required=""
                   />
                   {errors.password && (
@@ -205,4 +237,4 @@ const Login = () => {
     </>
   );
 };
-export default Login;
+export default UpdateLogin;

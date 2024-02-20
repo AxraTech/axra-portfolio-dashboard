@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import Pagination from "../pagination/Pagination";
-import { useLazyQuery, useQuery } from "@apollo/client";
-import { ALL_PRODUCTS, PRODUCT_PK } from "../../gql/product";
-import Search from "../../components/Search";
-import { MAIN_PRODUCT } from "../../gql/product";
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import {
+  ALL_PRODUCTS,
+  PRODUCT_PK,
+  UPDATE_POSITION,
+} from "../../gql/webProject";
+
 import { useNavigate, useParams } from "react-router-dom";
 
-import { ALL_APP_PROJECT } from "../../gql/appProject";
 import { ALL_WEB_PROJECT } from "../../gql/webProject";
 const AppProjects = () => {
   const navigate = useNavigate();
@@ -50,6 +52,26 @@ const AppProjects = () => {
   const handleRemove = (row) => {
     navigate(`/delete_web_project/${row.id}`);
   };
+  //update position
+  const [updatePosition] = useMutation(UPDATE_POSITION, {
+    onError: (error) => {
+      console.log("error: ", error);
+    },
+    onCompleted: (res) => {
+      // homeAlert(`Products have been put to the top.`);
+    },
+    refetchQueries: [ALL_WEB_PROJECT],
+  });
+
+  const handlePosition = (row) => {
+    updatePosition({
+      variables: {
+        id: row.id,
+        updateAt: new Date().toISOString(),
+      },
+    });
+  };
+
   if (!web) {
     return;
   }
@@ -57,7 +79,7 @@ const AppProjects = () => {
   return (
     <div>
       <div className="flex justify-between mb-3 ">
-        <Search />
+        {/* <Search /> */}
         <div className="flex items-center">
           <button
             type="button"
@@ -81,7 +103,7 @@ const AppProjects = () => {
           </button>
         </div>
       </div>
-      <div className="relative bg-white_color overflow-y-scroll max-h-96 overflow-x-auto  border-2 ">
+      <div className="relative bg-white_color overflow-y-scroll max-h-fit overflow-x-auto  border-2 ">
         <table className="w-full text-md text-left  text-gray-500">
           <thead className="text-md sticky top-0  text-gray-700 bg-gray-200">
             <tr>
@@ -112,7 +134,7 @@ const AppProjects = () => {
                   // } hover:bg-slate-100 hover:shadow-md`}
                   className="hover:bg-slate-100 border-y-2 hover:shadow-md"
                 >
-                  <td className="px-6 py-4">{index}</td>
+                  <td className="px-6 py-4">{index + 1}</td>
 
                   <td className="py-4">
                     <img
@@ -124,14 +146,20 @@ const AppProjects = () => {
 
                   <td className="py-4">
                     <button
+                      className="font-medium text-md rounded text-white py-2 px-4  bg-blue-600 hover:bg-blue-700"
+                      onClick={() => handlePosition(row)}
+                    >
+                      Top
+                    </button>
+                    <button
                       onClick={() => navigate(`${row.id}`)}
-                      className="font-medium text-md rounded text-white py-2 px-4  bg-green-600 hover:bg-green-700"
+                      className="font-medium text-md rounded text-white py-2 px-4 ml-5 bg-green-600 hover:bg-green-700"
                     >
                       Detail
                     </button>
                     <button
                       onClick={() => handleRemove(row)}
-                      className="font-medium text-md rounded text-white py-2 px-4 ml-8  bg-red-600 hover:bg-red-700"
+                      className="font-medium text-md rounded text-white py-2 px-4 ml-5  bg-red-600 hover:bg-red-700"
                     >
                       Delete
                     </button>

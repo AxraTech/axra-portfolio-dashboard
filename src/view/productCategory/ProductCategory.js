@@ -35,7 +35,7 @@ const ProductCategory = () => {
             className="w-auto h-auto"
           ></img>
         </div> */}
-        <div className=" col-span-1 p-4 px-10 ">
+        <div className=" col-span-2 p-4 px-10 ">
           {/* category */}
           <div className="flex gap-x-3 ">
             <p className="w-36">Product Category Name</p>

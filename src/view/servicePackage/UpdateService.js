@@ -1,29 +1,16 @@
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
-import imageService from "../../imageService/image";
-import {
-  ADD_PRODUCUT,
-  MAIN_PRODUCT,
-  PRODUCT_BRAND,
-  PRODUCT_CATEGORY,
-  PRODUCT_MODEL,
-  SUB_PRODUCT,
-} from "../../gql/product";
-import { useEffect, useLayoutEffect, useState } from "react";
-import { AiOutlineCloudUpload, AiOutlineDelete } from "react-icons/ai";
+
+import { useEffect, useState } from "react";
+
 import RichTextEditor from "../../components/RichTextEditor";
-import { DELETE_IMAGE, IMAGE_UPLOAD } from "../../gql/imageupload";
+
 import { useNavigate, useParams } from "react-router-dom";
+
 import {
-  ADD_SERVICE,
-  SERVICE_DETAIL_NAME,
-  SERVICE_PACKAGE,
-} from "../../gql/serivce";
-import {
-  ADD_SERVICE_PACKAGE,
   EDIT_SERVICE_PACKAGE,
   SERVICE_PACKAGE_PK,
 } from "../../gql/servicePackage";
-const imageType = ["image/jpeg", "image/png"];
+
 const CreateService = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -129,7 +116,6 @@ const CreateService = () => {
         },
       });
       navigate("/service_package");
-      console.log("after create");
     } catch (err) {
       console.log("Error", err);
       console.log("errrrrrrror");
@@ -147,7 +133,7 @@ const CreateService = () => {
           <div>
             <label
               for="base-input"
-              className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
             >
               Package Type
             </label>
@@ -165,7 +151,7 @@ const CreateService = () => {
           <div>
             <label
               for="base-input"
-              className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
             >
               Package Price
             </label>
@@ -205,7 +191,7 @@ const CreateService = () => {
           <div>
             <label
               for="base-input"
-              className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
             >
               Service Fee
             </label>
@@ -228,7 +214,7 @@ const CreateService = () => {
           <div>
             <label
               for="base-input"
-              className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
             >
               Service Package Description
             </label>

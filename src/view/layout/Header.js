@@ -1,9 +1,13 @@
 import { useState } from "react";
-import images from "../../images";
 
-const Header = () => {
+// import UpdateLogin from "../login/UpdateLogin";
+
+const Header = ({ handleDrawerOpen, open, user, updateUser }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -14,7 +18,7 @@ const Header = () => {
           {/* <img src={images.logo} className="w-auto h-14" /> */}
           <div className="flex">
             <svg
-              class="w-6 h-6 text-gray-800 dark:text-white"
+              class="w-6 h-6 text-gray-800 dark:text-gray-700"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -25,25 +29,21 @@ const Header = () => {
 
             <span className="relative">
               <button onClick={toggleDropdown} className="px-2 text-gray-800">
-                Admin Options
+                Admin Option
               </button>
               {isOpen && (
-                <div className="absolute top-10 right-0 w-40 py-2 bg-white shadow-md rounded-md">
+                <div className="absolute top-7 right-4 w-30 py-1 bg-white shadow-md rounded-md">
                   {/* Replace '#' with the actual URL for each option */}
-                  <a
-                    href="#"
+                  {/* <a
+                    href="/updateLogin"
+                    // onClick={() => handleOpenModal(true)}
                     className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                   >
-                    Login
-                  </a>
+                    Edit
+                  </a> */}
+
                   <a
-                    href="#"
-                    className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                  >
-                    Edit Profile
-                  </a>
-                  <a
-                    href="#"
+                    href="/signup"
                     className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
                   >
                     Logout
@@ -54,6 +54,13 @@ const Header = () => {
           </div>
         </div>
       </div>
+      {/* {openModal && (
+        <UpdateLogin
+          handleClose={handleCloseModal}
+          user={user}
+          updateData={updateUser}
+        />
+      )} */}
     </>
   );
 };

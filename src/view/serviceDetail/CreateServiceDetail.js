@@ -1,13 +1,6 @@
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import imageService from "../../imageService/image";
-import {
-  ADD_PRODUCUT,
-  MAIN_PRODUCT,
-  PRODUCT_BRAND,
-  PRODUCT_CATEGORY,
-  PRODUCT_MODEL,
-  SUB_PRODUCT,
-} from "../../gql/product";
+
 import { useState } from "react";
 import { AiOutlineCloudUpload, AiOutlineDelete } from "react-icons/ai";
 import RichTextEditor from "../../components/RichTextEditor";
@@ -39,9 +32,10 @@ const CreateServiceDetail = () => {
     onError: (err) => {
       setLoading(false);
       console.log("Imge upload error", err);
+      // alert("Image Upload Error");
     },
-
     onCompleted: (data) => {
+      console.log("data", data);
       setLoading(false);
     },
   });
@@ -51,8 +45,8 @@ const CreateServiceDetail = () => {
       setLoading(false);
       console.log("Imge upload error", err);
     },
-
     onCompleted: (data) => {
+      console.log("data", data);
       setLoading(false);
     },
   });
@@ -66,7 +60,6 @@ const CreateServiceDetail = () => {
     },
     onCompleted: (data) => {
       alert("New Service has been added");
-      console.log("result mmmmmmmmmmmm", data);
       setValues({});
       setLoading(false);
     },
@@ -148,10 +141,7 @@ const CreateServiceDetail = () => {
       tempErrors.banner_image_url = "Banner Image field is required.";
       errorExist = true;
     }
-    // if (!values.image_url) {
-    //   tempErrors.image_url = "Image field is required.";
-    //   errorExist = true;
-    // }
+
     if (!values.service_name) {
       tempErrors.service_name = "Service Name field is required.";
       errorExist = true;
@@ -168,21 +158,23 @@ const CreateServiceDetail = () => {
     }
 
     try {
-      const bannerImageUrl = await getBannerImageUrl({
+      const res = await getBannerImageUrl({
         variables: { contentType: "image/*" },
       });
-      console.log("banner iamge url", bannerImageUrl);
+
+      console.log("res", res);
       const imageUrl = await getImageUrl({
         variables: { contentType: "image/*" },
       });
-      console.log("image url", imageUrl);
+      console.log("image url ", imageUrl);
+      console.log("seleted banner Image", selectedBannerImage);
 
       await imageService.uploadImage(
-        bannerImageUrl.data.getImageUploadUrl.imageUploadUrl,
+        res.data.getImageUploadUrl.imageUploadUrl,
         selectedBannerImage
       );
 
-      const image = await imageService.uploadImage(
+      await imageService.uploadImage(
         imageUrl.data.getImageUploadUrl.imageUploadUrl,
         selectedImage
       );
@@ -190,8 +182,8 @@ const CreateServiceDetail = () => {
       await add_service({
         variables: {
           ...values,
-          banner_image_url: `https://axra.sgp1.digitaloceanspaces.com/Mula/${bannerImageUrl.data.getImageUploadUrl.imageName}`,
-          image_url: `https://axra.sgp1.digitaloceanspaces.com/Mula/${imageUrl.data.getImageUploadUrl.imageName}`,
+          banner_image_url: `https://axra.sgp1.digitaloceanspaces.com/AxraPortFo/${res.data.getImageUploadUrl.imageName}`,
+          image_url: `https://axra.sgp1.digitaloceanspaces.com/AxraPortFo/${imageUrl.data.getImageUploadUrl.imageName}`,
         },
       });
       navigate("/service_detail");
@@ -291,7 +283,7 @@ const CreateServiceDetail = () => {
           <div className="w-full">
             <label
               for="base-input"
-              className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
             >
               Service Name
             </label>
@@ -314,7 +306,7 @@ const CreateServiceDetail = () => {
           <div className="w-full">
             <label
               for="base-input"
-              className="block mb-2 text-md font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
             >
               Service Description
             </label>

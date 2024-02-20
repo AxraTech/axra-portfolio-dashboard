@@ -1,35 +1,45 @@
 import { useState } from "react";
-
+// import { DELETE_PRODUCT, PRODUCT_PK } from "../../gql/product";
 import { useMutation, useQuery } from "@apollo/client";
 import { useNavigate, useParams } from "react-router-dom";
-import { SERVICE_PACKAGE_PK } from "../../gql/servicePackage";
-import { DELETE_SERVICE_PACKAGE } from "../../gql/serivce";
+import { USER_PK } from "../../gql/userform";
+import { DELETE_USERFORM } from "../../gql/userform";
 
-const DeleteServicePackage = () => {
+const DeleteUserForm = () => {
   const [Modelopen, setModelOpen] = useState(true);
   const navigate = useNavigate();
   const { id } = useParams();
-  const { data: service } = useQuery(SERVICE_PACKAGE_PK, {
+  const [loading, setLoading] = useState(false);
+  const { data: user } = useQuery(USER_PK, {
     variables: { id: id },
   });
-  const [delete_product] = useMutation(DELETE_SERVICE_PACKAGE, {
+  const [delete_user] = useMutation(DELETE_USERFORM, {
     onError: (err) => {
-      console.log("Delete Error");
+      alert("Delete Error", err);
     },
-    onCompleted: (data) => {
-      alert("Deleted Successfull ");
+    onCompleted: () => {
+      setLoading(false);
+      alert("Delete Successfull");
     },
   });
+  console.log("user", user.user_appointment_form[0].id);
 
   const handleDelete = async () => {
-    if (service) {
-      await delete_product({
-        variables: { id: service?.service_package_by_pk.id },
+    try {
+      await delete_user({
+        variables: { id: user?.user_appointment_form[0].id },
       });
+    } catch (err) {
+      console.log("Delete Error", err);
     }
 
-    navigate("/service_package");
+    // setModelOpen(false);
+    navigate("/dashboard");
   };
+
+  if (!user) {
+    return null;
+  }
   return (
     <>
       {Modelopen && (
@@ -102,4 +112,4 @@ const DeleteServicePackage = () => {
     </>
   );
 };
-export default DeleteServicePackage;
+export default DeleteUserForm;
