@@ -11,64 +11,42 @@ import {
   PRODUCT_CATEGORY,
   PRODUCT_PK,
 } from "../../gql/product";
+import { EDIT_STAFF, STAFF_PK, USER_ID } from "../../gql/staffs";
 const imageType = ["image/jpeg", "image/png"];
-const UpdateProduct = () => {
+const UpdateStaff = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const { data: category } = useQuery(PRODUCT_CATEGORY);
-  const { data: brand } = useQuery(PRODUCT_BRAND);
   const [values, setValues] = useState({});
   const [loading, setLoading] = useState(false);
 
   const [errors, setErrors] = useState({});
-  const [description, setDescription] = useState("");
-  const [specification, setSpecification] = useState("");
+
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedReplacementImage, setSelectedReplacementImage] =
     useState(null);
 
-  const [loadProduct, resultProduct] = useLazyQuery(PRODUCT_PK);
+  const [loadStaff, resultStaff] = useLazyQuery(STAFF_PK);
 
   useEffect(() => {
-    loadProduct({ variables: { id: id } });
-  }, [loadProduct]);
+    loadStaff({ variables: { id: id } });
+  }, [loadStaff]);
 
   useEffect(() => {
-    if (resultProduct.data) {
+    if (resultStaff.data) {
       setValues({
-        id: resultProduct.data.product_model_by_pk.id ?? "",
-        fk_product_category_id:
-          resultProduct.data.product_model_by_pk.fk_product_category_id ?? "",
-        fk_product_brand_id:
-          resultProduct.data.product_model_by_pk.fk_product_brand_id ?? "",
-        model_name: resultProduct.data.product_model_by_pk.model_name ?? "",
-        product_description:
-          resultProduct.data.product_model_by_pk.product_description ?? "",
-        product_specification:
-          resultProduct.data.product_model_by_pk.product_specification ?? "",
-        product_image_url:
-          resultProduct.data.product_model_by_pk.product_image_url ?? "",
+        fk_users_id:
+          resultStaff?.data?.staff_info_by_pk?.staff_info_user?.id ?? "",
+        id: resultStaff?.data.staff_info_by_pk.id ?? "",
+        name: resultStaff?.data.staff_info_by_pk.name ?? "",
+        position: resultStaff?.data.staff_info_by_pk.position ?? "",
+        image: resultStaff?.data?.staff_info_by_pk.image ?? "",
+        staff_ID: resultStaff?.data?.staff_info_by_pk.staff_ID ?? "",
+        start_join_date:
+          resultStaff?.data?.staff_info_by_pk.start_join_date ?? "",
       });
-      setDescription(
-        resultProduct.data.product_model_by_pk.product_description ?? ""
-      );
-      setSpecification(
-        resultProduct.data.product_model_by_pk.product_specification ?? ""
-      );
     }
-  }, [resultProduct]);
-
-  // RTE
-  const descriptionChange = (value) => {
-    setDescription(value);
-    setValues({ ...values, product_description: value.toString("html") });
-  };
-
-  const specificationChange = (value) => {
-    setSpecification(value);
-    setValues({ ...values, product_specification: value.toString("html") });
-  };
+  }, [resultStaff]);
 
   const [getImageUrl] = useMutation(IMAGE_UPLOAD, {
     onError: (err) => {
@@ -81,20 +59,20 @@ const UpdateProduct = () => {
       // setImageFileUrl(data.getImageUploadUrl.imageUploadUrl);
       // setValues({
       //   ...values,
-      //   product_image_url: `https://axra.sgp1.digitaloceanspaces.com/AxraPortFo/${data.getImageUploadUrl.imageName}`,
+      //   image: `https://axra.sgp1.digitaloceanspaces.com/AxraPortFo/${data.getImageUploadUrl.imageName}`,
       // });
     },
   });
 
   // Create products
-  const [edit_product] = useMutation(EDIT_PRODUCUT, {
+  const [edit_product] = useMutation(EDIT_STAFF, {
     onError: (err) => {
       console.log("Product upload error", err);
-      alert("Product Update Error");
+      alert("Staff Update Error");
       setLoading(false);
     },
     onCompleted: (data) => {
-      alert("Product has been updated");
+      alert("Staff has been updated");
       setValues({});
       setLoading(false);
     },
@@ -120,20 +98,20 @@ const UpdateProduct = () => {
       setSelectedImage(img);
       setValues({
         ...values,
-        product_image_url: URL.createObjectURL(img),
+        image: URL.createObjectURL(img),
       });
 
       if (!imageType.includes(img.type)) {
         setErrors({
           ...errors,
-          product_image_url: "Please Select image (png,jpeg)",
+          image: "Please Select image (png,jpeg)",
         });
         return;
       }
       if (img.size > 10485760) {
         setErrors({
           ...errors,
-          product_image_url: "Image size must be smaller than 10MB",
+          image: "Image size must be smaller than 10MB",
         });
         return;
       }
@@ -148,19 +126,19 @@ const UpdateProduct = () => {
   };
 
   const handleImageDelete = () => {
-    setValues({ ...values, product_image_url: "" });
+    setValues({ ...values, image: "" });
   };
 
   // const handleImageDelete = async () => {
   //   // If there's an existing image, delete it
-  //   if (values.product_image_url) {
+  //   if (values.image) {
   //     try {
   //       setLoading(true);
-  //       // Extract the imageName from the product_image_url
-  //       const imageName = values.product_image_url.split("/").pop();
+  //       // Extract the imageName from the image
+  //       const imageName = values.image.split("/").pop();
   //       console.log("image name", imageName);
   //       await deleteImage({ variables: { image_name: imageName } });
-  //       setValues({ ...values, product_image_url: "" });
+  //       setValues({ ...values, image: "" });
   //       setLoading(false);
   //     } catch (error) {
   //       console.log("Error deleting image:", error);
@@ -183,7 +161,7 @@ const UpdateProduct = () => {
           res.data.getImageUploadUrl.imageUploadUrl,
           selectedReplacementImage
         );
-        updatedValues.product_image_url = `https://axra.sgp1.digitaloceanspaces.com/AxraPortFo/${res.data.getImageUploadUrl.imageName}`;
+        updatedValues.image = `https://axra.sgp1.digitaloceanspaces.com/AxraPortFo/${res.data.getImageUploadUrl.imageName}`;
       } else if (selectedImage) {
         const res = await getImageUrl({
           variables: { contentType: "image/*" },
@@ -192,25 +170,22 @@ const UpdateProduct = () => {
           res.data.getImageUploadUrl.imageUploadUrl,
           selectedImage
         );
-        updatedValues.product_image_url = `https://axra.sgp1.digitaloceanspaces.com/AxraPortFo/${res.data.getImageUploadUrl.imageName}`;
+        updatedValues.image = `https://axra.sgp1.digitaloceanspaces.com/AxraPortFo/${res.data.getImageUploadUrl.imageName}`;
       }
 
       await edit_product({ variables: updatedValues });
 
-      navigate("/products");
+      navigate("/staffs");
     } catch (err) {
       console.log("Error", err);
       console.log("Error occurred during update");
     }
   };
 
-  if (!category || !brand) {
-    return null; // You may want to display a loading spinner or something else
-  }
-
   return (
     <>
       <form>
+        {/* image upload */}
         <div className="max-w-sm mx-auto mt-8">
           <div className="flex items-center justify-center h-48 w-full bg-white border-2 border-dashed border-gray-500 rounded-lg overflow-hidden relative">
             {selectedReplacementImage ? (
@@ -227,10 +202,10 @@ const UpdateProduct = () => {
                   <AiOutlineDelete className="w-6 h-6 text-red-600" />
                 </button>
               </>
-            ) : values.product_image_url ? (
+            ) : values.image ? (
               <>
                 <img
-                  src={values.product_image_url}
+                  src={values.image}
                   alt="Uploaded preview"
                   className="h-full w-full object-cover"
                 />
@@ -257,135 +232,175 @@ const UpdateProduct = () => {
               </div>
             )}
           </div>
+          {errors.image && (
+            <p className="text-red-500 mt-2 flex justify-center text-sm">
+              {errors.image}
+            </p>
+          )}
         </div>
-
-        {/* Rest of the form fields */}
         <div className="w-full gap-x-20 gap-y-3 grid grid-cols-2 mt-10">
           {/* Category */}
-          <div>
+          {/* <div>
             <label
               for="base-input"
               className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
             >
-              Product Category
+              Staffs Category
             </label>
 
             <select
               id="default"
-              value={values.fk_product_category_id}
-              onChange={handleChange("fk_product_category_id")}
-              className="bg-white border border-gray-300 text-gray-900 mb-6 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              value={values.fk_Staffs_category_id}
+              onChange={handleChange("fk_Staffs_category_id")}
+              className="bg-white border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             >
               <option selected>Choose Category</option>
-              {Array.isArray(category.product_category) &&
-                category?.product_category.map((row, index) => (
+              {Array.isArray(category.Staffs_category) &&
+                category?.Staffs_category.map((row, index) => (
                   <option key={index} value={row.id}>
-                    {row.product_category_name}
+                    {row.Staffs_category_name}
                   </option>
                 ))}
             </select>
-          </div>
-
-          {/* product model */}
+            {errors.fk_Staffs_category_id && (
+              <p className="text-red-500 mt-1 text-sm">
+                {errors.fk_Staffs_category_id}
+              </p>
+            )}
+          </div> */}
+          {/* name */}
           <div>
             <label
-              for="base-input"
-              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
+              htmlFor="base-input"
+              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700 "
             >
-              Product Model
+              User Name
             </label>
 
             <input
               type="text"
               id="default-input"
-              value={values.model_name}
-              onChange={handleChange("model_name")}
+              value={values.fk_users_id}
+              // onChange={handleChange("userId?.users_by_pk?.name")}
               className="bg-white_color border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             />
 
-            {/* <select
-               id="default"
-               defaultValue=""
-               value={values.fk_product_type}
-               onChange={handleChange("fk_product_type")}
-               className="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-             >
-               <option selected>Choose Product</option>
-               {data.product_model.length !== 0 &&
-                 data?.product_model?.map((row, index) => (
-                   <option key={index} value={row.id}>
-                     {row.model_name}
-                   </option>
-                 ))}
-             </select> */}
+            {errors.fk_users_id && (
+              <p className="text-red-500 mt-2 text-sm">{errors.fk_users_id}</p>
+            )}
           </div>
 
-          {/* product brand */}
+          {/* staff name */}
           <div>
             <label
-              for="base-input"
-              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
+              htmlFor="base-input"
+              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700 "
             >
-              Product Brand
+              Staff Name
             </label>
 
-            <select
-              id="default"
-              defaultValue=""
-              value={values.fk_product_brand_id}
-              onChange={handleChange("fk_product_brand_id")}
-              className="bg-white_color border border-gray-300 text-gray-900 mb-6 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            >
-              <option selected>Choose Product</option>
-              {brand.product_brand.length !== 0 &&
-                brand?.product_brand?.map((row, index) => (
-                  <option key={index} value={row.id}>
-                    {row.brand_name}
-                  </option>
-                ))}
-            </select>
-          </div>
-          <div></div>
-
-          {/* product description */}
-          <div>
-            <label
-              for="base-input"
-              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
-            >
-              Product Description
-            </label>
-            <RichTextEditor value={description} onChange={descriptionChange} />
-          </div>
-
-          {/* product Specification */}
-          <div>
-            <label
-              for="base-input"
-              className="block  mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
-            >
-              Product Specification
-            </label>
-            <RichTextEditor
-              className="bg-red-100"
-              value={specification}
-              onChange={specificationChange}
+            <input
+              type="text"
+              id="default-input"
+              value={values.name}
+              onChange={handleChange("name")}
+              className="bg-white_color border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             />
+
+            {errors.name && (
+              <p className="text-red-500 mt-2 text-sm">{errors.name}</p>
+            )}
+          </div>
+
+          {/* Position */}
+          <div>
+            <label
+              htmlFor="base-input"
+              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700 "
+            >
+              Position
+            </label>
+
+            <input
+              type="text"
+              id="default-input"
+              value={values.position}
+              onChange={handleChange("position")}
+              className="bg-white_color border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            />
+
+            {errors.position && (
+              <p className="text-red-500 mt-2 text-sm">{errors.position}</p>
+            )}
+          </div>
+
+          {/* staff_ID */}
+          <div>
+            <label
+              htmlFor="base-input"
+              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700 "
+            >
+              Staff_ID
+            </label>
+
+            <input
+              type="text"
+              id="default-input"
+              value={values.staff_ID}
+              onChange={handleChange("staff_ID")}
+              className="bg-white_color border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            />
+
+            {errors.staff_ID && (
+              <p className="text-red-500 mt-2 text-sm">{errors.staff_ID}</p>
+            )}
+          </div>
+          {/* start_join_date*/}
+          <div>
+            <label
+              htmlFor="base-input"
+              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700 "
+            >
+              Start Join Date
+            </label>
+
+            <input
+              type="date"
+              id="default-input"
+              value={values.start_join_date}
+              onChange={handleChange("start_join_date")}
+              className="bg-white_color border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            />
+
+            {errors.start_join_date && (
+              <p className="text-red-500 mt-2 text-sm">
+                {errors.start_join_date}
+              </p>
+            )}
           </div>
         </div>
-
         <div className="flex justify-end my-5">
-          <button
-            className="flex items-center py-2 mt-5 px-4 bg-blue-700 text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded text-md px-4 py-2"
-            loading={loading}
-            onClick={handleUpdate}
-          >
-            Update
-          </button>
+          {loading ? (
+            <button
+              type="button"
+              className="flex items-center py-2 mt-5 px-4 bg-blue-700 text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded text-md px-4 py-2"
+              disabled
+            >
+              Loading
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="flex items-center py-2 mt-5 px-4 bg-blue-700 text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded text-md px-4 py-2"
+              onClick={handleUpdate}
+            >
+              Update
+            </button>
+          )}
         </div>
       </form>
     </>
   );
 };
 
-export default UpdateProduct;
+export default UpdateStaff;

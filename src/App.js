@@ -2,7 +2,7 @@ import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import Home from "./view/Home";
 import Login from "./view/login/Login";
-import Signup from "./view/login/Signup";
+import Signup from "./view/login/Logout";
 import { SideBarContextProvider } from "./context/SideBarContext";
 
 function App() {

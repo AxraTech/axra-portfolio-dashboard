@@ -1,15 +1,12 @@
 import { useState, useEffect } from "react";
 import Pagination from "../pagination/Pagination";
-import { useLazyQuery, useQuery } from "@apollo/client";
-import { ALL_PRODUCTS, PRODUCT_PK } from "../../gql/product";
-import Search from "../../components/Search";
-import { MAIN_PRODUCT } from "../../gql/product";
-import { useNavigate, useParams } from "react-router-dom";
-import { ALL_SERVICES } from "../../gql/serivce";
+import { useLazyQuery } from "@apollo/client";
+
+import { useNavigate } from "react-router-dom";
+
 import { ALL_SERVICE_PACKAGE } from "../../gql/servicePackage";
 const ServicePackage = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // Number of items per page
@@ -68,13 +65,13 @@ const ServicePackage = () => {
             <svg
               className="h-3.5 w-3.5 mr-2"
               fill="currentColor"
-              viewbox="0 0 20 20"
+              viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
               aria-hidden="true"
             >
               <path
-                clip-rule="evenodd"
-                fill-rule="evenodd"
+                clipRule="evenodd"
+                fillRule="evenodd"
                 d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
               />
             </svg>

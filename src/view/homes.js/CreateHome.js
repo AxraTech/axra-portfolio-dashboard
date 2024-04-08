@@ -16,10 +16,8 @@ const CreateHome = () => {
   const [values, setValues] = useState({});
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
-  const [imageFileUrl, setImageFileUrl] = useState();
 
   const [description, setDescription] = useState("");
-
   const [selectedImage, setSelectedImage] = useState(null);
 
   //RTE
@@ -31,11 +29,8 @@ const CreateHome = () => {
   const [getImageUrl] = useMutation(IMAGE_UPLOAD, {
     onError: (err) => {
       setLoading(false);
-      console.log("Imge upload error", err);
-      // alert("Image Upload Error");
     },
     onCompleted: (data) => {
-      console.log("data", data);
       setLoading(false);
     },
   });
@@ -43,13 +38,11 @@ const CreateHome = () => {
   //create products
   const [add_home] = useMutation(ADD_HOME, {
     onError: (err) => {
-      console.log("home data upload error", err);
       alert("Home data Upload Error");
       setLoading(false);
     },
     onCompleted: (data) => {
       alert("New Home Data has been added");
-      console.log("result", data);
       setValues({});
       setLoading(false);
     },
@@ -88,10 +81,6 @@ const CreateHome = () => {
     }
   };
 
-  // const handleImageDelete = () => {
-  //   setSelectedImage(null);
-  // };
-
   const handleImageDelete = async () => {
     // If there's an existing image, delete it
     if (values.image_url) {
@@ -99,7 +88,7 @@ const CreateHome = () => {
         setLoading(true);
         // Extract the imageName from the product_image_url
         const imageName = values.image_url.split("/").pop();
-        console.log("image name", imageName);
+
         await deleteImage({ variables: { image_name: imageName } });
         setValues({ ...values, image_url: "" });
         setLoading(false);

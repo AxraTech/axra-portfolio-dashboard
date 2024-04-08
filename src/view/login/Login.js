@@ -19,7 +19,11 @@ const Login = () => {
 
   /*Part of gql */
 
-  const [postLogin] = useMutation(ADMIN_LOGIN);
+  const [postLogin] = useMutation(ADMIN_LOGIN, {
+    onError: (err) => {
+      console.log("Login Error ", err);
+    },
+  });
 
   const handleChange = (prop) => (event) => {
     setValues({ ...values, [prop]: event.target.value });
@@ -47,29 +51,29 @@ const Login = () => {
       setLoading(false);
       return;
     }
-
+    console.log("username ", values.username, "password ", values.password);
     try {
       const result = await postLogin({
         variables: {
           username: values.username,
           password: values.password,
-          role: "admin",
         },
       });
-      console.log("result ", result);
+
       setValues({
         username: "",
         password: "",
       });
       setLoading(false);
-
-      if (result.data.AdminLogIn.error == 1) {
+      console.log("result --------", result?.data);
+      if (result.data.AdminLogIn.error === 1) {
         alert(result.data.AdminLogIn.message);
         return;
       } else alert("Login Successfull");
 
       const decodedToken = jose.decodeJwt(result.data.AdminLogIn.accessToken);
-      if (decodedToken.exp * 1000 < Date.now()) {
+      console.log("decoded token.............", decodedToken);
+      if (decodedToken.exp * 1000 > Date.now()) {
         navigate("/login");
       }
 
@@ -81,7 +85,7 @@ const Login = () => {
       window.localStorage.setItem("loggedUser", data);
       navigate("/dashboard");
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 

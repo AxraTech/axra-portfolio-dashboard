@@ -1,8 +1,7 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
 import Header from "../view/layout/Header";
 import Sidebar from "../view/layout/Sidebar";
-import Signup from "./login/Signup";
-import Login from "./login/Login";
+import Logout from "./login/Logout";
 
 import Products from "./product/Products";
 import Product from "./product/Product";
@@ -70,6 +69,18 @@ import UpdateLogin from "./login/UpdateLogin";
 import UserForm from "./dashboard/UserForm";
 import DeleteUserForm from "./dashboard/DeleteUserForm";
 import UserFormPk from "./dashboard/UserFormpk";
+import Login from "./login/Login";
+import Users from "./users/Users";
+import Staffs from "./staffs/Staffs";
+import CreateStaff from "./staffs/CreateStaff";
+import UpdateStaff from "./staffs/UpdateStaff";
+import DeleteStaff from "./staffs/DeleteStaff";
+import LeaveForms from "./leaveForm/LeaveForms";
+import LeaveForm from "./leaveForm/LeaveForm";
+import ClaimForms from "./claimForm/ClaimForms";
+import ClaimForm from "./claimForm/ClaimForm";
+import DeleteLeaveForm from "./leaveForm/DeleteLeaveForm";
+import DeleteClaimForm from "./claimForm/DeleteClaimForm";
 const Homee = () => {
   const AdminContext = createContext();
   const [open, setOpen] = useState(false);
@@ -79,6 +90,7 @@ const Homee = () => {
 
   useEffect(() => {
     const loggedUser = window.localStorage.getItem("loggedUser");
+
     if (loggedUser) {
       const parsedLoggedUser = JSON.parse(loggedUser);
       setAuth(parsedLoggedUser);
@@ -110,11 +122,36 @@ const Homee = () => {
       <main className="ml-64 h-full px-5 ">
         <AdminContext.Provider value={auth}>
           <Routes>
+            <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<UserForm />} />
             <Route path="/delete_userForm/:id" element={<DeleteUserForm />} />
             <Route path="/dashboard/:id" element={<UserFormPk />} />
-            <Route path="/signup" element={<Signup />} />
+            <Route path="/logout" element={<Logout />} />
+
             <Route path="/updateLogin" element={<UpdateLogin />} />
+            {/* users */}
+            <Route path="/users" element={<Users />}></Route>
+            {/* staffs */}
+            <Route path="/staffs" element={<Staffs />}></Route>
+            <Route path="/create_staff/:id" element={<CreateStaff />}></Route>
+            <Route path="/update_staff/:id" element={<UpdateStaff />}></Route>
+            <Route path="/delete_staff/:id" element={<DeleteStaff />}></Route>
+
+            {/* leave Form */}
+            <Route path="/leaveForm" element={<LeaveForms />}></Route>
+            <Route path="/leaveForm/:id" element={<LeaveForm />}></Route>
+            <Route
+              path="/deleteLeaveForm/:id"
+              element={<DeleteLeaveForm />}
+            ></Route>
+
+            {/* claim Form */}
+            <Route path="/claimForm" element={<ClaimForms />}></Route>
+            <Route path="/claimForm/:id" element={<ClaimForm />}></Route>
+            <Route
+              path="/deleteClaimForm/:id"
+              element={<DeleteClaimForm />}
+            ></Route>
             {/* product */}
             <Route path="/products" element={<Products />} />
             <Route path="/products/:id" element={<Product />} />

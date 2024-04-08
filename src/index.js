@@ -35,14 +35,13 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     console.log("graphql", graphQLErrors);
 
-    graphQLErrors.forEach(({ extensions }) => {
-      if (
-        extensions.code === "invalid-headers" ||
-        extensions.code === "invalid-jwt"
-      ) {
-        // window.location.assign(`${window.location.origin}/`);
-      }
-    });
+    // graphQLErrors.forEach(({ extensions }) => {
+    //   if (
+    //     extensions.code === "invalid-headers" ||
+    //     extensions.code === "invalid-jwt"
+    //   ) {
+    //   }
+    // });
   }
   if (networkError) {
     console.log(`[Network error]: ${networkError}`);
@@ -68,7 +67,3 @@ root.render(
     </BrowserRouter>
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals

@@ -1,25 +1,43 @@
-import { useNavigate } from "react-router-dom";
-import ModalBox from "../../components/ModalBox";
 import { useState } from "react";
-const Signup = () => {
+import { delete_staff, PRODUCT_PK } from "../../gql/product";
+import { useMutation, useQuery } from "@apollo/client";
+import { useNavigate, useParams } from "react-router-dom";
+import { DELETE_STAFF, STAFF_PK } from "../../gql/staffs";
+
+const DeleteStaff = () => {
+  const [Modelopen, setModelOpen] = useState(true);
   const navigate = useNavigate();
-  const [showModal, setShowModal] = useState(true);
-  const handleLogout = (e) => {
-    e.preventDefault();
-    window.localStorage.removeItem("loggedUser");
-    navigate("/login");
+  const { id } = useParams();
+  const { data: staff } = useQuery(STAFF_PK, { variables: { id: id } });
+  const [delete_staff] = useMutation(DELETE_STAFF, {
+    onError: (err) => {
+      console.log("Delete Error");
+    },
+    onCompleted: () => {
+      alert("Deleted Staff ");
+    },
+  });
+
+  const handleDelete = async () => {
+    if (staff) {
+      await delete_staff({
+        variables: { id: staff?.staff_info_by_pk.id },
+      });
+    }
+    // setModelOpen(false);
+    navigate("/staffs");
   };
   return (
     <>
-      {showModal ? (
-        <div m tabindex="-1" className="ml-64 mt-36">
+      {Modelopen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="relative w-full max-w-md max-h-full">
             <div className="relative bg-gray-300 rounded-lg shadow dark:bg-gray-700">
               <button
                 type="button"
                 className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
                 data-modal-hide="popup-modal"
-                onClick={() => setShowModal(false)}
+                onClick={() => navigate(-1)}
               >
                 <svg
                   className="w-3 h-3"
@@ -55,12 +73,12 @@ const Signup = () => {
                   />
                 </svg>
                 <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                  Are you sure you want to logout?
+                  Are you sure you want to Remove?
                 </h3>
                 <button
                   data-modal-hide="popup-modal"
                   type="button"
-                  onClick={handleLogout}
+                  onClick={handleDelete}
                   className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
                 >
                   Yes, I'm sure
@@ -68,7 +86,7 @@ const Signup = () => {
                 <button
                   data-modal-hide="popup-modal"
                   type="button"
-                  onClick={() => setShowModal(false)}
+                  onClick={() => navigate(-1)}
                   className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
                 >
                   No, cancel
@@ -77,9 +95,8 @@ const Signup = () => {
             </div>
           </div>
         </div>
-      ) : null}
+      )}
     </>
   );
 };
-
-export default Signup;
+export default DeleteStaff;
