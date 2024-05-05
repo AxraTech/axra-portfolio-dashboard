@@ -11,7 +11,7 @@ const ServicePackage = () => {
   const { data: service } = useQuery(SERVICE_PACKAGE_PK, {
     variables: { id: id },
   });
-  console.log("servie", service);
+
   const [desOpen, setDesOpen] = useState(true);
   const [speOpen, setSpeOpen] = useState(false);
 

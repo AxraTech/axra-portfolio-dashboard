@@ -51,7 +51,7 @@ const Login = () => {
       setLoading(false);
       return;
     }
-    console.log("username ", values.username, "password ", values.password);
+
     try {
       const result = await postLogin({
         variables: {
@@ -65,15 +65,14 @@ const Login = () => {
         password: "",
       });
       setLoading(false);
-      console.log("result --------", result?.data);
+
       if (result.data.AdminLogIn.error === 1) {
         alert(result.data.AdminLogIn.message);
         return;
       } else alert("Login Successfull");
 
       const decodedToken = jose.decodeJwt(result.data.AdminLogIn.accessToken);
-      console.log("decoded token.............", decodedToken);
-      if (decodedToken.exp * 1000 > Date.now()) {
+      if (decodedToken.exp * 1000 < Date.now()) {
         navigate("/login");
       }
 
@@ -81,7 +80,6 @@ const Login = () => {
         token: result.data.AdminLogIn.accessToken,
         userID: decodedToken.user_id,
       });
-
       window.localStorage.setItem("loggedUser", data);
       navigate("/dashboard");
     } catch (err) {
