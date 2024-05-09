@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Pagination from "../pagination/Pagination";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 
 import { useNavigate, useParams } from "react-router-dom";
 import { ALL_HOMES, ARTICLE_PK, DELETE_ARTICLE } from "../../gql/home";
+import SideBarContext from "../../context/SideBarContext";
 
 const Homes = () => {
   const navigate = useNavigate();
+  const { nav, setNav } = useContext(SideBarContext);
   const [search, setSearch] = useState();
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -19,7 +21,8 @@ const Homes = () => {
     loadProduct({
       fetchPolicy: "network-only",
     });
-  }, [loadProduct]);
+    setNav("homes");
+  }, [loadProduct, nav]);
   useEffect(() => {
     if (resHome.data) {
       setHome(resHome?.data.home);

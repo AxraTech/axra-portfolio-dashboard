@@ -20,9 +20,7 @@ import {
 import SideBarContext from "../../context/SideBarContext";
 const Sidebar = () => {
   const { nav, setNav } = useContext(SideBarContext);
-  const handleSidebar = (bar) => {
-    setNav(bar);
-  };
+  console.log(nav);
   return (
     <>
       <aside
@@ -42,43 +40,17 @@ const Sidebar = () => {
 
             <ul className="space-y-2 font-medium  ">
               {/* dashboard */}
-              {/* <li>
-                <a
-                  href="/dashboard"
-                  onClick={handleSidebar("dashboard")}
-                  className={`${
-                    nav == "dashboard"
-                      ? "flex items-center p-2 rounded-lg bg-gray-100"
-                      : "flex items-center p-2 rounded-lg"
-                  }`}
-                >
-                  <svg
-                    className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-sidebar_hover_color dark:group-hover:text-white"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    viewBox="0 0 18 18"
-                  >
-                    <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
-                  </svg>
-
-                  <span
-                    className={`${
-                      nav == "dashboard" ? "ml-3 text-text_color" : "ml-3"
-                    }`}
-                  >
-                    Dashboard
-                  </span>
-                </a>
-              </li> */}
 
               <li>
                 <a
                   href="/dashboard"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:hove:text-white  hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white"
+                  onClick={() => setNav("dashboard")}
+                  className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white ${
+                    nav === "dashboard" ? "bg-gray-700 text-white" : ""
+                  } `}
                 >
                   <svg
-                    className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-sidebar_hover_color dark:group-hover:text-white "
+                    className={`w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-sidebar_hover_color dark:group-hover:text-white `}
                     aria-hidden="true"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="currentColor"
@@ -97,7 +69,10 @@ const Sidebar = () => {
               <li>
                 <a
                   href="/users"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:hove:text-white  hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white"
+                  onClick={() => setNav("users")}
+                  className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white ${
+                    nav === "users" ? "bg-gray-700 text-white" : ""
+                  } `}
                 >
                   <FontAwesomeIcon
                     icon={faUser}
@@ -113,17 +88,11 @@ const Sidebar = () => {
               <li>
                 <a
                   href="/staffs"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:hove:text-white  hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white"
+                  onClick={() => setNav("staffs")}
+                  className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white ${
+                    nav === "staffs" ? "bg-gray-700 text-white" : ""
+                  } `}
                 >
-                  {/* <svg
-                    className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-sidebar_hover_color dark:group-hover:text-white "
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor"
-                    viewBox="0 0 18 18"
-                  >
-                    <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
-                  </svg> */}
                   <FontAwesomeIcon
                     icon={faPeopleGroup}
                     className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-sidebar_hover_color dark:group-hover:text-white "
@@ -139,7 +108,10 @@ const Sidebar = () => {
               <li>
                 <a
                   href="/leaveForm"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:hove:text-white  hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white"
+                  onClick={() => setNav("leaveForm")}
+                  className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white ${
+                    nav === "leaveForm" ? "bg-gray-700 text-white" : ""
+                  } `}
                 >
                   <FontAwesomeIcon
                     icon={faRightFromBracket}
@@ -156,7 +128,10 @@ const Sidebar = () => {
               <li>
                 <a
                   href="/claimForm"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:hove:text-white  hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white"
+                  onClick={() => setNav("claimForm")}
+                  className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white ${
+                    nav === "claimForm" ? "bg-gray-700 text-white" : ""
+                  } `}
                 >
                   <FontAwesomeIcon
                     icon={faCircleExclamation}
@@ -200,7 +175,10 @@ const Sidebar = () => {
               <li>
                 <a
                   href="/home"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:hove:text-white  hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white"
+                  onClick={() => setNav("home")}
+                  className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white ${
+                    nav === "home" ? "bg-gray-700 text-white" : ""
+                  } `}
                 >
                   <FontAwesomeIcon
                     icon={faHome}
@@ -217,8 +195,10 @@ const Sidebar = () => {
               <li>
                 <a
                   href="/article"
-                  onClick={handleSidebar("article")}
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:hove:text-white  hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white"
+                  onClick={() => setNav("article")}
+                  className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white ${
+                    nav === "article" ? "bg-gray-700 text-white" : ""
+                  } `}
                 >
                   <svg
                     className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-sidebar_hover_color dark:group-hover:text-white "
@@ -244,7 +224,10 @@ const Sidebar = () => {
               <li>
                 <a
                   href="/service_package"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:hove:text-white  hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white"
+                  onClick={() => setNav("service_package")}
+                  className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white ${
+                    nav === "service_package" ? "bg-gray-700 text-white" : ""
+                  } `}
                 >
                   <FontAwesomeIcon
                     icon={faLaptop}
@@ -260,7 +243,10 @@ const Sidebar = () => {
               <li>
                 <a
                   href="/service_detail"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:hove:text-white  hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white"
+                  onClick={() => setNav("service_detail")}
+                  className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white ${
+                    nav === "service_detail" ? "bg-gray-700 text-white" : ""
+                  } `}
                 >
                   <FontAwesomeIcon
                     icon={faLaptop}
@@ -275,8 +261,10 @@ const Sidebar = () => {
               <li>
                 <a
                   href="/products"
-                  // className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:hove:text-white  hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white"
+                  onClick={() => setNav("products")}
+                  className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white ${
+                    nav === "products" ? "bg-gray-700 text-white" : ""
+                  } `}
                 >
                   <svg
                     className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-sidebar_hover_color dark:group-hover:text-white"
@@ -296,8 +284,10 @@ const Sidebar = () => {
               <li>
                 <a
                   href="/product_brand"
-                  // className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:hove:text-white  hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white"
+                  onClick={() => setNav("product_brand")}
+                  className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white ${
+                    nav === "product_brand" ? "bg-gray-700 text-white" : ""
+                  } `}
                 >
                   <svg
                     className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-sidebar_hover_color dark:group-hover:text-white"
@@ -317,8 +307,10 @@ const Sidebar = () => {
               <li>
                 <a
                   href="/product_category"
-                  // className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:hove:text-white  hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white"
+                  onClick={() => setNav("product_category")}
+                  className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white ${
+                    nav === "product_category" ? "bg-gray-700 text-white" : ""
+                  } `}
                 >
                   <svg
                     className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-sidebar_hover_color dark:group-hover:text-white"
@@ -338,8 +330,10 @@ const Sidebar = () => {
               <li>
                 <a
                   href="/app_project"
-                  // className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:hove:text-white  hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white"
+                  onClick={() => setNav("app_project")}
+                  className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white ${
+                    nav === "app_project" ? "bg-gray-700 text-white" : ""
+                  } `}
                 >
                   <FontAwesomeIcon
                     icon={faMobileAndroidAlt}
@@ -354,8 +348,10 @@ const Sidebar = () => {
               <li>
                 <a
                   href="/web_project"
-                  // className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:hove:text-white  hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white"
+                  onClick={() => setNav("web_project")}
+                  className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white ${
+                    nav === "web_project" ? "bg-gray-700 text-white" : ""
+                  } `}
                 >
                   <FontAwesomeIcon
                     icon={faDesktopAlt}
@@ -370,8 +366,10 @@ const Sidebar = () => {
               <li>
                 <a
                   href="/contact"
-                  // className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:hove:text-white  hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white"
+                  onClick={() => setNav("contact")}
+                  className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white ${
+                    nav === "contact" ? "bg-gray-700 text-white" : ""
+                  } `}
                 >
                   <FontAwesomeIcon
                     icon={faMapMarker}
@@ -387,8 +385,10 @@ const Sidebar = () => {
               <li>
                 <a
                   href="/logout"
-                  // className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:hove:text-white  hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white"
+                  onClick={() => setNav("logout")}
+                  className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white ${
+                    nav === "logout" ? "bg-gray-700 text-white" : ""
+                  } `}
                 >
                   <FontAwesomeIcon
                     icon={faSignOutAlt}

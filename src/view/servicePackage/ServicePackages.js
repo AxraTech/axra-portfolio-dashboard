@@ -1,13 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Pagination from "../pagination/Pagination";
 import { useLazyQuery } from "@apollo/client";
 
 import { useNavigate } from "react-router-dom";
 
 import { ALL_SERVICE_PACKAGE } from "../../gql/servicePackage";
+import SideBarContext from "../../context/SideBarContext";
 const ServicePackage = () => {
   const navigate = useNavigate();
-
+  const { nav, setNav } = useContext(SideBarContext);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // Number of items per page
 
@@ -16,7 +17,8 @@ const ServicePackage = () => {
 
   useEffect(() => {
     loadService({ fetchPolicy: "network-only" });
-  }, [loadService]);
+    setNav("service_package");
+  }, [loadService, nav]);
   useEffect(() => {
     if (resultService.data) {
       setServices(resultService?.data.service_package);

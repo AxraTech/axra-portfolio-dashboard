@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Pagination from "../pagination/Pagination";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import {
@@ -10,10 +10,11 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 
 import { ALL_WEB_PROJECT } from "../../gql/webProject";
+import SideBarContext from "../../context/SideBarContext";
 const AppProjects = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-
+  const { nav, setNav } = useContext(SideBarContext);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // Number of items per page
 
@@ -22,7 +23,8 @@ const AppProjects = () => {
 
   useEffect(() => {
     loadService({ fetchPolicy: "network-only" });
-  }, [loadService]);
+    setNav("web_project");
+  }, [loadService, nav]);
   useEffect(() => {
     if (resWeb.data) {
       setWeb(resWeb?.data.website_project);

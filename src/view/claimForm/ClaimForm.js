@@ -27,14 +27,34 @@ const LeaveForm = () => {
 
   return (
     <>
+      <div className="my-5">
+        <span>
+          <a href="/" className="hover:text-blue-800">
+            Dashboard
+          </a>
+        </span>
+        <span>
+          <a href="/claim" className="hover:text-blue-600">
+            {" "}
+            / Claim Form Details
+          </a>
+        </span>
+        <span> / {id}</span>
+      </div>
       <div className="grid grid-cols-3 gap-x-10">
-        {/* <div className="col-span-1 bg-gray-200 p-4 shadow-sm w-auto h-auto">
+        <div className="col-span-1 bg-gray-200 p-4 shadow-sm w-auto h-auto">
           <img
-            src={claimForm?.claim_form_by_pk?.image_url}
+            src={claimForm?.claim_form_by_pk?.image}
             className="w-auto h-auto"
           ></img>
-        </div> */}
+        </div>
         <div className=" col-span-2 p-4 px-10 ">
+          {/* reason */}
+          <div className="flex gap-3 my-8">
+            <p className="w-36">Staff Name </p>
+            <p className="px-3">-</p>
+            <p>{claimForm?.claim_form_by_pk?.staff_info?.name}</p>
+          </div>
           {/* start date */}
           <div className="flex gap-3 my-8">
             <p className="w-36">Claimant Date</p>
@@ -47,22 +67,18 @@ const LeaveForm = () => {
             <p className="px-3">-</p>
             <p>{claimForm?.claim_form_by_pk?.claim_amount}</p>
           </div>
-          {/* total_amount */}
+          {/*expense type */}
           <div className="flex gap-3 my-8">
-            <p className="w-36">Total Amount</p>
+            <p className="w-36">Expense Type</p>
             <p className="px-3">-</p>
-            <p>
-              {claimForm?.claim_form_by_pk?.total_amount} <span>days</span>
-            </p>
+            <p>{claimForm?.claim_form_by_pk?.expense_type}</p>
           </div>
+
           {/* description_of_expense */}
           <div className="flex gap-3 my-8">
             <p className="w-36">Description Of Expense</p>
             <p className="px-3">-</p>
-            <p>
-              {claimForm?.claim_form_by_pk?.description_of_expense}{" "}
-              <span>days</span>
-            </p>
+            <p>{claimForm?.claim_form_by_pk?.description_of_expense} </p>
           </div>
         </div>
       </div>

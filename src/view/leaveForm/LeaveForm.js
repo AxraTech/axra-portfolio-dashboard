@@ -29,6 +29,20 @@ const LeaveForm = () => {
 
   return (
     <>
+      <div className="my-5">
+        <span>
+          <a href="/" className="hover:text-blue-800">
+            Dashboard
+          </a>
+        </span>
+        <span>
+          <a href="/leaveForm" className="hover:text-blue-600">
+            {" "}
+            / Leave Form Details
+          </a>
+        </span>
+        <span> / {id}</span>
+      </div>
       <div className="grid grid-cols-3 gap-x-10">
         {/* <div className="col-span-1 bg-gray-200 p-4 shadow-sm w-auto h-auto">
           <img
@@ -37,6 +51,12 @@ const LeaveForm = () => {
           ></img>
         </div> */}
         <div className=" col-span-2 p-4 px-10 ">
+          {/* staff Name */}
+          <div className="flex gap-3 my-8">
+            <p className="w-36">Staff Name</p>
+            <p className="px-3">-</p>
+            <p>{leaveForm?.leave_form_by_pk?.leave_form_staff_info?.name}</p>
+          </div>
           {/* start date */}
           <div className="flex gap-3 my-8">
             <p className="w-36">Leave Start Date</p>
@@ -62,6 +82,12 @@ const LeaveForm = () => {
             <p className="w-36">Leave Type</p>
             <p className="px-3">-</p>
             <p>{leaveForm?.leave_form_by_pk?.form_type}</p>
+          </div>
+          {/* reason*/}
+          <div className="flex gap-3 my-8">
+            <p className="w-36">Reason </p>
+            <p className="px-3">-</p>
+            <p>{leaveForm?.leave_form_by_pk?.reason}</p>
           </div>
         </div>
       </div>

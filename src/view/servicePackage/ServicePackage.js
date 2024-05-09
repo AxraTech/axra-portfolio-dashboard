@@ -26,6 +26,20 @@ const ServicePackage = () => {
 
   return (
     <>
+      <div className="my-5">
+        <span>
+          <a href="/" className="hover:text-blue-800">
+            Dashboard
+          </a>
+        </span>
+        <span>
+          <a href="/service_package" className="hover:text-blue-600">
+            {" "}
+            / Service Package Details
+          </a>
+        </span>
+        <span> / {id}</span>
+      </div>
       <div className="grid grid-cols-3">
         <div className=" col-span-2 ">
           {/* Package Type */}

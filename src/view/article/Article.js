@@ -32,6 +32,20 @@ const Article = () => {
 
   return (
     <>
+      <div className="my-5">
+        <span>
+          <a href="/" className="hover:text-blue-800">
+            Dashboard
+          </a>
+        </span>
+        <span>
+          <a href="/article" className="hover:text-blue-600">
+            {" "}
+            / Article Details
+          </a>
+        </span>
+        <span> / {id}</span>
+      </div>
       <div className="grid grid-cols-3 gap-x-10">
         <div className="col-span-1 bg-gray-200 p-4 shadow-sm w-auto h-auto">
           <img

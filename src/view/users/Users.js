@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Pagination from "../pagination/Pagination";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 
 import { useNavigate, useParams } from "react-router-dom";
 import { ALL_usersS, ARTICLE_PK, DELETE_ARTICLE } from "../../gql/users";
 import { ALL_USERS } from "../../gql/users";
+import SideBarContext from "../../context/SideBarContext";
 
 const Users = () => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ const Users = () => {
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-
+  const { nav, setNav } = useContext(SideBarContext);
   const [users, setUsers] = useState();
   const [loadUsers, resUsers] = useLazyQuery(ALL_USERS);
 
@@ -20,13 +21,13 @@ const Users = () => {
     loadUsers({
       fetchPolicy: "network-only",
     });
-  }, [loadUsers]);
+    setNav("users");
+  }, [loadUsers, nav]);
   useEffect(() => {
     if (resUsers.data) {
       setUsers(resUsers?.data.users);
     }
   }, [resUsers]);
-  console.log("res users ", resUsers);
 
   //   const handleSearch = (e) => {
   //     e.preventDefault();

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Pagination from "../pagination/Pagination";
 import { useLazyQuery } from "@apollo/client";
 
@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 import { GET_ALL_claim_form } from "../../gql/leaveForm";
 import { GET_ALL_CLAIM_FORM } from "../../gql/claimForm";
+import SideBarContext from "../../context/SideBarContext";
 
 const LeaveForms = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const LeaveForms = () => {
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // Number of items per page
-
+  const { nav, setNav } = useContext(SideBarContext);
   const [home, setHome] = useState();
   const [loadForm, resForm] = useLazyQuery(GET_ALL_CLAIM_FORM);
 
@@ -21,7 +22,8 @@ const LeaveForms = () => {
     loadForm({
       fetchPolicy: "network-only",
     });
-  }, [loadForm]);
+    setNav("claimForm");
+  }, [loadForm, nav]);
   useEffect(() => {
     if (resForm.data) {
       setHome(resForm?.data.claim_form);
@@ -118,6 +120,9 @@ const LeaveForms = () => {
                 Image
               </th>
               <th scope="col" className="py-4">
+                Staff Name
+              </th>
+              <th scope="col" className="py-4">
                 Expense Type
               </th>
               <th scope="col" className="py-4">
@@ -168,12 +173,13 @@ const LeaveForms = () => {
                         ></img>
                       }
                     </td>
-                    <td className="py-4">{row?.expense_type}</td>
-                    <td className="py-4">{row?.claim_amount}</td>
-                    <td className="py-4">{row.total_amount}</td>
-                    <td className="py-4">{row?.claimant_date}</td>
+                    <td className="py-4">{row?.staff_info?.name}</td>
+                    <td className="py-4 text-center">{row?.expense_type}</td>
+                    <td className="py-4 text-center">{row?.claim_amount}</td>
 
-                    <td className="py-4">
+                    <td className="py-4 text-center">{row?.claimant_date}</td>
+
+                    <td className="py-4 text-center">
                       {row.status === "pending" ? (
                         <p
                           style={{

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Pagination from "../pagination/Pagination";
 import { useLazyQuery, useQuery } from "@apollo/client";
 
@@ -7,9 +7,10 @@ import Search from "../../components/Search";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { ALL_PRODUCT_BRAND } from "../../gql/productBrand";
+import SideBarContext from "../../context/SideBarContext";
 const ProductBrand = () => {
   const navigate = useNavigate();
-
+  const { nav, setNav } = useContext(SideBarContext);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // Number of items per page
 
@@ -24,7 +25,8 @@ const ProductBrand = () => {
       },
       fetchPolicy: "network-only",
     });
-  }, [loadService, searchValue]);
+    setNav("product_brand");
+  }, [loadService, searchValue, nav]);
   useEffect(() => {
     if (resultProduct.data) {
       setProduct(resultProduct?.data.product_brand);

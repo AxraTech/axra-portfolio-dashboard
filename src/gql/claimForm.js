@@ -13,6 +13,10 @@ export const GET_ALL_CLAIM_FORM = gql`
       status
       total_amount
       updated_at
+      staff_info {
+        id
+        name
+      }
     }
     claim_form_aggregate {
       aggregate {
@@ -33,9 +37,14 @@ export const CLAIM_FORM_PK = gql`
       fk_staff_info_id
       id
       image
+      image
       status
       total_amount
       updated_at
+      staff_info {
+        id
+        name
+      }
     }
   }
 `;

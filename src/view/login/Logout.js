@@ -1,15 +1,19 @@
 import { useNavigate } from "react-router-dom";
 import ModalBox from "../../components/ModalBox";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import SideBarContext from "../../context/SideBarContext";
 const Signup = () => {
   const navigate = useNavigate();
+  const { nav, setNav } = useContext(SideBarContext);
   const [showModal, setShowModal] = useState(true);
   const handleLogout = (e) => {
-    console.log("--------------");
     e.preventDefault();
     window.localStorage.removeItem("loggedUser");
     navigate("/login");
   };
+  useEffect(() => {
+    setNav("logout");
+  }, [nav]);
   return (
     <>
       {showModal ? (

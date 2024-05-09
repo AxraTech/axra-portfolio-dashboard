@@ -27,6 +27,20 @@ const Product = () => {
 
   return (
     <>
+      <div className="my-5">
+        <span>
+          <a href="/" className="hover:text-blue-800">
+            Dashboard
+          </a>
+        </span>
+        <span>
+          <a href="/products" className="hover:text-blue-600">
+            {" "}
+            / Products Details
+          </a>
+        </span>
+        <span> / {id}</span>
+      </div>
       <div className="grid grid-cols-3 gap-x-10">
         <div className="col-span-1 bg-gray-200 p-4 shadow-sm w-auto h-auto">
           <img

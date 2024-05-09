@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Pagination from "../pagination/Pagination";
 import { useLazyQuery, useQuery } from "@apollo/client";
 import { ALL_PRODUCTS, PRODUCT_PK } from "../../gql/product";
@@ -6,10 +6,11 @@ import Search from "../../components/Search";
 import { MAIN_PRODUCT } from "../../gql/product";
 import { useNavigate, useParams } from "react-router-dom";
 import { ALL_CONTACT } from "../../gql/contact";
+import SideBarContext from "../../context/SideBarContext";
 const Contacts = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-
+  const { nav, setNav } = useContext(SideBarContext);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // Number of items per page
 
@@ -20,7 +21,8 @@ const Contacts = () => {
   // console.log("data", data);
   useEffect(() => {
     loadProduct({ fetchPolicy: "network-only" });
-  }, [loadProduct]);
+    setNav("contact");
+  }, [loadProduct, nav]);
   useEffect(() => {
     if (resContact.data) {
       setContact(resContact?.data.contact);

@@ -1,14 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Pagination from "../pagination/Pagination";
 import { useLazyQuery, useQuery } from "@apollo/client";
 
 import { useNavigate } from "react-router-dom";
 
 import { ALL_STAFFS } from "../../gql/staffs";
+import SideBarContext from "../../context/SideBarContext";
 
 const Staffs = () => {
   const navigate = useNavigate();
-
+  const { nav, setNav } = useContext(SideBarContext);
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -21,7 +22,8 @@ const Staffs = () => {
       variables: { search: `%${searchValue}%` },
       fetchPolicy: "network-only",
     });
-  }, [loadStaffs, searchValue]);
+    setNav("staffs");
+  }, [loadStaffs, searchValue, nav]);
 
   useEffect(() => {
     if (resStaffs.data) {

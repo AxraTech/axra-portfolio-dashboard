@@ -1,5 +1,5 @@
 const WeeklyCalendar = (props) => {
-  console.log("date time ", props.date_time);
+  // console.log("date time ", props.date_time);
   return (
     <>
       <div className="bg-white p-5 rounded-lg shadow-lg w-1/2 ">

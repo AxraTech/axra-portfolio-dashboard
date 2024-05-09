@@ -253,7 +253,7 @@ const Homee = () => {
               element={<DeleteWebsiteProject />}
             />
 
-            {/* article */}
+            {/* contact */}
             <Route path="/contact" element={<Contacts />} />
             <Route path="/contact/:id" element={<Contact />} />
             <Route path="/create_contact" element={<CreateContact />} />

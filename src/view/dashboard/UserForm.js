@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Pagination from "../pagination/Pagination";
 import { useLazyQuery, useQuery } from "@apollo/client";
 import { ALL_PRODUCTS, PRODUCT_PK } from "../../gql/product";
@@ -11,9 +11,11 @@ import Calendar from "react-calendar";
 // import MiniCalendar from "components/calendar/MiniCalendar";
 import WeeklyCalendar from "./WeeklyCalendar";
 import MonthlyCalendar from "./MonthlyCalendar";
+import SideBarContext from "../../context/SideBarContext";
 
 const UserForm = () => {
   const navigate = useNavigate();
+  const { nav, setNav } = useContext(SideBarContext);
   const { id } = useParams();
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -30,7 +32,8 @@ const UserForm = () => {
       variables: { search: `%${searchValue}%` },
       fetchPolicy: "network-only",
     });
-  }, [loadProduct, searchValue]);
+    setNav("dashboard");
+  }, [loadProduct, searchValue, nav]);
   useEffect(() => {
     if (resUser.data) {
       serUser(resUser?.data.user_appointment_form);
@@ -82,7 +85,7 @@ const UserForm = () => {
     }
   };
   const handleDateTime = (users) => {
-    console.log("user", users);
+    // console.log("user", users);
     return users;
   };
 
@@ -100,7 +103,7 @@ const UserForm = () => {
           {/* Search */}
           <div className="w-full md:w-1/3 my-5">
             <form className="flex items-center" onSubmit={handleSearch}>
-              <label for="simple-search" className="sr-only">
+              <label htmlFor="simple-search" className="sr-only">
                 Search
               </label>
               <div className="relative w-full">
@@ -109,13 +112,13 @@ const UserForm = () => {
                     aria-hidden="true"
                     className="w-5 h-5 text-gray-500"
                     fill="currentColor"
-                    viewbox="0 0 20 20"
+                    viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                       d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                      clip-rule="evenodd"
+                      clipRule="evenodd"
                     />
                   </svg>
                 </div>

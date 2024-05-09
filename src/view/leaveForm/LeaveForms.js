@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Pagination from "../pagination/Pagination";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 
 import { useNavigate, useParams } from "react-router-dom";
 import { ALL_LeaveForms, ARTICLE_PK, DELETE_ARTICLE } from "../../gql/home";
 import { GET_ALL_LEAVE_FORM } from "../../gql/leaveForm";
+import SideBarContext from "../../context/SideBarContext";
 
 const LeaveForms = () => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ const LeaveForms = () => {
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // Number of items per page
-
+  const { nav, setNav } = useContext(SideBarContext);
   const [home, setHome] = useState();
   const [loadForm, resForm] = useLazyQuery(GET_ALL_LEAVE_FORM);
 
@@ -20,7 +21,8 @@ const LeaveForms = () => {
     loadForm({
       fetchPolicy: "network-only",
     });
-  }, [loadForm]);
+    setNav("leaveForm");
+  }, [loadForm, nav]);
   useEffect(() => {
     if (resForm.data) {
       setHome(resForm?.data.leave_form);
@@ -114,6 +116,9 @@ const LeaveForms = () => {
                 ID
               </th>
               <th scope="col" className="py-4">
+                Staff Name
+              </th>
+              <th scope="col" className="py-4">
                 Form Type
               </th>
               <th scope="col" className="py-4">
@@ -158,6 +163,7 @@ const LeaveForms = () => {
                     className="hover:bg-slate-100 border-y-2 hover:shadow-md"
                   >
                     <td className="px-6 py-4">{index + 1}</td>
+                    <td className="py-4">{row?.leave_form_staff_info?.name}</td>
                     <td className="py-4">{row?.form_type}</td>
                     <td className="py-4">{row?.reason}</td>
                     <td className="py-4">{row.number_of_leaves}</td>

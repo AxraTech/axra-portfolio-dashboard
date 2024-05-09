@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Pagination from "../pagination/Pagination";
 import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
 
 import { useNavigate, useParams } from "react-router-dom";
 import { ALL_ARTICLES, ARTICLE_PK, DELETE_ARTICLE } from "../../gql/articles";
+import SideBarContext from "../../context/SideBarContext";
 
 const Articles = () => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const Articles = () => {
   const [searchValue, setSearchValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-
+  const { nav, setNav } = useContext(SideBarContext);
   const [articles, setArticles] = useState();
   const [loadProduct, resulteArticles] = useLazyQuery(ALL_ARTICLES);
 
@@ -20,7 +21,8 @@ const Articles = () => {
       variables: { search: `%${searchValue}%` },
       fetchPolicy: "network-only",
     });
-  }, [loadProduct, searchValue]);
+    setNav("article");
+  }, [loadProduct, searchValue, nav]);
   useEffect(() => {
     if (resulteArticles.data) {
       setArticles(resulteArticles?.data.article);
