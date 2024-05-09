@@ -93,7 +93,7 @@ const UpdateServicePackage = () => {
       setLoading(false);
       return;
     }
-    console.log("values ============", values);
+    
     try {
       await add_service({
         variables: {
