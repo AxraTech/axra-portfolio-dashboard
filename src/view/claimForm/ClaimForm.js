@@ -34,7 +34,7 @@ const LeaveForm = () => {
           </a>
         </span>
         <span>
-          <a href="/claim" className="hover:text-blue-600">
+          <a href="/claimForm" className="hover:text-blue-600">
             {" "}
             / Claim Form Details
           </a>
