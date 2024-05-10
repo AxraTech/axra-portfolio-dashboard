@@ -35,12 +35,6 @@ const Appointment = () => {
         <span> / {id}</span>
       </div>
       <div className="grid grid-cols-3 gap-x-10">
-        {/* <div className="col-span-1 bg-gray-200 p-4 shadow-sm w-auto h-auto">
-          <img
-            src={Appointment?.leave_form_by_pk?.image_url}
-            className="w-auto h-auto"
-          ></img>
-        </div> */}
         <div className=" col-span-2 p-4 px-10 ">
           {/* staff Name */}
           <div className="flex gap-3 my-8">
@@ -70,7 +64,7 @@ const Appointment = () => {
           <div className="flex gap-3 my-8">
             <p className="w-36">Descripiton</p>
             <p className="px-3">-</p>
-            <p>{app?.desciripiton}</p>
+            <p>{app?.descripiton}</p>
           </div>
         </div>
       </div>
