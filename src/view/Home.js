@@ -77,9 +77,12 @@ import UpdateStaff from "./staffs/UpdateStaff";
 import DeleteStaff from "./staffs/DeleteStaff";
 import LeaveForms from "./leaveForm/LeaveForms";
 import LeaveForm from "./leaveForm/LeaveForm";
+import Appointments from "./appointmentForm/Appointments";
+import Appointment from "./appointmentForm/Appointment";
 import ClaimForms from "./claimForm/ClaimForms";
 import ClaimForm from "./claimForm/ClaimForm";
 import DeleteLeaveForm from "./leaveForm/DeleteLeaveForm";
+import DeleteAppointment from "./appointmentForm/DeleteAppointment";
 import DeleteClaimForm from "./claimForm/DeleteClaimForm";
 const Homee = () => {
   const AdminContext = createContext();
@@ -152,6 +155,15 @@ const Homee = () => {
               path="/deleteClaimForm/:id"
               element={<DeleteClaimForm />}
             ></Route>
+
+            {/* appointment Form */}
+            <Route path="/appointment" element={<Appointments />}></Route>
+            <Route path="/appointment/:id" element={<Appointment />}></Route>
+            <Route
+              path="/deleteAppointment/:id"
+              element={<DeleteAppointment />}
+            ></Route>
+
             {/* product */}
             <Route path="/products" element={<Products />} />
             <Route path="/products/:id" element={<Product />} />

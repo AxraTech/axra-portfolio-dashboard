@@ -41,6 +41,8 @@ export const LEAVE_FORM_PK = gql`
       reason
       start_date
       status
+      hourly_start_time
+      hourly_end_time
       updated_at
     }
   }

@@ -15,6 +15,7 @@ import {
   faU,
   faCircleExclamation,
   faRightFromBracket,
+  faTasks,
 } from "@fortawesome/free-solid-svg-icons";
 
 import SideBarContext from "../../context/SideBarContext";
@@ -140,6 +141,25 @@ const Sidebar = () => {
 
                   <span className="flex-1 ml-3 whitespace-nowrap text-sidebar_text_color hover:text-sidebar_hover_color">
                     Claim Forms
+                  </span>
+                </a>
+              </li>
+              {/* Claim Forms */}
+              <li>
+                <a
+                  href="/appointment"
+                  onClick={() => setNav("appointment")}
+                  className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white ${
+                    nav === "appointment" ? "bg-gray-700 text-white" : ""
+                  } `}
+                >
+                  <FontAwesomeIcon
+                    icon={faTasks}
+                    className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-sidebar_hover_color dark:group-hover:text-white "
+                  />
+
+                  <span className="flex-1 ml-3 whitespace-nowrap text-sidebar_text_color hover:text-sidebar_hover_color">
+                    User Appointment
                   </span>
                 </a>
               </li>

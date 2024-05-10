@@ -3,7 +3,7 @@ import { DELETE_PRODUCT, PRODUCT_PK } from "../../gql/product";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import ModalBox from "../../components/ModalBox";
-
+import { format } from "date-fns";
 import { LEAVE_FORM_PK, UPDATE_STATUS } from "../../gql/leaveForm";
 
 const LeaveForm = () => {
@@ -82,6 +82,29 @@ const LeaveForm = () => {
             <p className="w-36">Leave Type</p>
             <p className="px-3">-</p>
             <p>{leaveForm?.leave_form_by_pk?.form_type}</p>
+          </div>
+          {/* hourly start time*/}
+          <div className="flex gap-3 my-8">
+            <p className="w-36">Hourly Start Time</p>
+            <p className="px-3">-</p>
+            <p>
+              {format(
+                new Date(leaveForm?.leave_form_by_pk?.hourly_start_time),
+                "yyyy-MM-dd hh:mm:ss a"
+              )}
+            </p>
+          </div>
+          {/* hourly end time*/}
+          <div className="flex gap-3 my-8">
+            <p className="w-36">Hourly End Time</p>
+            <p className="px-3">-</p>
+            <p>
+              {" "}
+              {format(
+                new Date(leaveForm?.leave_form_by_pk?.hourly_end_time),
+                "yyyy-MM-dd hh:mm:ss a"
+              )}
+            </p>
           </div>
           {/* reason*/}
           <div className="flex gap-3 my-8">
