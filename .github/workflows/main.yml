@@ -12,7 +12,10 @@ env:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
+    
+    env:
+      MY_SECRET_KEY: ${{ secrets.SERVER_PASSWORD }}
+      
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -40,7 +43,7 @@ jobs:
           key: ${{ secrets.SERVER_KEY }}
           port: 22
           script: |
-             ./dashboard_automate.sh
+             echo $MY_SECRET_KEY | sudo -S ./dashboard_automate.sh
      
           
             
