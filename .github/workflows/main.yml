@@ -40,7 +40,7 @@ jobs:
           key: ${{ secrets.SERVER_KEY }}
           port: 22
           script: |
-            echo ${{secrets.SERVER_PASSWORD}} | sudo -S ./dashboard_automate.sh
+             ./dashboard_automate.sh
      
           
             
