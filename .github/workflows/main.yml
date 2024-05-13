@@ -29,8 +29,8 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_KEY }}
-          source: "build"
-          target: "/"
+          source: "build/*"
+          target: "/home/axra/"
 
       - name: SSH into Server and Run Script
         uses: appleboy/ssh-action@master
