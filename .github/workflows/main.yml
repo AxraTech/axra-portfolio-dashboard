@@ -41,7 +41,8 @@ jobs:
           key: ${{ secrets.SERVER_KEY }}
           port: 22
           script: |
-            ./home/axra/dashboard_automate.sh
+            cd /home/axra/
+            ./dashboard_automate.sh
      
           
             
