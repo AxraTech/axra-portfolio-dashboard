@@ -51,7 +51,7 @@ const Products = () => {
   const totalPages = Math.ceil(
     resultProduct?.data?.product_model_aggregate?.aggregate.count / itemsPerPage
   );
-
+  const totals = resultProduct?.data?.product_model_aggregate?.aggregate.count;
   // Get the current page's data
   const currentData = products?.slice(
     (currentPage - 1) * itemsPerPage,
@@ -245,6 +245,7 @@ const Products = () => {
         totalPages={totalPages}
         onNextPage={handleNextPage}
         onPrevPage={handlePrevPage}
+        totals={totals}
       />
     </div>
   );

@@ -48,7 +48,8 @@ const AppProjects = () => {
   const totalPages = Math.ceil(
     resApp?.data?.application_project_aggregate?.aggregate.count / itemsPerPage
   );
-
+  const totalsApp =
+    resApp?.data?.application_project_aggregate?.aggregate.count;
   // Get the current page's data
   const currentData = app?.slice(
     (currentPage - 1) * itemsPerPage,
@@ -282,6 +283,7 @@ const AppProjects = () => {
         totalPages={totalPages}
         onNextPage={handleNextPage}
         onPrevPage={handlePrevPage}
+        totals={totalsApp}
       />
     </div>
   );

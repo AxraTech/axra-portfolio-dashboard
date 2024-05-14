@@ -15,6 +15,9 @@ export const ALL_USERS = gql`
       phone
       profile_image_url
       updated_at
+      users_staff_infos {
+        id
+      }
     }
     users_aggregate {
       aggregate {

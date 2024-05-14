@@ -34,7 +34,8 @@ const ServicePackage = () => {
     resultService?.data?.service_package_aggregate?.aggregate.count /
       itemsPerPage
   );
-
+  const totals =
+    resultService?.data?.service_package_aggregate?.aggregate.count;
   // Get the current page's data
   const currentData = serivces?.slice(
     (currentPage - 1) * itemsPerPage,
@@ -149,6 +150,7 @@ const ServicePackage = () => {
         totalPages={totalPages}
         onNextPage={handleNextPage}
         onPrevPage={handlePrevPage}
+        totals={totals}
       />
     </div>
   );

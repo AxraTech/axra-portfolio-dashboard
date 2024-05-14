@@ -81,7 +81,7 @@ const Login = () => {
         userID: decodedToken.user_id,
       });
       window.localStorage.setItem("loggedUser", data);
-      navigate("/dashboard");
+      navigate("/appointment");
     } catch (err) {
       // console.log(err);
     }

@@ -51,7 +51,8 @@ const Appointments = () => {
     resForm?.data?.user_appointment_form_aggregate?.aggregate.count /
       itemsPerPage
   );
-
+  const totals =
+    resForm?.data?.user_appointment_form_aggregate?.aggregate.count;
   // Get the current page's data
   const currentData = home?.slice(
     (currentPage - 1) * itemsPerPage,
@@ -191,6 +192,7 @@ const Appointments = () => {
         totalPages={totalPages}
         onNextPage={handleNextPage}
         onPrevPage={handlePrevPage}
+        totals={totals}
       />
     </div>
   );

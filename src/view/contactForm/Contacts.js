@@ -33,7 +33,7 @@ const Contacts = () => {
   const totalPages = Math.ceil(
     resContact?.data?.contact_aggregate?.aggregate.count / itemsPerPage
   );
-
+  const totals = resContact?.data?.contact_aggregate?.aggregate.count;
   // Get the current page's data
   const currentData = contact?.slice(
     (currentPage - 1) * itemsPerPage,
@@ -154,6 +154,7 @@ const Contacts = () => {
         totalPages={totalPages}
         onNextPage={handleNextPage}
         onPrevPage={handlePrevPage}
+        totals={totals}
       />
     </div>
   );

@@ -34,7 +34,7 @@ const Article = () => {
     <>
       <div className="my-5">
         <span>
-          <a href="/" className="hover:text-blue-800">
+          <a href="/appointment" className="hover:text-blue-800">
             Dashboard
           </a>
         </span>

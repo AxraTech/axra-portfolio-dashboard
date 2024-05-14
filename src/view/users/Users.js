@@ -50,6 +50,8 @@ const Users = () => {
     resUsers?.data?.users_aggregate?.aggregate.count / itemsPerPage
   );
 
+  const totalUsers = resUsers?.data?.users_aggregate?.aggregate.count;
+
   // Get the current page's data
   const currentData = users?.slice(
     (currentPage - 1) * itemsPerPage,
@@ -112,7 +114,7 @@ const Users = () => {
           </form>
         </div> */}
       </div>
-      <div className="relative bg-white_color overflow-y-scroll max-h-96 overflow-x-auto  border-2 ">
+      <div className="relative bg-white_color overflow-y-scroll max-h-98 overflow-x-auto  border-2 ">
         <table className="w-full text-md text-left  text-gray-500">
           <thead className="text-md sticky top-0  text-gray-700 bg-gray-200">
             <tr>
@@ -132,7 +134,6 @@ const Users = () => {
               <th scope="col" className="py-4">
                 Created_at
               </th>
-
               <th scope="col" className="py-4">
                 Action
               </th>
@@ -172,12 +173,20 @@ const Users = () => {
                     <td className="py-4">{row?.created_at.substring(0, 10)}</td>
 
                     <td className="py-4">
-                      <button
-                        onClick={() => navigate(`/create_staff/${row?.id}`)}
-                        className="font-medium text-md rounded text-white py-2 px-4  bg-pink-600 hover:bg-pink-700"
-                      >
-                        Add to Staff
-                      </button>
+                      {row?.users_staff_infos &&
+                      row?.users_staff_infos.length === 0 ? (
+                        <button
+                          onClick={() => navigate(`/create_staff/${row?.id}`)}
+                          className="font-medium text-md rounded text-white py-2 px-4  bg-pink-600 hover:bg-pink-700"
+                        >
+                          Add To Staff
+                        </button>
+                      ) : (
+                        <button className="font-medium text-md rounded text-white py-2 px-4  bg-pink-600 hover:bg-pink-700 opacity-25">
+                          Add To Staff
+                        </button>
+                      )}
+
                       {/* <button
                         onClick={() => handleRemove(row)}
                         className="font-medium text-md rounded text-white py-2 px-4 ml-8  bg-red-600 hover:bg-red-700"
@@ -196,6 +205,7 @@ const Users = () => {
         totalPages={totalPages}
         onNextPage={handleNextPage}
         onPrevPage={handlePrevPage}
+        totals={totalUsers}
       />
     </div>
   );

@@ -51,7 +51,7 @@ const Staffs = () => {
   const totalPages = Math.ceil(
     resStaffs?.data?.staff_info_aggregate?.aggregate.count / itemsPerPage
   );
-
+  const totals = resStaffs?.data?.staff_info_aggregate?.aggregate.count;
   // Get the current page's data
   const currentData = Staffs?.slice(
     (currentPage - 1) * itemsPerPage,
@@ -227,6 +227,7 @@ const Staffs = () => {
         totalPages={totalPages}
         onNextPage={handleNextPage}
         onPrevPage={handlePrevPage}
+        totals={totals}
       />
     </div>
   );

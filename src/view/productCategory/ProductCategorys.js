@@ -53,7 +53,8 @@ const ProductCategorys = () => {
     resultProduct?.data?.product_category_aggregate?.aggregate.count /
       itemsPerPage
   );
-
+  const totals =
+    resultProduct?.data?.product_category_aggregate?.aggregate.count;
   // Get the current page's data
   const currentData = product?.slice(
     (currentPage - 1) * itemsPerPage,
@@ -212,6 +213,7 @@ const ProductCategorys = () => {
         totalPages={totalPages}
         onNextPage={handleNextPage}
         onPrevPage={handlePrevPage}
+        totals={totals}
       />
     </div>
   );

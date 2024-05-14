@@ -49,7 +49,7 @@ const Homes = () => {
   const totalPages = Math.ceil(
     resHome?.data?.home_aggregate?.aggregate.count / itemsPerPage
   );
-
+  const totals = resHome?.data?.home_aggregate?.aggregate.count;
   // Get the current page's data
   const currentData = home?.slice(
     (currentPage - 1) * itemsPerPage,
@@ -212,6 +212,7 @@ const Homes = () => {
         totalPages={totalPages}
         onNextPage={handleNextPage}
         onPrevPage={handlePrevPage}
+        totals={totals}
       />
     </div>
   );

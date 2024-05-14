@@ -1,6 +1,12 @@
 import React from "react";
 
-const Pagination = ({ currentPage, totalPages, onNextPage, onPrevPage }) => {
+const Pagination = ({
+  currentPage,
+  totalPages,
+  onNextPage,
+  onPrevPage,
+  totals,
+}) => {
   //console.log("object", currentPage, totalPages, onNextPage, onPrevPage);
   return (
     <div className="flex items-center justify-center mt-4 mb-10">
@@ -21,6 +27,7 @@ const Pagination = ({ currentPage, totalPages, onNextPage, onPrevPage }) => {
       >
         Next
       </button>
+      <p>Totals - {totals}</p>
     </div>
   );
 };
