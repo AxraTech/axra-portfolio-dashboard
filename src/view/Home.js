@@ -84,6 +84,11 @@ import ClaimForm from "./claimForm/ClaimForm";
 import DeleteLeaveForm from "./leaveForm/DeleteLeaveForm";
 import DeleteAppointment from "./appointmentForm/DeleteAppointment";
 import DeleteClaimForm from "./claimForm/DeleteClaimForm";
+import ServiceCategorys from "./serviceCategory/ServiceCategorys";
+import ServiceCategory from "./serviceCategory/ServiceCategory";
+import CreateServiceCategory from "./serviceCategory/CreateServiceCategory";
+import UpdateServiceCategory from "./serviceCategory/UpdateServiceCategory";
+import DeleteServiceCategory from "./serviceCategory/DeleteServiceCategory";
 const Homee = () => {
   const AdminContext = createContext();
   const [open, setOpen] = useState(false);
@@ -176,6 +181,23 @@ const Homee = () => {
             <Route path="/create_home" element={<CreateHome />} />
             <Route path="/update_home/:id" element={<UpdateHome />} />
             <Route path="/delete_home/:id" element={<DeleteHome />} />
+
+            {/* service category */}
+            <Route path="/service_cat" element={<ServiceCategorys />} />
+            <Route path="/service_cat/:id" element={<ServiceCategory />} />
+            <Route
+              path="/create_service_cat"
+              element={<CreateServiceCategory />}
+            />
+            <Route
+              path="/update_service_cat/:id"
+              element={<UpdateServiceCategory />}
+            />
+            <Route
+              path="/delete_service_cat/:id"
+              element={<DeleteServiceCategory />}
+            />
+
             {/* service package */}
             <Route path="/service_package" element={<ServicePackages />} />
             <Route path="/service_package/:id" element={<ServicePackage />} />

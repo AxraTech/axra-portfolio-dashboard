@@ -86,3 +86,13 @@ export const EDIT_SERVICE_PACKAGE = gql`
     }
   }
 `;
+
+//service category
+export const SERVICE_CAT = gql`
+  query aa {
+    service_categories {
+      id
+      service_name
+    }
+  }
+`;
