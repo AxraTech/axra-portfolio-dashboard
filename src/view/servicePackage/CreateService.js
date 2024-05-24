@@ -1,8 +1,15 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ADD_SERVICE_PACKAGE, SERVICE_CAT } from "../../gql/servicePackage";
+import {
+  ADD_SERVICE_PACKAGE,
+  SERVICE_PACKAGE_DETAILS,
+} from "../../gql/servicePackage";
 import RichTextEditor from "../../components/RichTextEditor";
+import {
+  SERVICE_CAT,
+  SERVICE_CAT_BY_NAME,
+} from "../../gql/mixedServiceCategory";
 
 const CreateService = () => {
   const navigate = useNavigate();
@@ -13,6 +20,9 @@ const CreateService = () => {
   const [errors, setErrors] = useState({});
   const [description, setDescription] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const { data: serviceCatByName } = useQuery(SERVICE_CAT_BY_NAME, {
+    variables: { service_name: selectedCategory },
+  });
 
   const descriptionChange = (value) => {
     setDescription(value);
@@ -21,6 +31,14 @@ const CreateService = () => {
       service_package_description: value.toString("html"),
     });
   };
+  const [add_service_package_details] = useMutation(SERVICE_PACKAGE_DETAILS, {
+    onError: (err) => {
+      alert("Service Package Details Error");
+    },
+    onCompleted: (data) => {
+      console.log("Service Package Details upload done");
+    },
+  });
 
   const [add_service] = useMutation(ADD_SERVICE_PACKAGE, {
     onError: (err) => {
@@ -28,9 +46,14 @@ const CreateService = () => {
       alert("Service Package Error");
       setLoading(false);
     },
-    onCompleted: (data) => {
+    onCompleted: async (data) => {
+      await add_service_package_details({
+        variables: {
+          fk_service_details_id: serviceCatByName?.service_details[0]?.id,
+          fk_service_packages_id: data?.insert_service_packages_one?.id,
+        },
+      });
       alert("New Service Package has been added");
-      console.log("result", data);
       setValues({});
       setLoading(false);
     },
@@ -47,22 +70,36 @@ const CreateService = () => {
     setLoading(true);
     let errorExist = false;
     const tempErrors = {};
-    if (!values.one_time_package_price) {
-      tempErrors.one_time_package_price = "Package Price field is required.";
-      errorExist = true;
-    }
-    if (!values.recurrently_service_fee) {
-      tempErrors.recurrently_service_fee = "Service Fee field is required.";
-      errorExist = true;
-    }
-    if (!values.service_package_description) {
-      tempErrors.service_package_description =
-        "Service Description field is required.";
-      errorExist = true;
-    }
-    if (!values.service_package_type) {
-      tempErrors.service_package_type = "Package Type field is required.";
-      errorExist = true;
+
+    if (selectedCategory === "Web Design & Development") {
+      if (!values.one_time_package_price) {
+        tempErrors.one_time_package_price = "Package Price field is required.";
+        errorExist = true;
+      }
+      if (!values.recurrently_service_fee) {
+        tempErrors.recurrently_service_fee = "Service Fee field is required.";
+        errorExist = true;
+      }
+      if (!values.service_package_description) {
+        tempErrors.service_package_description =
+          "Service Description field is required.";
+        errorExist = true;
+      }
+      if (!values.service_package_type) {
+        tempErrors.service_package_type = "Package Type field is required.";
+        errorExist = true;
+      }
+    } else {
+      if (!values.service_package_description) {
+        tempErrors.service_package_description =
+          "Service Description field is required.";
+        errorExist = true;
+      }
+
+      if (!values.service_package_name) {
+        tempErrors.service_package_name = "Package Name field is required.";
+        errorExist = true;
+      }
     }
 
     if (errorExist) {
@@ -72,11 +109,24 @@ const CreateService = () => {
     }
 
     try {
-      await add_service({
-        variables: {
-          ...values,
-        },
-      });
+      if (selectedCategory === "Web Design & Development") {
+        await add_service({
+          variables: {
+            ...values,
+            service_package_name: null,
+          },
+        });
+      } else {
+        await add_service({
+          variables: {
+            ...values,
+            one_time_package_price: null,
+            service_package_type: null,
+            recurrently_service_fee: null,
+          },
+        });
+      }
+
       navigate("/service_package");
     } catch (err) {
       console.log("Error", err);

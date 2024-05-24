@@ -74,6 +74,7 @@ const Contact = () => {
           <div className="flex gap-3 my-8">
             <p className="w-36">Email</p>
             <p className="px-3">-</p>
+            {console.log("email --------", contact?.contact_by_pk?.email)}
             <p>{contact?.contact_by_pk?.email}</p>
           </div>
           {/* start time */}

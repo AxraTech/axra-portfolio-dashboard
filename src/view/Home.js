@@ -98,12 +98,11 @@ const Homee = () => {
 
   useEffect(() => {
     const loggedUser = window.localStorage.getItem("loggedUser");
-
-    if (loggedUser) {
+    if (!loggedUser) {
+      navigate("/login");
+    } else {
       const parsedLoggedUser = JSON.parse(loggedUser);
       setAuth(parsedLoggedUser);
-    } else {
-      navigate("/login");
     }
   }, []);
 
@@ -185,6 +184,15 @@ const Homee = () => {
             {/* service category */}
             <Route path="/service_cat" element={<ServiceCategorys />} />
             <Route path="/service_cat/:id" element={<ServiceCategory />} />
+            <Route path="/service_cat/:id/:id" element={<ServiceDetail />} />
+            <Route
+              path="/service_cat/:id/create_service_detail"
+              element={<CreateServiceDetail />}
+            />
+            <Route
+              path="/service_cat/:id/:id/update_service_detail"
+              element={<UpdateServiceDetial />}
+            />
             <Route
               path="/create_service_cat"
               element={<CreateServiceCategory />}
@@ -205,8 +213,8 @@ const Homee = () => {
             <Route path="/update_service/:id" element={<UpdateService />} />
             <Route path="/delete_service/:id" element={<DeleteService />} />
             {/* serivce detail */}
-            <Route path="/service_detail" element={<ServiceDetails />} />
-            <Route path="/service_detail/:id" element={<ServiceDetail />} />
+            {/* <Route path="/service_detail/:id" element={<ServiceDetails />} /> */}
+
             <Route
               path="/create_service_detail"
               element={<CreateServiceDetail />}

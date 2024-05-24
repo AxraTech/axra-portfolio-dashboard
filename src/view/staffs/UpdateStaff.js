@@ -11,7 +11,7 @@ import {
   PRODUCT_CATEGORY,
   PRODUCT_PK,
 } from "../../gql/product";
-import { EDIT_STAFF, STAFF_PK, USER_ID } from "../../gql/staffs";
+import { EDIT_STAFF, STAFF_ID, STAFF_PK, USER_ID } from "../../gql/staffs";
 const imageType = ["image/jpeg", "image/png"];
 const UpdateStaff = () => {
   const navigate = useNavigate();
@@ -19,13 +19,14 @@ const UpdateStaff = () => {
 
   const [values, setValues] = useState({});
   const [loading, setLoading] = useState(false);
+  const [isUnique, setIsUnique] = useState(false);
 
   const [errors, setErrors] = useState({});
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedReplacementImage, setSelectedReplacementImage] =
     useState(null);
-
+  const { data: staffIdData } = useQuery(STAFF_ID);
   const [loadStaff, resultStaff] = useLazyQuery(STAFF_PK);
 
   useEffect(() => {
@@ -47,6 +48,13 @@ const UpdateStaff = () => {
       });
     }
   }, [resultStaff]);
+  useEffect(() => {
+    if (values.staff_ID) {
+      const existingStaffIDs =
+        staffIdData?.staff_info.map((staff) => staff.staff_ID) || [];
+      setIsUnique(!existingStaffIDs.includes(values.staff_ID));
+    }
+  }, [values.staff_ID, staffIdData]);
 
   const [getImageUrl] = useMutation(IMAGE_UPLOAD, {
     onError: (err) => {
@@ -150,6 +158,24 @@ const UpdateStaff = () => {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
+    setErrors({});
+    setLoading(true);
+    let errorExist = false;
+    const tempErrors = {};
+    if (!values.staff_ID) {
+      tempErrors.staff_ID = "Staff ID field is required.";
+      errorExist = true;
+    } else if (!isUnique) {
+      tempErrors.staff_ID = "Staff ID must be unique.";
+      errorExist = true;
+    }
+
+    if (errorExist) {
+      setErrors({ ...tempErrors });
+      console.log("error exit ", tempErrors);
+      setLoading(false);
+      return;
+    }
     try {
       const updatedValues = { ...values };
 

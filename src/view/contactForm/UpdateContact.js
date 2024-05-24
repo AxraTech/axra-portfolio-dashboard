@@ -35,6 +35,8 @@ const UpdateContact = () => {
         email: resContact.data.contact_by_pk.email ?? "",
         address: resContact.data.contact_by_pk.address ?? "",
         image_url: resContact.data.contact_by_pk.image_url ?? "",
+        end_time: resContact.data.contact_by_pk.end_time ?? "",
+        start_time: resContact.data.contact_by_pk.start_time ?? "",
       });
     }
   }, [resContact]);
@@ -172,7 +174,7 @@ const UpdateContact = () => {
       console.log("Error occurred during update");
     }
   };
-
+  console.log("values ", values);
   return (
     <>
       <form>

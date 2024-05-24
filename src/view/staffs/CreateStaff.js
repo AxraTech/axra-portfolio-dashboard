@@ -1,12 +1,12 @@
 import { useMutation, useQuery } from "@apollo/client";
 import imageService from "../../imageService/image";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineCloudUpload, AiOutlineDelete } from "react-icons/ai";
 import RichTextEditor from "../../components/RichTextEditor";
 import { DELETE_IMAGE, IMAGE_UPLOAD } from "../../gql/imageupload";
 import { useNavigate, useParams } from "react-router-dom";
-import { CREATE_STAFFS, USER_ID } from "../../gql/staffs";
+import { CREATE_STAFFS, STAFF_ID, USER_ID } from "../../gql/staffs";
 const imageType = ["image/jpeg", "image/png"];
 const CreateStaff = () => {
   const { id } = useParams();
@@ -17,17 +17,17 @@ const CreateStaff = () => {
   const [errors, setErrors] = useState({});
 
   const [selectedImage, setSelectedImage] = useState(null);
-
+  const [isUnique, setIsUnique] = useState(false);
   const { data: userId, error } = useQuery(USER_ID, { variables: { id: id } });
+  const { data: staffIdData } = useQuery(STAFF_ID);
 
   const [getImageUrl] = useMutation(IMAGE_UPLOAD, {
     onError: (err) => {
       setLoading(false);
-      console.log("Imge upload error", err);
+
       // alert("Image Upload Error");
     },
     onCompleted: (data) => {
-      console.log("data", data);
       setLoading(false);
     },
   });
@@ -41,7 +41,7 @@ const CreateStaff = () => {
     },
     onCompleted: (data) => {
       alert("New Staffs has been added");
-      console.log("result", data);
+
       setValues({});
       setLoading(false);
     },
@@ -98,6 +98,13 @@ const CreateStaff = () => {
       }
     }
   };
+  useEffect(() => {
+    if (values.staff_ID) {
+      const existingStaffIDs =
+        staffIdData?.staff_info.map((staff) => staff.staff_ID) || [];
+      setIsUnique(!existingStaffIDs.includes(values.staff_ID));
+    }
+  }, [values.staff_ID, staffIdData]);
 
   const handleCreate = async (e) => {
     e.preventDefault();
@@ -112,6 +119,11 @@ const CreateStaff = () => {
       errorExist = true;
     }
 
+    if (!values.phone) {
+      tempErrors.phone = "Phone field is required.";
+      errorExist = true;
+    }
+
     if (!values.position) {
       tempErrors.position = "Staffs Position field is required.";
       errorExist = true;
@@ -121,9 +133,17 @@ const CreateStaff = () => {
       tempErrors.image = "Staffs Image field is required.";
       errorExist = true;
     }
+    if (!values.staff_ID) {
+      tempErrors.staff_ID = "Staff ID field is required.";
+      errorExist = true;
+    } else if (!isUnique) {
+      tempErrors.staff_ID = "Staff ID must be unique.";
+      errorExist = true;
+    }
 
     if (errorExist) {
       setErrors({ ...tempErrors });
+      console.log("error exit ", tempErrors);
       setLoading(false);
       return;
     }
@@ -192,35 +212,6 @@ const CreateStaff = () => {
           )}
         </div>
         <div className="w-full gap-x-20 gap-y-3 grid grid-cols-2 mt-10">
-          {/* Category */}
-          {/* <div>
-            <label
-              for="base-input"
-              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
-            >
-              Staffs Category
-            </label>
-
-            <select
-              id="default"
-              value={values.fk_Staffs_category_id}
-              onChange={handleChange("fk_Staffs_category_id")}
-              className="bg-white border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            >
-              <option selected>Choose Category</option>
-              {Array.isArray(category.Staffs_category) &&
-                category?.Staffs_category.map((row, index) => (
-                  <option key={index} value={row.id}>
-                    {row.Staffs_category_name}
-                  </option>
-                ))}
-            </select>
-            {errors.fk_Staffs_category_id && (
-              <p className="text-red-500 mt-1 text-sm">
-                {errors.fk_Staffs_category_id}
-              </p>
-            )}
-          </div> */}
           {/* name */}
           <div>
             <label
@@ -280,6 +271,7 @@ const CreateStaff = () => {
               value={values.phone}
               onChange={handleChange("phone")}
               className="bg-white_color border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              required
             />
 
             {errors.phone && (
@@ -312,12 +304,11 @@ const CreateStaff = () => {
           {/* staff_ID */}
           <div>
             <label
-              htmlFor="base-input"
-              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700 "
+              htmlFor="default-input"
+              className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
             >
               Staff_ID
             </label>
-
             <input
               type="text"
               id="default-input"
@@ -325,7 +316,6 @@ const CreateStaff = () => {
               onChange={handleChange("staff_ID")}
               className="bg-white_color border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             />
-
             {errors.staff_ID && (
               <p className="text-red-500 mt-2 text-sm">{errors.staff_ID}</p>
             )}

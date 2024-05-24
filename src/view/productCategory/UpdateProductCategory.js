@@ -168,7 +168,6 @@ const UpdateProductBrand = () => {
       navigate("/product_category");
     } catch (err) {
       console.log("Error", err);
-      console.log("Error occurred during update");
     }
   };
 

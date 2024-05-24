@@ -169,7 +169,6 @@ const Users = () => {
                     </td>
                     <td className="py-4">{row?.name}</td>
                     <td className="py-4 ">{row?.phone}</td>
-
                     <td className="py-4">{row?.created_at.substring(0, 10)}</td>
 
                     <td className="py-4">

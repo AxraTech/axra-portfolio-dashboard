@@ -1,24 +1,33 @@
-import { useMutation, useQuery } from "@apollo/client";
-import { DELETE_PRODUCT, PRODUCT_PK } from "../../gql/product";
-import { useNavigate, useParams } from "react-router-dom";
-import { useState } from "react";
-import ModalBox from "../../components/ModalBox";
-// import DeleteProduct from "./DeleteProduct";
-import { SERVICE_DETAIL_PK } from "../../gql/serviceDetail";
-import { PRODUCT_BRAND_PK } from "../../gql/productBrand";
-import { SERVICE_CATEGORY_BY_PK } from "../../gql/serviceCategory";
+import { useQuery } from "@apollo/client";
 
+import { useNavigate, useParams } from "react-router-dom";
+
+// import DeleteProduct from "./DeleteProduct";
+
+import { SERVICE_CATEGORY_BY_PK } from "../../gql/serviceCategory";
+import ServiceDetails from "../serviceDetail/ServiceDetails";
+import { useState } from "react";
+import DeleteServiceCategory from "../../view/serviceCategory/DeleteServiceCategory";
 const ServiceCategory = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const [cat, setCat] = useState();
   const { data: service } = useQuery(SERVICE_CATEGORY_BY_PK, {
     variables: { id: id },
   });
 
+  const handleOpen = (data) => {
+    setOpen(true);
+    setCat(data);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   if (!service) {
     return;
   }
-  console.log("Service cat", service);
 
   return (
     <>
@@ -71,16 +80,20 @@ const ServiceCategory = () => {
           Edit
         </button>
         <button
-          onClick={() =>
-            navigate(
-              `/delete_service_cat/${service?.service_categories_by_pk?.id}`
-            )
-          }
+          // onClick={() =>
+          //   navigate(
+          //     `/delete_service_cat/${service?.service_categories_by_pk?.id}`
+          //   )
+          // }
+          onClick={() => handleOpen(service)}
           className=" font-medium text-md rounded text-white py-2 px-4  bg-red-600 hover:bg-red-700"
         >
           Delete
         </button>
       </div>
+      <ServiceDetails catId={id} />
+
+      {open && <DeleteServiceCategory catId={cat} handleClose={handleClose} />}
     </>
   );
 };

@@ -1,41 +1,78 @@
 import { useState, useEffect, useContext } from "react";
 import Pagination from "../pagination/Pagination";
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery, useQuery } from "@apollo/client";
 
 import { useNavigate } from "react-router-dom";
 
 import { ALL_SERVICE_PACKAGE } from "../../gql/servicePackage";
 import SideBarContext from "../../context/SideBarContext";
+import DeleteServicePackage from "./DeleteServicePackage";
 const ServicePackage = () => {
   const navigate = useNavigate();
   const { nav, setNav } = useContext(SideBarContext);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // Number of items per page
-
+  const [open, setOpen] = useState(false);
+  const [packages, setPackages] = useState();
   const [serivces, setServices] = useState();
+  const [searchValue, setSearchValue] = useState("");
   const [loadService, resultService] = useLazyQuery(ALL_SERVICE_PACKAGE);
 
   useEffect(() => {
-    loadService({ fetchPolicy: "network-only" });
+    loadService({
+      variables: {
+        packageQuery: {
+          _or: [
+            {
+              service_package_name: { _ilike: `%${searchValue}%` },
+            },
+            { service_package_type: { _ilike: `%${searchValue}%` } },
+          ],
+        },
+      },
+      fetchPolicy: "network-only",
+    });
     setNav("service_package");
-  }, [loadService, nav]);
+  }, [loadService, searchValue, nav]);
   useEffect(() => {
     if (resultService.data) {
-      setServices(resultService?.data.service_package);
+      setServices(resultService?.data.service_packages);
     }
   }, [resultService]);
 
   const handleRemove = (row) => {
-    navigate(`/delete_service_detail/${row.id}`);
+    setOpen(true);
+    setPackages(row);
+  };
+
+  const handleRemoveClose = () => {
+    setOpen(false);
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setSearchValue(searchValue);
+
+    if (searchValue === "") {
+      loadService(
+        {
+          variables: {
+            search: `%${searchValue}%`,
+          },
+          fetchPolicy: "network-only",
+        },
+        [loadService, searchValue]
+      );
+    }
   };
 
   // Calculate total number of pages
   const totalPages = Math.ceil(
-    resultService?.data?.service_package_aggregate?.aggregate.count /
+    resultService?.data?.service_packages_aggregate?.aggregate.count /
       itemsPerPage
   );
   const totals =
-    resultService?.data?.service_package_aggregate?.aggregate.count;
+    resultService?.data?.service_packages_aggregate?.aggregate.count;
   // Get the current page's data
   const currentData = serivces?.slice(
     (currentPage - 1) * itemsPerPage,
@@ -58,7 +95,41 @@ const ServicePackage = () => {
   return (
     <div>
       <div className="flex justify-between mb-3 ">
-        {/* <Search /> */}
+        {/* Search */}
+        <div className="w-full md:w-1/3 my-5">
+          <form className="flex items-center" onSubmit={handleSearch}>
+            <label for="simple-search" className="sr-only">
+              Search
+            </label>
+            <div className="relative w-full">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg
+                  aria-hidden="true"
+                  className="w-5 h-5 text-gray-500"
+                  fill="currentColor"
+                  viewbox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <input
+                type="text"
+                id="simple-search"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg   block w-full pl-10 p-2 "
+                placeholder="Search by service package name or package type"
+                required=""
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+              />
+            </div>
+          </form>
+        </div>
+
         <div className="flex items-center">
           <button
             type="button"
@@ -90,17 +161,19 @@ const ServicePackage = () => {
                 ID
               </th>
               <th scope="col" className="py-4">
+                Category
+              </th>
+              <th scope="col" className="py-4">
                 Package Type
+              </th>
+              <th scope="col" className="py-4">
+                Package Name
               </th>
               <th scope="col" className="py-4">
                 Package Price
               </th>
-
               <th scope="col" className="py-4">
                 Service Fee
-              </th>
-              <th scope="col" className="py-4">
-                Package Description
               </th>
 
               <th scope="col" className="py-4">
@@ -119,14 +192,25 @@ const ServicePackage = () => {
                   className="hover:bg-slate-100 border-y-2 hover:shadow-md"
                 >
                   <td className="px-6 py-4">{index + 1}</td>
-                  <td className="py-4">{row?.service_package_type}</td>
-                  <td className="py-4">{row?.one_time_package_price}</td>
-                  <td className="py-4">{row?.recurrently_service_fee}</td>
-                  <td className="py-4">
-                    {row?.service_package_description.substring(0, 20)}
+
+                  <td className="pr-2">
+                    {row?.service_details_packages[0]?.service_details_packages?.service_category?.service_name?.substring(
+                      0,
+                      10
+                    )}
+                  </td>
+                  <td className="pr-2">
+                    {row?.service_package_type?.substring(0, 10)}
+                  </td>
+                  <td className="pr-2">
+                    {row?.service_package_name?.substring(0, 10)}
+                  </td>
+                  <td className="pr-2">{row?.one_time_package_price}</td>
+                  <td className="pr-2">
+                    {row?.recurrently_service_fee?.substring(0, 10)}
                   </td>
 
-                  <td className="py-4">
+                  <td className="pr-2 ">
                     <button
                       onClick={() => navigate(`${row.id}`)}
                       className="font-medium text-md rounded text-white py-2 px-4  bg-green-600 hover:bg-green-700"
@@ -134,7 +218,7 @@ const ServicePackage = () => {
                       Detail
                     </button>
                     <button
-                      onClick={() => navigate(`/delete_service/${row.id}`)}
+                      onClick={() => handleRemove(row)}
                       className="font-medium text-md rounded text-white py-2 px-4 ml-8  bg-red-600 hover:bg-red-700"
                     >
                       Delete
@@ -145,6 +229,13 @@ const ServicePackage = () => {
           </tbody>
         </table>
       </div>
+
+      {open && (
+        <DeleteServicePackage
+          packages={packages}
+          handleDelClose={handleRemoveClose}
+        />
+      )}
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}

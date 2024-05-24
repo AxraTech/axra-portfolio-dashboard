@@ -45,7 +45,7 @@ const UpdateArticle = () => {
   // RTE
   const descriptionChange = (value) => {
     setDescription(value);
-    setValues({ ...values, product_description: value.toString("html") });
+    setValues({ ...values, description: value.toString("html") });
   };
 
   const [getImageUrl] = useMutation(IMAGE_UPLOAD, {

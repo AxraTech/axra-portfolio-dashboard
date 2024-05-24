@@ -127,3 +127,13 @@ export const EDIT_STAFF = gql`
     }
   }
 `;
+
+//staff id
+export const STAFF_ID = gql`
+  query aa {
+    staff_info {
+      id
+      staff_ID
+    }
+  }
+`;

@@ -9,10 +9,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ALL_PRODUCT_CAT } from "../../gql/productCategory";
 import SideBarContext from "../../context/SideBarContext";
 import { ALL_SERVICE_CATEGORY } from "../../gql/serviceCategory";
+import DeleteServiceCategory from "./DeleteServiceCategory";
 const ServiceCategorys = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { nav, setNav } = useContext(SideBarContext);
+  const [open, setOpen] = useState(false);
+  const [cat, setCat] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // Number of items per page
 
@@ -73,7 +76,13 @@ const ServiceCategorys = () => {
   };
 
   const handleRemove = (row) => {
-    navigate(`/delete_service_cat/${row.id}`);
+    setOpen(true);
+    setCat(row?.service_categories_by_pk);
+    // navigate(`/delete_service_cat/${row.id}`);
+  };
+  console.log("cata in detail", cat);
+  const handleClose = () => {
+    setOpen(false);
   };
   if (!service) {
     return;
@@ -216,6 +225,7 @@ const ServiceCategorys = () => {
         onPrevPage={handlePrevPage}
         totals={totals}
       />
+      {open && <DeleteServiceCategory cat={cat} handleClose={handleClose} />}
     </div>
   );
 };

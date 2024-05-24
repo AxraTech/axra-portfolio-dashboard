@@ -105,7 +105,7 @@ const CreateProduct = () => {
         setLoading(true);
 
         const imageName = values.product_image_url.split("/").pop();
-        console.log("image name", imageName);
+
         await deleteImage({ variables: { image_name: imageName } });
         setValues({ ...values, product_image_url: "" });
         setLoading(false);

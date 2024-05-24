@@ -6,28 +6,44 @@ import ModalBox from "../../components/ModalBox";
 // import DeleteProduct from "./DeleteProduct";
 import { SERVICE_DETAIL_PK } from "../../gql/serviceDetail";
 
+import UpdateServiceDetails from "../../view/serviceDetail/UpdateServiceDetail";
+import {
+  SERVICE_CAT_BY_DETAIL_ID,
+  SERVICE_CAT_BY_NAME,
+} from "../../gql/mixedServiceCategory";
+import DeleteServiceDetail from "./DeleteServiceDetail";
+import ServiceDetailPackages from "../../view/serviceDetailPackage/ServiceDetailPackages";
+
 const ServiceDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { data: service } = useQuery(SERVICE_DETAIL_PK, {
     variables: { id: id },
   });
+
   const [desOpen, setDesOpen] = useState(true);
-  const [speOpen, setSpeOpen] = useState(false);
-  const [Modelopen, setModelOpen] = useState(false);
-
+  const [open, setOpen] = useState(false);
+  const [delOpen, setDelOpen] = useState(false);
+  const [details, setDetails] = useState();
+  const [serviceDetails, setServiceDetails] = useState();
   const handleDescription = () => {
-    console.log("object");
-
     setDesOpen(true);
-    setSpeOpen(false);
+  };
+  const handleOpen = (data) => {
+    setServiceDetails(data);
+    setOpen(true);
+  };
+  const handleDelOpen = (data) => {
+    setDelOpen(true);
+    setDetails(data);
   };
 
-  const handleSpecification = () => {
-    setSpeOpen(true);
-    setDesOpen(false);
+  const handleDelClose = () => {
+    setDelOpen(false);
   };
-
+  const handleClose = (data) => {
+    setOpen(false);
+  };
   if (!service) {
     return;
   }
@@ -48,25 +64,21 @@ const ServiceDetail = () => {
         </span>
         <span> / {id}</span>
       </div>
-      <div className="grid grid-cols-3 gap-x-10">
+      <div className="grid grid-cols-2 gap-x-10">
         <div className="col-span-1 bg-gray-200 p-4 shadow-sm w-auto h-auto">
           <img
-            src={service?.service_detail_by_pk?.banner_image_url}
+            src={service?.service_details_by_pk?.image_url}
             className="w-auto h-auto"
           ></img>
         </div>
-        <div className="col-span-1 bg-gray-200 p-4 shadow-sm w-auto h-auto">
-          <img
-            src={service?.service_detail_by_pk?.image_url}
-            className="w-auto h-auto"
-          ></img>
-        </div>
-        <div className=" col-span-1 p-4 px-10 ">
+        <div className=" col-span-1 p-4 px-3 ">
           {/* category */}
           <div className="flex gap-x-3 ">
-            <p className="w-36">Service Name</p>
+            <p>Service Name</p>
             <p className="px-3">-</p>
-            <p>{service?.service_detail_by_pk?.service_name}</p>
+            <p>
+              {service?.service_details_by_pk?.service_category?.service_name}
+            </p>
           </div>
         </div>
       </div>
@@ -86,33 +98,43 @@ const ServiceDetail = () => {
           className="py-5"
           open={desOpen}
           dangerouslySetInnerHTML={{
-            __html: service?.service_detail_by_pk?.service_description,
+            __html: service?.service_details_by_pk?.service_description,
           }}
         ></div>
       )}
 
       <div className="flex justify-end gap-x-10 py-5">
         <button
-          onClick={() =>
-            navigate(
-              `/update_service_detail/${service?.service_detail_by_pk?.id}`
-            )
-          }
+          // onClick={() =>
+          //   navigate(
+          //     `/service_cat/${serviceCat?.service_categories[0]?.id}/${service?.service_details_by_pk?.id}/update_service_detail`
+          //   )
+          // }
+          onClick={() => handleOpen(service)}
           className=" font-medium text-md rounded text-white py-2 px-4  bg-blue-600 hover:bg-blue-700"
         >
           Edit
         </button>
         <button
-          onClick={() =>
-            navigate(
-              `/delete_service_detail/${service?.service_detail_by_pk?.id}`
-            )
-          }
+          onClick={() => handleDelOpen(service)}
           className=" font-medium text-md rounded text-white py-2 px-4  bg-red-600 hover:bg-red-700"
         >
           Delete
         </button>
       </div>
+      <ServiceDetailPackages serviceId={service?.service_details_by_pk?.id} />
+      {open && (
+        <UpdateServiceDetails
+          handleClose={handleClose}
+          serviceDetails={serviceDetails}
+        />
+      )}
+      {delOpen && (
+        <DeleteServiceDetail
+          detailId={details}
+          handleDelClose={handleDelClose}
+        />
+      )}
     </>
   );
 };

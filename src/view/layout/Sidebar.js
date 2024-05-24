@@ -241,7 +241,7 @@ const Sidebar = () => {
                 </a>
               </li>
 
-              {/* service */}
+              {/* service category*/}
               <li>
                 <a
                   href="/service_cat"
@@ -280,24 +280,7 @@ const Sidebar = () => {
                   </span>
                 </a>
               </li>
-              {/* service detail*/}
-              <li>
-                <a
-                  href="/service_detail"
-                  onClick={() => setNav("service_detail")}
-                  className={`flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group hover:text-white ${
-                    nav === "service_detail" ? "bg-gray-700 text-white" : ""
-                  } `}
-                >
-                  <FontAwesomeIcon
-                    icon={faLaptop}
-                    className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-sidebar_hover_color dark:group-hover:text-white "
-                  />
-                  <span className="flex-1 ml-3 text-sidebar_text_color whitespace-nowrap hover:text-sidebar_hover_color">
-                    Service Detail
-                  </span>
-                </a>
-              </li>
+
               {/* product */}
               <li>
                 <a

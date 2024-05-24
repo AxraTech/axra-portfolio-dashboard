@@ -37,7 +37,6 @@ const UpdateProductBrand = () => {
         id: resultService.data.service_categories_by_pk.id ?? "",
         service_name:
           resultService.data.service_categories_by_pk.service_name ?? "",
-
         image_url: resultService.data.service_categories_by_pk.image_url ?? "",
       });
     }
