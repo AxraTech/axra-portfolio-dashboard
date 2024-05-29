@@ -7,7 +7,10 @@ import RichTextEditor from "../../components/RichTextEditor";
 import { DELETE_IMAGE, IMAGE_UPLOAD } from "../../gql/imageupload";
 import { useNavigate } from "react-router-dom";
 import { add_service } from "../../gql/articles";
-import { ADD_SERVICE_DETAIL } from "../../gql/serviceDetail";
+import {
+  ADD_SERVICE_DETAIL,
+  ALL_SERVICE_DETAIL,
+} from "../../gql/serviceDetail";
 import { SERVICE_CAT, SERVICE_CAT_BY_PK } from "../../gql/mixedServiceCategory";
 const imageType = ["image/jpeg", "image/png"];
 const CreateServiceDetail = ({ handleClose, serviceId }) => {
@@ -50,6 +53,7 @@ const CreateServiceDetail = ({ handleClose, serviceId }) => {
       setValues({});
       setLoading(false);
     },
+    refetchQueries: [ALL_SERVICE_DETAIL],
   });
 
   const [deleteImage] = useMutation(DELETE_IMAGE, {

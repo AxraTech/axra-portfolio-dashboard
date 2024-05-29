@@ -1,9 +1,8 @@
-import { useMutation, useQuery } from "@apollo/client";
-import { DELETE_PRODUCT, PRODUCT_PK } from "../../gql/product";
+import { useQuery } from "@apollo/client";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
-import ModalBox from "../../components/ModalBox";
 
+import { format } from "date-fns";
 import { ARTICLE_PK } from "../../gql/articles";
 
 const Article = () => {
@@ -65,6 +64,31 @@ const Article = () => {
             <p className="w-36">Title</p>
             <p className="px-3">-</p>
             <p>{article?.article_by_pk?.title}</p>
+          </div>
+          {/* created at */}
+          <div className="flex gap-3 my-8">
+            <p className="w-36">Created At</p>
+            <p className="px-3">-</p>
+
+            <p>
+              {" "}
+              {format(
+                new Date(article?.article_by_pk?.created_at),
+                "yyyy-MM-dd hh:mm:ss a"
+              )}
+            </p>
+          </div>
+          {/* updated at */}
+          <div className="flex gap-3 my-8">
+            <p className="w-36">Updated At</p>
+            <p className="px-3">-</p>
+            <p>
+              {" "}
+              {format(
+                new Date(article?.article_by_pk?.updated_at),
+                "yyyy-MM-dd hh:mm:ss a"
+              )}
+            </p>
           </div>
         </div>
       </div>

@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   ADD_SERVICE_PACKAGE,
+  ALL_SERVICE_PACKAGE,
   DELETE_SERVICE_DETIAILS_PACKAGE,
   EDIT_SERVICE_PACKAGE,
   SERVICE_PACKAGE_DETAILS,
@@ -47,7 +48,15 @@ const UpdateService = () => {
           ?.service_category?.service_name
       );
     }
-  }, [servicePackage]);
+  }, [
+    servicePackage?.service_packages_by_pk?.id,
+    servicePackage?.service_packages_by_pk?.one_time_package_price,
+    servicePackage?.service_packages_by_pk?.recurrently_service_fee,
+    servicePackage?.service_packages_by_pk?.service_package_description,
+    servicePackage?.service_packages_by_pk?.service_package_name,
+    servicePackage?.service_packages_by_pk?.service_package_type,
+  ]);
+
   const descriptionChange = (value) => {
     setDescription(value);
     setValues({
@@ -88,10 +97,12 @@ const UpdateService = () => {
           fk_service_packages_id: data?.update_service_packages_by_pk?.id,
         },
       });
+
       alert("Update done");
       setValues({});
       setLoading(false);
     },
+    refetchQueries: [ALL_SERVICE_PACKAGE],
   });
 
   const handleChange = (prop) => (e) => {
@@ -106,36 +117,36 @@ const UpdateService = () => {
     let errorExist = false;
     const tempErrors = {};
 
-    // if (selectedCategory === "Web Design & Development") {
-    //   if (!values.one_time_package_price) {
-    //     tempErrors.one_time_package_price = "Package Price field is required.";
-    //     errorExist = true;
-    //   }
-    //   if (!values.recurrently_service_fee) {
-    //     tempErrors.recurrently_service_fee = "Service Fee field is required.";
-    //     errorExist = true;
-    //   }
-    //   if (!values.service_package_description) {
-    //     tempErrors.service_package_description =
-    //       "Service Description field is required.";
-    //     errorExist = true;
-    //   }
-    //   if (!values.service_package_type) {
-    //     tempErrors.service_package_type = "Package Type field is required.";
-    //     errorExist = true;
-    //   }
-    // } else {
-    //   if (!values.service_package_description) {
-    //     tempErrors.service_package_description =
-    //       "Service Description field is required.";
-    //     errorExist = true;
-    //   }
+    if (selectedCategory === "Web Design & Development") {
+      if (!values.one_time_package_price) {
+        tempErrors.one_time_package_price = "Package Price field is required.";
+        errorExist = true;
+      }
+      if (!values.recurrently_service_fee) {
+        tempErrors.recurrently_service_fee = "Service Fee field is required.";
+        errorExist = true;
+      }
+      if (!values.service_package_description) {
+        tempErrors.service_package_description =
+          "Service Description field is required.";
+        errorExist = true;
+      }
+      if (!values.service_package_type) {
+        tempErrors.service_package_type = "Package Type field is required.";
+        errorExist = true;
+      }
+    } else {
+      if (!values.service_package_description) {
+        tempErrors.service_package_description =
+          "Service Description field is required.";
+        errorExist = true;
+      }
 
-    //   if (!values.service_package_name) {
-    //     tempErrors.service_package_name = "Package Name field is required.";
-    //     errorExist = true;
-    //   }
-    // }
+      if (!values.service_package_name) {
+        tempErrors.service_package_name = "Package Name field is required.";
+        errorExist = true;
+      }
+    }
 
     if (errorExist) {
       setErrors({ ...tempErrors });
@@ -158,6 +169,7 @@ const UpdateService = () => {
         await edit_service({
           variables: {
             ...values,
+
             fk_service_packages_id:
               servicePackage?.service_details_packages_by_pk?.id,
             one_time_package_price: null,
@@ -176,7 +188,7 @@ const UpdateService = () => {
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
   };
-  console.log("values ", values);
+
   return (
     <>
       <div className="flex items-center mb-8">
@@ -216,7 +228,7 @@ const UpdateService = () => {
               <input
                 type="text"
                 id="default-input"
-                value={values.service_package_type}
+                value={values?.service_package_type}
                 onChange={handleChange("service_package_type")}
                 className="bg-white_color border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
               />
@@ -295,7 +307,7 @@ const UpdateService = () => {
           </div>
         ) : (
           <div className="w-full gap-x-20 gap-y-3 grid grid-cols-2 ">
-            {/* package type */}
+            {/* package name */}
             <div>
               <label
                 for="base-input"

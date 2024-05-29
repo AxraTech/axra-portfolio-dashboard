@@ -52,12 +52,9 @@ export const CLAIM_FORM_PK = gql`
 //update status
 export const UPDATE_STATUS = gql`
   mutation MyMutation($id: Int!, $status: String!) {
-    update_claim_form_by_pk(
-      pk_columns: { id: $id }
-      _set: { status: $status }
-    ) {
-      status
-      id
+    ClaimFormStatus(id: $id, status: $status) {
+      error
+      message
     }
   }
 `;

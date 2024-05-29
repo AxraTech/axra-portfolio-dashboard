@@ -1,5 +1,4 @@
 import { useState } from "react";
-// import { DELETE_PRODUCT, PRODUCT_PK } from "../../gql/product";
 import { useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import {
@@ -47,7 +46,7 @@ const DeleteServiceDetail = ({ details, detailId, handleDelClose }) => {
               type="button"
               className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
               data-modal-hide="popup-modal"
-              onClick={() => navigate(-1)}
+              onClick={handleDelClose}
             >
               <svg
                 className="w-3 h-3"

@@ -51,12 +51,9 @@ export const LEAVE_FORM_PK = gql`
 //update status
 export const UPDATE_STATUS = gql`
   mutation MyMutation($id: Int!, $status: String!) {
-    update_leave_form_by_pk(
-      pk_columns: { id: $id }
-      _set: { status: $status }
-    ) {
-      status
-      id
+    LeaveFormStatus(id: $id, status: $status) {
+      error
+      message
     }
   }
 `;

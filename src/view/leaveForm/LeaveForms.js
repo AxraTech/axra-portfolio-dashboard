@@ -121,9 +121,7 @@ const LeaveForms = () => {
               <th scope="col" className="py-4">
                 Form Type
               </th>
-              <th scope="col" className="py-4">
-                Reason
-              </th>
+
               <th scope="col" className="py-4">
                 NoOfDays
               </th>
@@ -165,12 +163,12 @@ const LeaveForms = () => {
                     <td className="px-6 py-4">{index + 1}</td>
                     <td className="py-4">{row?.leave_form_staff_info?.name}</td>
                     <td className="py-4">{row?.form_type}</td>
-                    <td className="py-4">{row?.reason}</td>
+
                     <td className="py-4">{row.number_of_leaves}</td>
                     <td className="py-4">{row?.start_date}</td>
                     <td className="py-4">{row?.end_date}</td>
                     <td className="py-4">
-                      {row?.status === "pending" ? (
+                      {row.status === "pending" ? (
                         <p
                           style={{
                             color: "blue",

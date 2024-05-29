@@ -2,16 +2,13 @@ import { useState } from "react";
 
 import { useMutation, useQuery } from "@apollo/client";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  ALL_SERVICE_PACKAGE,
-  SERVICE_PACKAGE_PK,
-} from "../../gql/servicePackage";
+import { SERVICE_PACKAGE_PK } from "../../gql/servicePackage";
 import { DELETE_SERVICE_PACKAGE } from "../../gql/serivce";
 
-const DeleteServicePackage = ({ packages, packageId, handleDelClose }) => {
+const DeleteServicePackage = ({ packageId, handleDelClose }) => {
   const navigate = useNavigate();
   const { id } = useParams();
-
+  console.log("id----- ", packageId);
   const [delete_service] = useMutation(DELETE_SERVICE_PACKAGE, {
     onError: (err) => {
       console.log("Delete Error");
@@ -19,15 +16,15 @@ const DeleteServicePackage = ({ packages, packageId, handleDelClose }) => {
     onCompleted: (data) => {
       alert("Deleted Successfull ");
     },
-    refetchQueries: [ALL_SERVICE_PACKAGE],
   });
 
   const handleDelete = async () => {
     await delete_service({
-      variables: { id: packages?.id },
+      variables: { id: packageId?.service_packages_by_pk?.id },
     });
 
     handleDelClose();
+    navigate(-1);
   };
   return (
     <>

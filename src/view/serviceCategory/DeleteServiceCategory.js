@@ -3,7 +3,10 @@ import { useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { DELETE_SERVICE_CATEGORY } from "../../gql/serviceCategory";
+import {
+  ALL_SERVICE_CATEGORY,
+  DELETE_SERVICE_CATEGORY,
+} from "../../gql/serviceCategory";
 
 const DeleteServiceCategory = ({ cat, catId, handleClose }) => {
   const [Modelopen, setModelOpen] = useState(true);
@@ -16,25 +19,19 @@ const DeleteServiceCategory = ({ cat, catId, handleClose }) => {
       alert("Delete Error");
     },
     onCompleted: (data) => {
-      console.log("result", data);
       setLoading(false);
       alert("Delete Successfull");
     },
+    refetchQueries: [ALL_SERVICE_CATEGORY],
   });
 
   const handleDelete = async () => {
     try {
-      if (catId) {
-        await delete_serviceDetail({
-          variables: { id: catId?.service_categories_by_pk?.id },
-        });
-      } else {
-        await delete_serviceDetail({
-          variables: { id: cat?.id },
-        });
-      }
+      await delete_serviceDetail({
+        variables: { id: cat?.id },
+      });
+
       handleClose();
-      navigate(-1);
     } catch (err) {
       console.log("Delete Error", err);
     }
@@ -50,7 +47,7 @@ const DeleteServiceCategory = ({ cat, catId, handleClose }) => {
               type="button"
               className="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
               data-modal-hide="popup-modal"
-              onClick={() => navigate(-1)}
+              onClick={handleClose}
             >
               <svg
                 className="w-3 h-3"

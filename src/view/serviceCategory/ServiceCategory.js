@@ -7,7 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { SERVICE_CATEGORY_BY_PK } from "../../gql/serviceCategory";
 import ServiceDetails from "../serviceDetail/ServiceDetails";
 import { useState } from "react";
-import DeleteServiceCategory from "../../view/serviceCategory/DeleteServiceCategory";
+import DeleteServiceCategoryDetail from "../../view/serviceCategory/DeleteServiceCategoryDetail";
 const ServiceCategory = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -18,10 +18,11 @@ const ServiceCategory = () => {
   });
 
   const handleOpen = (data) => {
+    console.log("data ", data);
     setOpen(true);
     setCat(data);
   };
-
+  console.log("cat ", cat);
   const handleClose = () => {
     setOpen(false);
   };
@@ -93,7 +94,9 @@ const ServiceCategory = () => {
       </div>
       <ServiceDetails catId={id} />
 
-      {open && <DeleteServiceCategory catId={cat} handleClose={handleClose} />}
+      {open && (
+        <DeleteServiceCategoryDetail catId={cat} handleClose={handleClose} />
+      )}
     </>
   );
 };

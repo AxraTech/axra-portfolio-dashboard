@@ -62,9 +62,9 @@ const Appointment = () => {
           </div>
           {/* description*/}
           <div className="flex gap-3 my-8">
-            <p className="w-36">Descripiton</p>
+            <p className="w-36">description</p>
             <p className="px-3">-</p>
-            <p>{app?.descripiton}</p>
+            <p>{app?.description}</p>
           </div>
         </div>
       </div>

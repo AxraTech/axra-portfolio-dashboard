@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 
 import { SERVICE_PACKAGE_PK } from "../../gql/servicePackage";
-import DeleteServicePackage from "./DeleteServicePackage";
+import DeleteServicePackageDetail from "./DeleteServicePackageDetail";
 
 const ServicePackage = () => {
   const { id } = useParams();
@@ -120,7 +120,7 @@ const ServicePackage = () => {
         </button>
       </div>
       {open && (
-        <DeleteServicePackage
+        <DeleteServicePackageDetail
           packageId={packages}
           handleDelClose={handleRemoveClose}
         />

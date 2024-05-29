@@ -76,8 +76,9 @@ const ServiceCategorys = () => {
   };
 
   const handleRemove = (row) => {
+    console.log("row ", row);
     setOpen(true);
-    setCat(row?.service_categories_by_pk);
+    setCat(row);
     // navigate(`/delete_service_cat/${row.id}`);
   };
   console.log("cata in detail", cat);
@@ -225,6 +226,7 @@ const ServiceCategorys = () => {
         onPrevPage={handlePrevPage}
         totals={totals}
       />
+      {console.log("ct ----", cat)}
       {open && <DeleteServiceCategory cat={cat} handleClose={handleClose} />}
     </div>
   );

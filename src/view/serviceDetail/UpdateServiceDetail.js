@@ -22,9 +22,6 @@ const UpdateServiceDetail = ({ handleClose, serviceDetails }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedReplacementImage, setSelectedReplacementImage] =
     useState(null);
-  // const { data: serviceDetails } = useQuery(SERVICE_DETAIL_PK, {
-  //   variables: { id: id },
-  // });
 
   useEffect(() => {
     if (serviceDetails) {
@@ -35,9 +32,16 @@ const UpdateServiceDetail = ({ handleClose, serviceDetails }) => {
         service_description: details?.service_description ?? "",
         image_url: details?.image_url ?? "",
       });
-      setDescription(details?.service_description ?? "");
     }
-  }, [serviceDetails]);
+    setDescription(
+      serviceDetails?.service_details_by_pk?.service_description ?? ""
+    );
+  }, [
+    serviceDetails?.service_details_by_pk?.id,
+    serviceDetails?.service_details_by_pk?.fk_service_category_id,
+    serviceDetails?.service_details_by_pk?.service_description,
+    serviceDetails?.service_details_by_pk?.image_url,
+  ]);
 
   // RTE
   const descriptionChange = (value) => {

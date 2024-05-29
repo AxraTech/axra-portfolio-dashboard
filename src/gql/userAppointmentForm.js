@@ -6,7 +6,7 @@ export const GET_ALL_APPOINMENT_FORM = gql`
       created_at
       updated_at
       company_name
-      descripiton
+      description
       date_time
       email
       phone
@@ -28,7 +28,7 @@ export const APPOINTMENT_BY_PK = gql`
       date_time
       email
       phone
-      descripiton
+      description
       created_at
       updated_at
     }

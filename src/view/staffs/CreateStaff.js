@@ -128,6 +128,10 @@ const CreateStaff = () => {
       tempErrors.position = "Staffs Position field is required.";
       errorExist = true;
     }
+    if (!values.start_join_date) {
+      tempErrors.start_join_date = "start_join_date field is required.";
+      errorExist = true;
+    }
 
     if (!values.image) {
       tempErrors.image = "Staffs Image field is required.";

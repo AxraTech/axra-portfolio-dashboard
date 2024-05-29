@@ -34,6 +34,7 @@ const ServicePackage = () => {
     });
     setNav("service_package");
   }, [loadService, searchValue, nav]);
+
   useEffect(() => {
     if (resultService.data) {
       setServices(resultService?.data.service_packages);

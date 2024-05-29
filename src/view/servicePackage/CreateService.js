@@ -20,6 +20,7 @@ const CreateService = () => {
   const [errors, setErrors] = useState({});
   const [description, setDescription] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [categoryError, setCategoryError] = useState("");
   const { data: serviceCatByName } = useQuery(SERVICE_CAT_BY_NAME, {
     variables: { service_name: selectedCategory },
   });
@@ -39,7 +40,7 @@ const CreateService = () => {
       console.log("Service Package Details upload done");
     },
   });
-
+  console.log("caegor y", serviceCatByName?.service_details);
   const [add_service] = useMutation(ADD_SERVICE_PACKAGE, {
     onError: (err) => {
       console.log("Service Package upload error", err);
@@ -70,7 +71,13 @@ const CreateService = () => {
     setLoading(true);
     let errorExist = false;
     const tempErrors = {};
-
+    if (!selectedCategory) {
+      setCategoryError("Please select a service category.");
+      setLoading(false);
+      return;
+    } else {
+      setCategoryError("");
+    }
     if (selectedCategory === "Web Design & Development") {
       if (!values.one_time_package_price) {
         tempErrors.one_time_package_price = "Package Price field is required.";
@@ -158,6 +165,9 @@ const CreateService = () => {
             </label>
           </div>
         ))}
+        {categoryError && (
+          <p className="text-red-500 mt-2 text-sm">{categoryError}</p>
+        )}
       </div>
 
       <form>
