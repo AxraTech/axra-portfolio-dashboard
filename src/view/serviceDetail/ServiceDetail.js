@@ -22,12 +22,18 @@ const ServiceDetail = () => {
   });
 
   const [desOpen, setDesOpen] = useState(true);
+  const [desOneOpen, setDesOneOpen] = useState(true);
   const [open, setOpen] = useState(false);
   const [delOpen, setDelOpen] = useState(false);
   const [details, setDetails] = useState();
   const [serviceDetails, setServiceDetails] = useState();
   const handleDescription = () => {
     setDesOpen(true);
+    setDesOneOpen(false);
+  };
+  const handleSpecification = () => {
+    setDesOneOpen(true);
+    setDesOpen(false);
   };
   const handleOpen = (data) => {
     setServiceDetails(data);
@@ -91,6 +97,15 @@ const ServiceDetail = () => {
         >
           Service Description
         </button>
+
+        <button
+          className={`${
+            desOneOpen ? "border-b border-blue-500" : "border-b border-black"
+          }`}
+          onClick={handleSpecification}
+        >
+          Service Description One
+        </button>
       </div>
 
       {desOpen && (
@@ -99,6 +114,16 @@ const ServiceDetail = () => {
           open={desOpen}
           dangerouslySetInnerHTML={{
             __html: service?.service_details_by_pk?.service_description,
+          }}
+        ></div>
+      )}
+
+      {desOneOpen && (
+        <div
+          className="py-5"
+          open={desOneOpen}
+          dangerouslySetInnerHTML={{
+            __html: service?.service_details_by_pk?.service_description_one,
           }}
         ></div>
       )}

@@ -1,6 +1,8 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import imageService from "../../imageService/image";
+import { AiOutlineCloudUpload, AiOutlineDelete } from "react-icons/ai";
 import {
   ADD_SERVICE_PACKAGE,
   SERVICE_PACKAGE_DETAILS,
@@ -10,11 +12,12 @@ import {
   SERVICE_CAT,
   SERVICE_CAT_BY_NAME,
 } from "../../gql/mixedServiceCategory";
-
+import { DELETE_IMAGE, IMAGE_UPLOAD } from "../../gql/imageupload";
+const imageType = ["image/jpeg", "image/png"];
 const CreateService = () => {
   const navigate = useNavigate();
-  const { data: serviceCat } = useQuery(SERVICE_CAT);
 
+  const [selectedImage, setSelectedImage] = useState(null);
   const [values, setValues] = useState({});
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
@@ -24,6 +27,7 @@ const CreateService = () => {
   const { data: serviceCatByName } = useQuery(SERVICE_CAT_BY_NAME, {
     variables: { service_name: selectedCategory },
   });
+  const { data: serviceCat } = useQuery(SERVICE_CAT);
 
   const descriptionChange = (value) => {
     setDescription(value);
@@ -31,6 +35,63 @@ const CreateService = () => {
       ...values,
       service_package_description: value.toString("html"),
     });
+  };
+
+  const [getImageUrl] = useMutation(IMAGE_UPLOAD, {
+    onError: (err) => {
+      setLoading(false);
+      console.log("Imge upload error", err);
+      // alert("Image Upload Error");
+    },
+    onCompleted: (data) => {
+      setLoading(false);
+    },
+  });
+
+  const [deleteImage] = useMutation(DELETE_IMAGE, {
+    onError: (error) => {
+      console.log("error : ", error);
+      setLoading(false);
+    },
+  });
+
+  const handleImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      let img = e.target.files[0];
+      setSelectedImage(img);
+      setValues({ ...values, package_name_icon: URL.createObjectURL(img) });
+      if (!imageType.includes(img.type)) {
+        setErrors({
+          ...errors,
+          package_name_icon: "Please Select image (png,jpeg)",
+        });
+        return;
+      }
+      if (img.size > 10485760) {
+        setErrors({
+          ...errors,
+          package_name_icon: "Image size must be smaller than 10MB",
+        });
+        return;
+      }
+    }
+  };
+
+  const handleImageDelete = async () => {
+    if (values.package_name_icon) {
+      try {
+        // setLoading(true);
+
+        const imageName = values?.package_name_icon.split("/").pop();
+        await deleteImage({ variables: { image_name: imageName } });
+        setSelectedImage(null);
+        setValues({ ...values, package_name_icon: "" });
+        setLoading(false);
+      } catch (error) {
+        console.log("Error deleting image:", error);
+        setLoading(false);
+      }
+    }
   };
   const [add_service_package_details] = useMutation(SERVICE_PACKAGE_DETAILS, {
     onError: (err) => {
@@ -71,6 +132,10 @@ const CreateService = () => {
     setLoading(true);
     let errorExist = false;
     const tempErrors = {};
+    if (!values.package_name_icon) {
+      tempErrors.package_name_icon = "Package Icon field is required.";
+      errorExist = true;
+    }
     if (!selectedCategory) {
       setCategoryError("Please select a service category.");
       setLoading(false);
@@ -116,11 +181,18 @@ const CreateService = () => {
     }
 
     try {
+      const res = await getImageUrl({ variables: { contentType: "image/*" } });
+
+      await imageService.uploadImage(
+        res.data.getImageUploadUrl.imageUploadUrl,
+        selectedImage
+      );
       if (selectedCategory === "Web Design & Development") {
         await add_service({
           variables: {
             ...values,
             service_package_name: null,
+            package_name_icon: `https://axra.sgp1.digitaloceanspaces.com/AxraPortFo/${res.data.getImageUploadUrl.imageName}`,
           },
         });
       } else {
@@ -130,6 +202,7 @@ const CreateService = () => {
             one_time_package_price: null,
             service_package_type: null,
             recurrently_service_fee: null,
+            package_name_icon: `https://axra.sgp1.digitaloceanspaces.com/AxraPortFo/${res.data.getImageUploadUrl.imageName}`,
           },
         });
       }
@@ -146,6 +219,46 @@ const CreateService = () => {
 
   return (
     <>
+      {/* image upload */}
+      <div className="max-w-sm mx-auto my-4 mt-0">
+        <div className="flex items-center justify-center h-48 w-full bg-white border-2 border-dashed border-gray-500 rounded-lg overflow-hidden relative">
+          {selectedImage ? (
+            <>
+              <img
+                src={values?.package_name_icon}
+                alt="Uploaded preview"
+                className="h-full w-full object-cover"
+              />
+              <button
+                onClick={handleImageDelete}
+                className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md"
+              >
+                <AiOutlineDelete className="w-6 h-6 text-red-600" />
+              </button>
+            </>
+          ) : (
+            <div className="text-center">
+              <label htmlFor="upload" className="cursor-pointer">
+                <AiOutlineCloudUpload className="w-12 h-12 text-gray-500" />
+                <p className="text-gray-500 mt-2">Click to Upload</p>
+              </label>
+              <input
+                id="upload"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="opacity-0 absolute top-0 left-0 w-full h-full cursor-pointer"
+              />
+            </div>
+          )}
+        </div>
+
+        {errors.package_name_icon && (
+          <p className="text-red-500 mt-2 flex justify-center text-sm">
+            {errors.package_name_icon}
+          </p>
+        )}
+      </div>
       <div className="flex items-center mb-8">
         {serviceCat?.service_categories.map((cat, index) => (
           <div key={index} className="mx-3">

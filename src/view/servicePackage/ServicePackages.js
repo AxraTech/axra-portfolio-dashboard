@@ -162,6 +162,9 @@ const ServicePackage = () => {
                 ID
               </th>
               <th scope="col" className="py-4">
+                Icon
+              </th>
+              <th scope="col" className="py-4">
                 Category
               </th>
               <th scope="col" className="py-4">
@@ -193,6 +196,12 @@ const ServicePackage = () => {
                   className="hover:bg-slate-100 border-y-2 hover:shadow-md"
                 >
                   <td className="px-6 py-4">{index + 1}</td>
+                  <td className="py-4">
+                    <img
+                      src={row?.package_name_icon}
+                      className="rounded-full w-12 h-12"
+                    ></img>
+                  </td>
 
                   <td className="pr-2">
                     {row?.service_details_packages[0]?.service_details_packages?.service_category?.service_name?.substring(

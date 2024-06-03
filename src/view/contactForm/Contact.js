@@ -74,7 +74,7 @@ const Contact = () => {
           <div className="flex gap-3 my-8">
             <p className="w-36">Email</p>
             <p className="px-3">-</p>
-            {console.log("email --------", contact?.contact_by_pk?.email)}
+
             <p>{contact?.contact_by_pk?.email}</p>
           </div>
           {/* start time */}
@@ -89,6 +89,11 @@ const Contact = () => {
             <p className="w-36">Closing Time</p>
             <p className="px-3">-</p>
             <p>{formattedEndTime}</p>
+          </div>
+          <div className="flex gap-3 my-8">
+            <p className="w-36">Address</p>
+            <p className="px-3">-</p>
+            <p>{contact?.contact_by_pk?.address}</p>
           </div>
         </div>
       </div>

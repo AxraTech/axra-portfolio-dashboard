@@ -22,12 +22,17 @@ const CreateServiceDetail = ({ handleClose, serviceId }) => {
   const [errors, setErrors] = useState({});
 
   const [description, setDescription] = useState("");
+  const [descriptionOne, setDescriptionOne] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
 
   // RTE
   const descriptionChange = (value) => {
     setDescription(value);
     setValues({ ...values, service_description: value.toString("html") });
+  };
+  const descriptionOneChange = (value) => {
+    setDescriptionOne(value);
+    setValues({ ...values, service_description_one: value.toString("html") });
   };
 
   const [getImageUrl] = useMutation(IMAGE_UPLOAD, {
@@ -231,7 +236,7 @@ const CreateServiceDetail = ({ handleClose, serviceId }) => {
                 </p>
               )}
             </div>
-
+            {/* description */}
             <div>
               {/*  service_description */}
               <div className="w-full">
@@ -248,6 +253,26 @@ const CreateServiceDetail = ({ handleClose, serviceId }) => {
                 {errors.service_description && (
                   <p className="text-red-500 mt-2 text-sm">
                     {errors.service_description}
+                  </p>
+                )}
+              </div>
+            </div>
+            {/*  service_description one */}
+            <div>
+              <div className="w-full">
+                <label
+                  for="base-input"
+                  className=" mb-2 text-md font-medium text-white"
+                >
+                  Service Description One
+                </label>
+                <RichTextEditor
+                  value={descriptionOne}
+                  onChange={descriptionOneChange}
+                />
+                {errors.service_description_one && (
+                  <p className="text-red-500 mt-2 text-sm">
+                    {errors.service_description_one}
                   </p>
                 )}
               </div>

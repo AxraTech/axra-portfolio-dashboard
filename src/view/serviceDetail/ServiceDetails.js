@@ -149,6 +149,9 @@ const ServiceDetails = ({ catId }) => {
               <th scope="col" className="py-4">
                 Service Description
               </th>
+              <th scope="col" className="py-4">
+                Service Description One
+              </th>
 
               <th scope="col" className="py-4">
                 Action
@@ -178,6 +181,9 @@ const ServiceDetails = ({ catId }) => {
                   </td>
                   <td className="py-4">
                     {row?.service_description.substring(0, 20)}
+                  </td>
+                  <td className="py-4">
+                    {row?.service_description_one.substring(0, 20)}
                   </td>
 
                   <td className="py-4">

@@ -128,7 +128,7 @@ const Contacts = () => {
                   </td>
                   <td className="py-4">{row?.phone}</td>
                   <td className="py-4">{row?.email}</td>
-                  <td className="py-4">{row?.address}</td>
+                  <td className="py-4">{row?.address?.substring(0, 20)}</td>
                   <td className="py-4">
                     <button
                       onClick={() => navigate(`${row.id}`)}

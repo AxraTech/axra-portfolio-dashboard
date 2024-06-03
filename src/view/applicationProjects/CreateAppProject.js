@@ -79,28 +79,23 @@ const CreateAppProject = () => {
     }
   };
 
-  const handleImageDelete = () => {
-    setSelectedImage(null);
+  const handleImageDelete = async () => {
+    if (values.image_url) {
+      try {
+        // setLoading(true);
+
+        const imageName = values.image_url.split("/").pop();
+
+        await deleteImage({ variables: { image_name: imageName } });
+        setSelectedImage(null);
+        setValues({ ...values, image_url: "" });
+        setLoading(false);
+      } catch (error) {
+        console.log("Error deleting image:", error);
+        setLoading(false);
+      }
+    }
   };
-
-  //   const handleImageDelete = async () => {
-  //     // If there's an existing image, delete it
-  //     if (values.image_url) {
-  //       try {
-  //         setLoading(true);
-  //         // Extract the imageName from the product_image_url
-  //         const imageName = values.image_url.split("/").pop();
-  //         console.log("image name", imageName);
-  //         await deleteImage({ variables: { image_name: imageName } });
-  //         setValues({ ...values, image_url: "" });
-  //         setLoading(false);
-  //       } catch (error) {
-  //         console.log("Error deleting image:", error);
-  //         setLoading(false);
-  //       }
-  //     }
-  //   };
-
   const handleCreate = async (e) => {
     e.preventDefault();
 
@@ -130,7 +125,7 @@ const CreateAppProject = () => {
 
     try {
       const res = await getImageUrl({ variables: { contentType: "image/*" } });
-      console.log("response ", res);
+
       await imageService.uploadImage(
         res.data.getImageUploadUrl.imageUploadUrl,
         selectedImage
@@ -150,120 +145,116 @@ const CreateAppProject = () => {
 
   return (
     <>
-      <form>
-        {/* image upload */}
+      {/* image upload */}
 
-        <div className="grid grid-cols-4 gap-x-10">
-          <div className=" col-span-2">
-            <div className=" flex  items-center justify-center h-48 w-full bg-white border-2 border-dashed border-gray-500 rounded-lg overflow-hidden relative">
-              {selectedImage ? (
-                <div>
-                  <img
-                    src={values.image_url}
-                    alt="Uploaded preview"
-                    className="h-full w-full object-cover"
-                  />
-                  <button
-                    onClick={handleImageDelete}
-                    className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md"
-                  >
-                    <AiOutlineDelete className="w-6 h-6 text-red-600" />
-                  </button>
-                </div>
-              ) : (
-                <div className="text-center">
-                  <label htmlFor="upload" className="cursor-pointer">
-                    <AiOutlineCloudUpload className="w-12 h-12 text-gray-500" />
-                    <p className="text-gray-500 mt-2">Click to Upload</p>
-                  </label>
-                  <input
-                    id="upload"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="opacity-0 absolute top-0 left-0 w-full h-full cursor-pointer"
-                  />
-                </div>
-              )}
-            </div>
-            {errors.image_url && (
-              <p className="text-red-500 mt-2 flex justify-center text-sm">
-                {errors.image_url}
+      <div className="grid grid-cols-4 gap-x-10">
+        <div className=" col-span-2">
+          <div className=" flex  items-center justify-center h-48 w-full bg-white border-2 border-dashed border-gray-500 rounded-lg overflow-hidden relative">
+            {selectedImage ? (
+              <div>
+                <img
+                  src={values.image_url}
+                  alt="Uploaded preview"
+                  className="h-full w-full object-cover"
+                />
+                <button
+                  onClick={handleImageDelete}
+                  className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md"
+                >
+                  <AiOutlineDelete className="w-6 h-6 text-red-600" />
+                </button>
+              </div>
+            ) : (
+              <div className="text-center">
+                <label htmlFor="upload" className="cursor-pointer">
+                  <AiOutlineCloudUpload className="w-12 h-12 text-gray-500" />
+                  <p className="text-gray-500 mt-2">Click to Upload</p>
+                </label>
+                <input
+                  id="upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="opacity-0 absolute top-0 left-0 w-full h-full cursor-pointer"
+                />
+              </div>
+            )}
+          </div>
+          {errors.image_url && (
+            <p className="text-red-500 mt-2 flex justify-center text-sm">
+              {errors.image_url}
+            </p>
+          )}
+        </div>
+        <form onSubmit={handleCreate} className="col-span-2">
+          {/* android app url */}
+          <div>
+            <label
+              for="base-input"
+              className="block  mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
+            >
+              Android App Link
+            </label>
+
+            <input
+              type="text"
+              id="default-input"
+              value={values.android_app_url}
+              onChange={handleChange("android_app_url")}
+              className="bg-white_color border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            />
+
+            {errors.android_app_url && (
+              <p className="text-red-500 mt-2 text-sm">
+                {errors.android_app_url}
               </p>
             )}
           </div>
-          <div className="col-span-2">
-            {/* android app url */}
-            <div>
-              <label
-                for="base-input"
-                className="block  mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
-              >
-                Android App Link
-              </label>
 
-              <input
-                type="text"
-                id="default-input"
-                value={values.android_app_url}
-                onChange={handleChange("android_app_url")}
-                className="bg-white_color border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              />
+          {/* ios app url */}
+          <div className="my-2">
+            <label
+              for="base-input"
+              className="block  mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
+            >
+              IOS App Link
+            </label>
 
-              {errors.android_app_url && (
-                <p className="text-red-500 mt-2 text-sm">
-                  {errors.android_app_url}
-                </p>
-              )}
-            </div>
+            <input
+              type="text"
+              id="default-input"
+              value={values.ios_app_url}
+              onChange={handleChange("ios_app_url")}
+              className="bg-white_color border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            />
 
-            {/* ios app url */}
-            <div className="my-2">
-              <label
-                for="base-input"
-                className="block  mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
-              >
-                IOS App Link
-              </label>
-
-              <input
-                type="text"
-                id="default-input"
-                value={values.ios_app_url}
-                onChange={handleChange("ios_app_url")}
-                className="bg-white_color border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              />
-
-              {errors.ios_app_url && (
-                <p className="text-red-500 mt-2 text-sm">
-                  {errors.ios_app_url}
-                </p>
-              )}
-            </div>
+            {errors.ios_app_url && (
+              <p className="text-red-500 mt-2 text-sm">{errors.ios_app_url}</p>
+            )}
           </div>
-        </div>
+        </form>
+      </div>
 
-        {/* <div className="w-full gap-x-20 gap-y-3 grid grid-cols-2 mt-10"></div> */}
-        <div className="flex justify-end my-5">
-          {loading ? (
-            <button
-              type="button"
-              className="flex items-center py-2 mt-5 px-4 bg-blue-700 text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded text-md px-4 py-2"
-              disabled
-            >
-              Loading
-            </button>
-          ) : (
-            <button
-              type="submit"
-              className="flex items-center py-2 mt-5 px-4 bg-blue-700 text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded text-md px-4 py-2"
-              onClick={handleCreate}
-            >
-              Create
-            </button>
-          )}
-        </div>
-      </form>
+      {/* <div className="w-full gap-x-20 gap-y-3 grid grid-cols-2 mt-10"></div> */}
+      <div className="flex justify-end my-5">
+        {loading ? (
+          <button
+            type="button"
+            className="flex items-center py-2 mt-5 px-4 bg-blue-700 text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded text-md px-4 py-2"
+            disabled
+          >
+            Loading
+          </button>
+        ) : (
+          <button
+            type="submit"
+            className="flex items-center py-2 mt-5 px-4 bg-blue-700 text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded text-md px-4 py-2"
+            onClick={handleCreate}
+          >
+            Create
+          </button>
+        )}
+      </div>
     </>
   );
 };

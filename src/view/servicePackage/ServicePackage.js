@@ -104,7 +104,7 @@ const ServicePackage = () => {
           }}
         ></div>
       }
-      {console.log("id ", serviceDetail)}
+
       <div className="flex justify-end gap-x-10 py-5">
         <button
           onClick={() => navigate(`/update_service/${serviceDetail?.id}`)}

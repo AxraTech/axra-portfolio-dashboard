@@ -19,6 +19,7 @@ const UpdateServiceDetail = ({ handleClose, serviceDetails }) => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [description, setDescription] = useState("");
+  const [descriptionOne, setDescriptionOne] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedReplacementImage, setSelectedReplacementImage] =
     useState(null);
@@ -30,23 +31,33 @@ const UpdateServiceDetail = ({ handleClose, serviceDetails }) => {
         id: details?.id ?? "",
         fk_service_category_id: details?.fk_service_category_id ?? "",
         service_description: details?.service_description ?? "",
+        service_description_one: details?.service_description_one ?? "",
         image_url: details?.image_url ?? "",
       });
+      setDescription(
+        serviceDetails?.service_details_by_pk?.service_description ?? ""
+      );
     }
-    setDescription(
-      serviceDetails?.service_details_by_pk?.service_description ?? ""
+
+    setDescriptionOne(
+      serviceDetails?.service_details_by_pk?.service_description_one ?? ""
     );
   }, [
     serviceDetails?.service_details_by_pk?.id,
     serviceDetails?.service_details_by_pk?.fk_service_category_id,
     serviceDetails?.service_details_by_pk?.service_description,
+    serviceDetails?.service_details_by_pk?.service_description_one,
     serviceDetails?.service_details_by_pk?.image_url,
   ]);
-
+  console.log("values ", values);
   // RTE
   const descriptionChange = (value) => {
     setDescription(value);
     setValues({ ...values, service_description: value.toString("html") });
+  };
+  const descriptionOneChange = (value) => {
+    setDescriptionOne(value);
+    setValues({ ...values, service_description_one: value.toString("html") });
   };
 
   const [getImageUrl] = useMutation(IMAGE_UPLOAD, {
@@ -249,9 +260,8 @@ const UpdateServiceDetail = ({ handleClose, serviceDetails }) => {
                 )}
               </div>
             </div>
-
+            {/*  service_description */}
             <div>
-              {/*  service_description */}
               <div className="w-full">
                 <label
                   for="base-input"
@@ -266,6 +276,26 @@ const UpdateServiceDetail = ({ handleClose, serviceDetails }) => {
                 {errors.service_description && (
                   <p className="text-red-500 mt-2 text-sm">
                     {errors.service_description}
+                  </p>
+                )}
+              </div>
+            </div>
+            {/*  service_description_one */}
+            <div>
+              <div className="w-full">
+                <label
+                  for="base-input"
+                  className=" mb-2 text-md font-medium text-white"
+                >
+                  Service Description one
+                </label>
+                <RichTextEditor
+                  value={descriptionOne}
+                  onChange={descriptionOneChange}
+                />
+                {errors.service_description_one && (
+                  <p className="text-red-500 mt-2 text-sm">
+                    {errors.service_description_one}
                   </p>
                 )}
               </div>

@@ -174,58 +174,57 @@ const UpdateContact = () => {
       console.log("Error occurred during update");
     }
   };
-  console.log("values ", values);
+
   return (
     <>
-      <form>
-        <div className="max-w-sm mx-auto mt-8">
-          <div className="flex items-center justify-center h-48 w-full bg-white border-2 border-dashed border-gray-500 rounded-lg overflow-hidden relative">
-            {selectedReplacementImage ? (
-              <>
-                <img
-                  src={URL.createObjectURL(selectedReplacementImage)}
-                  alt="Replacement preview"
-                  className="h-full w-full object-cover"
-                />
-                <button
-                  onClick={() => setSelectedReplacementImage(null)}
-                  className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md"
-                >
-                  <AiOutlineDelete className="w-6 h-6 text-red-600" />
-                </button>
-              </>
-            ) : values.image_url ? (
-              <>
-                <img
-                  src={values.image_url}
-                  alt="Uploaded preview"
-                  className="h-full w-full object-cover"
-                />
-                <button
-                  onClick={handleImageDelete}
-                  className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md"
-                >
-                  <AiOutlineDelete className="w-6 h-6 text-red-600" />
-                </button>
-              </>
-            ) : (
-              <div className="text-center">
-                <label htmlFor="upload" className="cursor-pointer">
-                  <AiOutlineCloudUpload className="w-12 h-12 text-gray-500" />
-                  <p className="text-gray-500 mt-2">Click to Upload</p>
-                </label>
-                <input
-                  id="upload"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="opacity-0 absolute top-0 left-0 w-full h-full cursor-pointer"
-                />
-              </div>
-            )}
-          </div>
+      <div className="max-w-sm mx-auto mt-8">
+        <div className="flex items-center justify-center h-48 w-full bg-white border-2 border-dashed border-gray-500 rounded-lg overflow-hidden relative">
+          {selectedReplacementImage ? (
+            <>
+              <img
+                src={URL.createObjectURL(selectedReplacementImage)}
+                alt="Replacement preview"
+                className="h-full w-full object-cover"
+              />
+              <button
+                onClick={() => setSelectedReplacementImage(null)}
+                className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md"
+              >
+                <AiOutlineDelete className="w-6 h-6 text-red-600" />
+              </button>
+            </>
+          ) : values.image_url ? (
+            <>
+              <img
+                src={values.image_url}
+                alt="Uploaded preview"
+                className="h-full w-full object-cover"
+              />
+              <button
+                onClick={handleImageDelete}
+                className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md"
+              >
+                <AiOutlineDelete className="w-6 h-6 text-red-600" />
+              </button>
+            </>
+          ) : (
+            <div className="text-center">
+              <label htmlFor="upload" className="cursor-pointer">
+                <AiOutlineCloudUpload className="w-12 h-12 text-gray-500" />
+                <p className="text-gray-500 mt-2">Click to Upload</p>
+              </label>
+              <input
+                id="upload"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="opacity-0 absolute top-0 left-0 w-full h-full cursor-pointer"
+              />
+            </div>
+          )}
         </div>
-
+      </div>
+      <form>
         <div className="w-full gap-x-20 gap-y-3 grid grid-cols-2 mt-10">
           {/* phone */}
           <div>

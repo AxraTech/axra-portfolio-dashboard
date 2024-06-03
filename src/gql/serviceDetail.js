@@ -12,6 +12,7 @@ export const ALL_SERVICE_DETAIL = gql`
       }
       image_url
       service_description
+      service_description_one
     }
     service_details_aggregate {
       aggregate {
@@ -30,6 +31,7 @@ export const SERVICE_DETAIL_PK = gql`
       image_url
       fk_service_category_id
       service_description
+      service_description_one
       service_category {
         id
         service_name
@@ -44,12 +46,14 @@ export const ADD_SERVICE_DETAIL = gql`
   mutation add_service_details(
     $image_url: String!
     $service_description: String!
+    $service_description_one: String!
     $fk_service_category_id: Int!
   ) {
     insert_service_details_one(
       object: {
         image_url: $image_url
         service_description: $service_description
+        service_description_one: $service_description_one
         fk_service_category_id: $fk_service_category_id
       }
     ) {
@@ -57,6 +61,7 @@ export const ADD_SERVICE_DETAIL = gql`
       id
       image_url
       service_description
+      service_description_one
       service_category {
         id
         service_name
@@ -81,6 +86,7 @@ export const EDIT_SERVICE_DETAIL = gql`
     $id: Int!
     $image_url: String!
     $service_description: String!
+    $service_description_one: String!
     $fk_service_category_id: Int!
   ) {
     update_service_details_by_pk(
@@ -89,6 +95,7 @@ export const EDIT_SERVICE_DETAIL = gql`
         fk_service_category_id: $fk_service_category_id
         image_url: $image_url
         service_description: $service_description
+        service_description_one: $service_description_one
       }
     ) {
       created_at

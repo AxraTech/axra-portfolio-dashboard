@@ -7,6 +7,7 @@ export const ALL_SERVICE_PACKAGE = gql`
       id
       recurrently_service_fee
       one_time_package_price
+      package_name_icon
       service_package_description
       service_package_name
       service_package_type
@@ -37,6 +38,7 @@ export const SERVICE_PACKAGE_PK = gql`
       created_at
       service_package_name
       service_package_type
+      package_name_icon
       service_package_description
       updated_at
       service_details_packages {
@@ -57,6 +59,7 @@ export const ADD_SERVICE_PACKAGE = gql`
     $recurrently_service_fee: String!
     $service_package_type: String!
     $service_package_name: String!
+    $package_name_icon: String!
   ) {
     insert_service_packages_one(
       object: {
@@ -65,6 +68,7 @@ export const ADD_SERVICE_PACKAGE = gql`
         service_package_description: $service_package_description
         service_package_type: $service_package_type
         service_package_name: $service_package_name
+        package_name_icon: $package_name_icon
       }
     ) {
       id
@@ -73,6 +77,7 @@ export const ADD_SERVICE_PACKAGE = gql`
       service_package_description
       updated_at
       service_package_name
+      package_name_icon
     }
   }
 `;
@@ -85,6 +90,7 @@ export const EDIT_SERVICE_PACKAGE = gql`
     $recurrently_service_fee: String!
     $service_package_type: String!
     $service_package_name: String!
+    $package_name_icon: String!
   ) {
     update_service_packages_by_pk(
       pk_columns: { id: $id }
@@ -94,6 +100,7 @@ export const EDIT_SERVICE_PACKAGE = gql`
         service_package_description: $service_package_description
         service_package_type: $service_package_type
         service_package_name: $service_package_name
+        package_name_icon: $package_name_icon
       }
     ) {
       id
@@ -102,6 +109,7 @@ export const EDIT_SERVICE_PACKAGE = gql`
       service_package_description
       service_package_name
       service_package_type
+      package_name_icon
     }
   }
 `;

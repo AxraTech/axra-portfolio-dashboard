@@ -175,7 +175,9 @@ const LeaveForms = () => {
                       }
                     </td>
                     <td className="py-4">{row?.staff_info?.name}</td>
-                    <td className="py-4 text-center">{row?.expense_type}</td>
+                    <td className="py-4 text-center">
+                      {row?.expense_type?.substring(0, 10)} ...
+                    </td>
                     <td className="py-4 text-center">{row?.claim_amount}</td>
 
                     <td className="py-4 text-center">{row?.claimant_date}</td>

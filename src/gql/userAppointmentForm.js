@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 export const GET_ALL_APPOINMENT_FORM = gql`
   query aa {
-    user_appointment_form {
+    user_appointment_form(order_by: { updated_at: desc }) {
       id
       created_at
       updated_at

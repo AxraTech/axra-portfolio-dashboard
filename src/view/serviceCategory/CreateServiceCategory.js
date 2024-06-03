@@ -145,93 +145,91 @@ const CreateServiceCategory = () => {
 
   return (
     <>
-      <form>
-        {/* image upload */}
+      {/* image upload */}
 
-        <div className="grid grid-cols-4 gap-x-10">
-          <div className=" col-span-2">
-            <div className=" flex  items-center justify-center h-48 w-full bg-white border-2 border-dashed border-gray-500 rounded-lg overflow-hidden relative">
-              {selectedImage ? (
-                <div>
-                  <img
-                    src={values.image_url}
-                    alt="Uploaded preview"
-                    className="h-full w-full object-cover"
-                  />
-                  <button
-                    onClick={handleImageDelete}
-                    className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md"
-                  >
-                    <AiOutlineDelete className="w-6 h-6 text-red-600" />
-                  </button>
-                </div>
-              ) : (
-                <div className="text-center">
-                  <label htmlFor="upload" className="cursor-pointer">
-                    <AiOutlineCloudUpload className="w-12 h-12 text-gray-500" />
-                    <p className="text-gray-500 mt-2">Click to Upload</p>
-                  </label>
-                  <input
-                    id="upload"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="opacity-0 absolute top-0 left-0 w-full h-full cursor-pointer"
-                  />
-                </div>
-              )}
-            </div>
-            {errors.image_url && (
-              <p className="text-red-500 mt-2 flex justify-center text-sm">
-                {errors.image_url}
-              </p>
+      <div className="grid grid-cols-4 gap-x-10">
+        <div className=" col-span-2">
+          <div className=" flex  items-center justify-center h-48 w-full bg-white border-2 border-dashed border-gray-500 rounded-lg overflow-hidden relative">
+            {selectedImage ? (
+              <div>
+                <img
+                  src={values.image_url}
+                  alt="Uploaded preview"
+                  className="h-full w-full object-cover"
+                />
+                <button
+                  onClick={handleImageDelete}
+                  className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md"
+                >
+                  <AiOutlineDelete className="w-6 h-6 text-red-600" />
+                </button>
+              </div>
+            ) : (
+              <div className="text-center">
+                <label htmlFor="upload" className="cursor-pointer">
+                  <AiOutlineCloudUpload className="w-12 h-12 text-gray-500" />
+                  <p className="text-gray-500 mt-2">Click to Upload</p>
+                </label>
+                <input
+                  id="upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="opacity-0 absolute top-0 left-0 w-full h-full cursor-pointer"
+                />
+              </div>
             )}
           </div>
-
-          {/* service model */}
-          <div className="col-span-2">
-            <label
-              for="base-input"
-              className="block  mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
-            >
-              Category Name
-            </label>
-
-            <input
-              type="text"
-              id="default-input"
-              value={values.service_name}
-              onChange={handleChange("service_name")}
-              className="bg-white_color border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            />
-
-            {errors.service_name && (
-              <p className="text-red-500 mt-2 text-sm">{errors.service_name}</p>
-            )}
-          </div>
-        </div>
-
-        {/* <div className="w-full gap-x-20 gap-y-3 grid grid-cols-2 mt-10"></div> */}
-        <div className="flex justify-end my-5">
-          {loading ? (
-            <button
-              type="button"
-              className="flex items-center py-2 mt-5 px-4 bg-blue-700 text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded text-md px-4 py-2"
-              disabled
-            >
-              Loading
-            </button>
-          ) : (
-            <button
-              type="submit"
-              className="flex items-center py-2 mt-5 px-4 bg-blue-700 text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded text-md px-4 py-2"
-              onClick={handleCreate}
-            >
-              Create
-            </button>
+          {errors.image_url && (
+            <p className="text-red-500 mt-2 flex justify-center text-sm">
+              {errors.image_url}
+            </p>
           )}
         </div>
-      </form>
+        <form className="col-span-2">
+          {/* service model */}
+
+          <label
+            for="base-input"
+            className="block  mb-2 text-md font-medium text-gray-900 dark:text-gray-700"
+          >
+            Category Name
+          </label>
+
+          <input
+            type="text"
+            id="default-input"
+            value={values.service_name}
+            onChange={handleChange("service_name")}
+            className="bg-white_color border border-gray-300 text-gray-900 text-md rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+          />
+
+          {errors.service_name && (
+            <p className="text-red-500 mt-2 text-sm">{errors.service_name}</p>
+          )}
+        </form>
+      </div>
+
+      {/* <div className="w-full gap-x-20 gap-y-3 grid grid-cols-2 mt-10"></div> */}
+      <div className="flex justify-end my-5">
+        {loading ? (
+          <button
+            type="button"
+            className="flex items-center py-2 mt-5 px-4 bg-blue-700 text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded text-md px-4 py-2"
+            disabled
+          >
+            Loading
+          </button>
+        ) : (
+          <button
+            type="submit"
+            className="flex items-center py-2 mt-5 px-4 bg-blue-700 text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded text-md px-4 py-2"
+            onClick={handleCreate}
+          >
+            Create
+          </button>
+        )}
+      </div>
     </>
   );
 };

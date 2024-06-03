@@ -42,7 +42,6 @@ const CreateProduct = () => {
       // alert("Image Upload Error");
     },
     onCompleted: (data) => {
-      console.log("data", data);
       setLoading(false);
     },
   });
@@ -102,11 +101,12 @@ const CreateProduct = () => {
   const handleImageDelete = async () => {
     if (values.product_image_url) {
       try {
-        setLoading(true);
+        // setLoading(true);
 
         const imageName = values.product_image_url.split("/").pop();
 
         await deleteImage({ variables: { image_name: imageName } });
+        setSelectedImage(null);
         setValues({ ...values, product_image_url: "" });
         setLoading(false);
       } catch (error) {
@@ -118,7 +118,6 @@ const CreateProduct = () => {
 
   const handleCreate = async (e) => {
     e.preventDefault();
-
     setErrors({});
     setLoading(true);
     let errorExist = false;
@@ -141,6 +140,10 @@ const CreateProduct = () => {
         "Product Specification field is required.";
       errorExist = true;
     }
+    if (!values.product_description) {
+      tempErrors.product_description = "Product Description field is required.";
+      errorExist = true;
+    }
 
     if (!values.product_image_url) {
       tempErrors.product_image_url = "Product Image field is required.";
@@ -155,7 +158,7 @@ const CreateProduct = () => {
 
     try {
       const res = await getImageUrl({ variables: { contentType: "image/*" } });
-      console.log("res", res);
+
       await imageService.uploadImage(
         res.data.getImageUploadUrl.imageUploadUrl,
         selectedImage
@@ -179,46 +182,46 @@ const CreateProduct = () => {
 
   return (
     <>
-      <form>
-        {/* image upload */}
-        <div className="max-w-sm mx-auto mt-8">
-          <div className="flex items-center justify-center h-48 w-full bg-white border-2 border-dashed border-gray-500 rounded-lg overflow-hidden relative">
-            {selectedImage ? (
-              <>
-                <img
-                  src={values.product_image_url}
-                  alt="Uploaded preview"
-                  className="h-full w-full object-cover"
-                />
-                <button
-                  onClick={handleImageDelete}
-                  className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md"
-                >
-                  <AiOutlineDelete className="w-6 h-6 text-red-600" />
-                </button>
-              </>
-            ) : (
-              <div className="text-center">
-                <label htmlFor="upload" className="cursor-pointer">
-                  <AiOutlineCloudUpload className="w-12 h-12 text-gray-500" />
-                  <p className="text-gray-500 mt-2">Click to Upload</p>
-                </label>
-                <input
-                  id="upload"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="opacity-0 absolute top-0 left-0 w-full h-full cursor-pointer"
-                />
-              </div>
-            )}
-          </div>
-          {errors.product_image_url && (
-            <p className="text-red-500 mt-2 flex justify-center text-sm">
-              {errors.product_image_url}
-            </p>
+      {/* image upload */}
+      <div className="max-w-sm mx-auto mt-8">
+        <div className="flex items-center justify-center h-48 w-full bg-white border-2 border-dashed border-gray-500 rounded-lg overflow-hidden relative">
+          {selectedImage ? (
+            <>
+              <img
+                src={values.product_image_url}
+                alt="Uploaded preview"
+                className="h-full w-full object-cover"
+              />
+              <button
+                onClick={handleImageDelete}
+                className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md"
+              >
+                <AiOutlineDelete className="w-6 h-6 text-red-600" />
+              </button>
+            </>
+          ) : (
+            <div className="text-center">
+              <label htmlFor="upload" className="cursor-pointer">
+                <AiOutlineCloudUpload className="w-12 h-12 text-gray-500" />
+                <p className="text-gray-500 mt-2">Click to Upload</p>
+              </label>
+              <input
+                id="upload"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="opacity-0 absolute top-0 left-0 w-full h-full cursor-pointer"
+              />
+            </div>
           )}
         </div>
+        {errors.product_image_url && (
+          <p className="text-red-500 mt-2 flex justify-center text-sm">
+            {errors.product_image_url}
+          </p>
+        )}
+      </div>
+      <form onSubmit={handleCreate}>
         <div className="w-full gap-x-20 gap-y-3 grid grid-cols-2 mt-10">
           {/* Category */}
           <div>

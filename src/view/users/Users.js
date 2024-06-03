@@ -172,16 +172,17 @@ const Users = () => {
                     <td className="py-4">{row?.created_at.substring(0, 10)}</td>
 
                     <td className="py-4">
-                      {row?.users_staff_infos &&
-                      row?.users_staff_infos.length === 0 ? (
+                      {(row?.users_staff_infos &&
+                        row?.users_staff_infos.length !== 0) ||
+                      row?.name === "pending" ? (
+                        <button className="font-medium text-md rounded text-white py-2 px-4  bg-pink-600 hover:bg-pink-700 opacity-25">
+                          Add To Staff
+                        </button>
+                      ) : (
                         <button
                           onClick={() => navigate(`/create_staff/${row?.id}`)}
                           className="font-medium text-md rounded text-white py-2 px-4  bg-pink-600 hover:bg-pink-700"
                         >
-                          Add To Staff
-                        </button>
-                      ) : (
-                        <button className="font-medium text-md rounded text-white py-2 px-4  bg-pink-600 hover:bg-pink-700 opacity-25">
                           Add To Staff
                         </button>
                       )}

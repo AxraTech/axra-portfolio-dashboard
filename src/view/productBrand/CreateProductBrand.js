@@ -151,7 +151,7 @@ const CreateProduct = () => {
         {/* image upload */}
 
         <div className="grid grid-cols-4 gap-x-10">
-          <div className=" col-span-2">
+          {/* <div className=" col-span-2">
             <div className=" flex  items-center justify-center h-48 w-full bg-white border-2 border-dashed border-gray-500 rounded-lg overflow-hidden relative">
               {selectedImage ? (
                 <div>
@@ -188,7 +188,7 @@ const CreateProduct = () => {
                 {errors.image_url}
               </p>
             )}
-          </div>
+          </div> */}
 
           {/* product model */}
           <div className="col-span-2">

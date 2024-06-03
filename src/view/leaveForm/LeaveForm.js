@@ -90,7 +90,7 @@ const LeaveForm = () => {
             <p>
               {format(
                 new Date(leaveForm?.leave_form_by_pk?.hourly_start_time),
-                "yyyy-MM-dd hh:mm:ss a"
+                "hh:mm:ss a"
               )}
             </p>
           </div>
@@ -102,7 +102,7 @@ const LeaveForm = () => {
               {" "}
               {format(
                 new Date(leaveForm?.leave_form_by_pk?.hourly_end_time),
-                "yyyy-MM-dd hh:mm:ss a"
+                "hh:mm:ss a"
               )}
             </p>
           </div>

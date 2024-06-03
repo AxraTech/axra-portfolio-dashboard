@@ -84,14 +84,14 @@ const CreateContact = () => {
   // };
 
   const handleImageDelete = async () => {
-    // If there's an existing image, delete it
-    if (values.product_image_url) {
+    if (values.image_url) {
       try {
-        setLoading(true);
-        // Extract the imageName from the product_image_url
+        // setLoading(true);
+
         const imageName = values.image_url.split("/").pop();
-        console.log("image name", imageName);
+
         await deleteImage({ variables: { image_name: imageName } });
+        setSelectedImage(null);
         setValues({ ...values, image_url: "" });
         setLoading(false);
       } catch (error) {
@@ -116,6 +116,10 @@ const CreateContact = () => {
       tempErrors.email = "Email field is required.";
       errorExist = true;
     }
+    if (!values.address) {
+      tempErrors.address = "Address field is required.";
+      errorExist = true;
+    }
     if (!values.image_url) {
       tempErrors.image_url = "Image Url field is required.";
       errorExist = true;
@@ -137,7 +141,7 @@ const CreateContact = () => {
 
     try {
       const res = await getImageUrl({ variables: { contentType: "image/*" } });
-      console.log("response ", res);
+
       await imageService.uploadImage(
         res.data.getImageUploadUrl.imageUploadUrl,
         selectedImage
@@ -156,50 +160,49 @@ const CreateContact = () => {
       console.log("errrrrrrror");
     }
   };
-  console.log("values", values);
 
   return (
     <>
-      <form>
-        {/* image upload */}
-        <div className="max-w-sm mx-auto mt-8">
-          <div className="flex items-center justify-center h-48 w-full bg-white border-2 border-dashed border-gray-500 rounded-lg overflow-hidden relative">
-            {selectedImage ? (
-              <>
-                <img
-                  src={values.image_url}
-                  alt="Uploaded preview"
-                  className="h-full w-full object-cover"
-                />
-                <button
-                  onClick={handleImageDelete}
-                  className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md"
-                >
-                  <AiOutlineDelete className="w-6 h-6 text-red-600" />
-                </button>
-              </>
-            ) : (
-              <div className="text-center">
-                <label htmlFor="upload" className="cursor-pointer">
-                  <AiOutlineCloudUpload className="w-12 h-12 text-gray-500" />
-                  <p className="text-gray-500 mt-2">Click to Upload</p>
-                </label>
-                <input
-                  id="upload"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="opacity-0 absolute top-0 left-0 w-full h-full cursor-pointer"
-                />
-              </div>
-            )}
-          </div>
-          {errors.image_url && (
-            <p className="text-red-500 mt-2 flex justify-center text-sm">
-              {errors.image_url}
-            </p>
+      {/* image upload */}
+      <div className="max-w-sm mx-auto mt-8">
+        <div className="flex items-center justify-center h-48 w-full bg-white border-2 border-dashed border-gray-500 rounded-lg overflow-hidden relative">
+          {selectedImage ? (
+            <>
+              <img
+                src={values.image_url}
+                alt="Uploaded preview"
+                className="h-full w-full object-cover"
+              />
+              <button
+                onClick={handleImageDelete}
+                className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md"
+              >
+                <AiOutlineDelete className="w-6 h-6 text-red-600" />
+              </button>
+            </>
+          ) : (
+            <div className="text-center">
+              <label htmlFor="upload" className="cursor-pointer">
+                <AiOutlineCloudUpload className="w-12 h-12 text-gray-500" />
+                <p className="text-gray-500 mt-2">Click to Upload</p>
+              </label>
+              <input
+                id="upload"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="opacity-0 absolute top-0 left-0 w-full h-full cursor-pointer"
+              />
+            </div>
           )}
         </div>
+        {errors.image_url && (
+          <p className="text-red-500 mt-2 flex justify-center text-sm">
+            {errors.image_url}
+          </p>
+        )}
+      </div>
+      <form onSubmit={handleCreate}>
         <div className="w-full gap-x-20 gap-y-3 grid grid-cols-2 mt-10">
           {/* phone */}
           <div>
