@@ -48,16 +48,16 @@ const CreateHome = () => {
     },
   });
 
+  const handleChange = (prop) => (e) => {
+    setValues({ ...values, [prop]: e.target.value });
+  };
+
   const [deleteImage] = useMutation(DELETE_IMAGE, {
     onError: (error) => {
       console.log("error : ", error);
       setLoading(false);
     },
   });
-
-  const handleChange = (prop) => (e) => {
-    setValues({ ...values, [prop]: e.target.value });
-  };
 
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -82,14 +82,14 @@ const CreateHome = () => {
   };
 
   const handleImageDelete = async () => {
-    // If there's an existing image, delete it
     if (values.image_url) {
       try {
-        setLoading(true);
-        // Extract the imageName from the product_image_url
+        // setLoading(true);
+
         const imageName = values.image_url.split("/").pop();
 
         await deleteImage({ variables: { image_name: imageName } });
+        setSelectedImage(null);
         setValues({ ...values, image_url: "" });
         setLoading(false);
       } catch (error) {

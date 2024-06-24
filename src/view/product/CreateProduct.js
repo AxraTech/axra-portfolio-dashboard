@@ -57,6 +57,7 @@ const CreateProduct = () => {
       alert("New Product has been added");
       console.log("result", data);
       setValues({});
+
       setLoading(false);
     },
   });

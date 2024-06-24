@@ -52,16 +52,16 @@ const CreateArticle = () => {
     },
   });
 
+  const handleChange = (prop) => (e) => {
+    setValues({ ...values, [prop]: e.target.value });
+  };
+
   const [deleteImage] = useMutation(DELETE_IMAGE, {
     onError: (error) => {
       console.log("error : ", error);
       setLoading(false);
     },
   });
-
-  const handleChange = (prop) => (e) => {
-    setValues({ ...values, [prop]: e.target.value });
-  };
 
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -85,19 +85,16 @@ const CreateArticle = () => {
     }
   };
 
-  // const handleImageDelete = () => {
-  //   setSelectedImage(null);
-  // };
-
-  const handleImageDelete = async () => {
-    // If there's an existing image, delete it
+  const handleImageDelete = async (e) => {
+    e.preventDefault();
     if (values.image_url) {
       try {
-        setLoading(true);
-        // Extract the imageName from the product_image_url
+        // setLoading(true);
+
         const imageName = values.image_url.split("/").pop();
-        console.log("image name", imageName);
+
         await deleteImage({ variables: { image_name: imageName } });
+        setSelectedImage(null);
         setValues({ ...values, image_url: "" });
         setLoading(false);
       } catch (error) {
@@ -109,7 +106,6 @@ const CreateArticle = () => {
 
   const handleCreate = async (e) => {
     e.preventDefault();
-
     setErrors({});
     setLoading(true);
     let errorExist = false;
@@ -139,7 +135,7 @@ const CreateArticle = () => {
 
     try {
       const res = await getImageUrl({ variables: { contentType: "image/*" } });
-      console.log("response ", res);
+
       await imageService.uploadImage(
         res.data.getImageUploadUrl.imageUploadUrl,
         selectedImage

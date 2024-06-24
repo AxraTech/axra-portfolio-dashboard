@@ -35,13 +35,15 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     console.log("graphql", graphQLErrors);
 
-    // graphQLErrors.forEach(({ extensions }) => {
-    //   if (
-    //     extensions.code === "invalid-headers" ||
-    //     extensions.code === "invalid-jwt"
-    //   ) {
-    //   }
-    // });
+    graphQLErrors.forEach(({ extensions }) => {
+      if (
+        extensions.code === "invalid-headers" ||
+        extensions.code === "invalid-jwt"
+      ) {
+        localStorage.removeItem("token");
+        alert("Session Expired, Please Sign In With Your Credentials Again");
+      }
+    });
   }
   if (networkError) {
     console.log(`[Network error]: ${networkError}`);

@@ -27,6 +27,13 @@ const UpdateServiceDetail = ({ handleClose, serviceDetails }) => {
   useEffect(() => {
     if (serviceDetails) {
       const details = serviceDetails?.service_details_by_pk;
+
+      setDescription(
+        serviceDetails?.service_details_by_pk?.service_description ?? ""
+      );
+      setDescriptionOne(
+        serviceDetails?.service_details_by_pk?.service_description_one ?? ""
+      );
       setValues({
         id: details?.id ?? "",
         fk_service_category_id: details?.fk_service_category_id ?? "",
@@ -34,14 +41,7 @@ const UpdateServiceDetail = ({ handleClose, serviceDetails }) => {
         service_description_one: details?.service_description_one ?? "",
         image_url: details?.image_url ?? "",
       });
-      setDescription(
-        serviceDetails?.service_details_by_pk?.service_description ?? ""
-      );
     }
-
-    setDescriptionOne(
-      serviceDetails?.service_details_by_pk?.service_description_one ?? ""
-    );
   }, [
     serviceDetails?.service_details_by_pk?.id,
     serviceDetails?.service_details_by_pk?.fk_service_category_id,

@@ -105,9 +105,12 @@ const CreateServiceDetail = ({ handleClose, serviceId }) => {
     e.preventDefault();
     if (values.image_url) {
       try {
-        setLoading(true);
+        // setLoading(true);
+
         const imageName = values.image_url.split("/").pop();
+
         await deleteImage({ variables: { image_name: imageName } });
+        setSelectedImage(null);
         setValues({ ...values, image_url: "" });
         setLoading(false);
       } catch (error) {
@@ -116,7 +119,6 @@ const CreateServiceDetail = ({ handleClose, serviceId }) => {
       }
     }
   };
-
   const handleCreate = async (e) => {
     e.preventDefault();
 

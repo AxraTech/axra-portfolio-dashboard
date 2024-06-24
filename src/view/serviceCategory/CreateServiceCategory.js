@@ -83,14 +83,14 @@ const CreateServiceCategory = () => {
   // };
 
   const handleImageDelete = async () => {
-    // If there's an existing image, delete it
-    if (values.product_image_url) {
+    if (values.image_url) {
       try {
-        setLoading(true);
-        // Extract the imageName from the product_image_url
+        // setLoading(true);
+
         const imageName = values.image_url.split("/").pop();
-        console.log("image name", imageName);
+
         await deleteImage({ variables: { image_name: imageName } });
+        setSelectedImage(null);
         setValues({ ...values, image_url: "" });
         setLoading(false);
       } catch (error) {

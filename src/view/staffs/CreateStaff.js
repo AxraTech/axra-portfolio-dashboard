@@ -47,16 +47,16 @@ const CreateStaff = () => {
     },
   });
 
+  const handleChange = (prop) => (e) => {
+    setValues({ ...values, [prop]: e.target.value });
+  };
+
   const [deleteImage] = useMutation(DELETE_IMAGE, {
     onError: (error) => {
       console.log("error : ", error);
       setLoading(false);
     },
   });
-
-  const handleChange = (prop) => (e) => {
-    setValues({ ...values, [prop]: e.target.value });
-  };
 
   const handleImageChange = (e) => {
     if (e.target.files && e.target.files[0]) {
@@ -80,16 +80,13 @@ const CreateStaff = () => {
     }
   };
 
-  // const handleImageDelete = () => {
-  //   setSelectedImage(null);
-  // };
-
   const handleImageDelete = async () => {
     if (values.image) {
       try {
         setLoading(true);
         const imageName = values.image.split("/").pop();
         await deleteImage({ variables: { image_name: imageName } });
+        setSelectedImage(null);
         setValues({ ...values, image: "" });
         setLoading(false);
       } catch (error) {
@@ -98,6 +95,25 @@ const CreateStaff = () => {
       }
     }
   };
+
+  // const handleImageDelete = () => {
+  //   setSelectedImage(null);
+  // };
+
+  // const handleImageDelete = async () => {
+  //   if (values.image) {
+  //     try {
+  //       setLoading(true);
+  //       const imageName = values.image.split("/").pop();
+  //       await deleteImage({ variables: { image_name: imageName } });
+  //       setValues({ ...values, image: "" });
+  //       setLoading(false);
+  //     } catch (error) {
+  //       console.log("Error deleting image:", error);
+  //       setLoading(false);
+  //     }
+  //   }
+  // };
   useEffect(() => {
     if (values.staff_ID) {
       const existingStaffIDs =
@@ -108,7 +124,6 @@ const CreateStaff = () => {
 
   const handleCreate = async (e) => {
     e.preventDefault();
-
     setErrors({});
     setLoading(true);
     let errorExist = false;
@@ -217,7 +232,7 @@ const CreateStaff = () => {
       <form>
         <div className="w-full gap-x-20 gap-y-3 grid grid-cols-2 mt-10">
           {/* name */}
-          <div>
+          {/* <div>
             <label
               htmlFor="base-input"
               className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700 "
@@ -236,7 +251,7 @@ const CreateStaff = () => {
             {errors.name && (
               <p className="text-red-500 mt-2 text-sm">{errors.name}</p>
             )}
-          </div>
+          </div> */}
 
           {/* staff name */}
           <div>

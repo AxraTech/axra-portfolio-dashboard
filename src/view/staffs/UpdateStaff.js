@@ -305,7 +305,7 @@ const UpdateStaff = () => {
             )}
           </div> */}
           {/* name */}
-          <div>
+          {/* <div>
             <label
               htmlFor="base-input"
               className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-700 "
@@ -324,7 +324,7 @@ const UpdateStaff = () => {
             {errors.fk_users_id && (
               <p className="text-red-500 mt-2 text-sm">{errors.fk_users_id}</p>
             )}
-          </div>
+          </div> */}
 
           {/* staff name */}
           <div>

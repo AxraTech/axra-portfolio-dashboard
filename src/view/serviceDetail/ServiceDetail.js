@@ -7,10 +7,7 @@ import ModalBox from "../../components/ModalBox";
 import { SERVICE_DETAIL_PK } from "../../gql/serviceDetail";
 
 import UpdateServiceDetails from "../../view/serviceDetail/UpdateServiceDetail";
-import {
-  SERVICE_CAT_BY_DETAIL_ID,
-  SERVICE_CAT_BY_NAME,
-} from "../../gql/mixedServiceCategory";
+
 import DeleteServiceDetail from "./DeleteServiceDetail";
 import ServiceDetailPackages from "../../view/serviceDetailPackage/ServiceDetailPackages";
 
@@ -22,7 +19,7 @@ const ServiceDetail = () => {
   });
 
   const [desOpen, setDesOpen] = useState(true);
-  const [desOneOpen, setDesOneOpen] = useState(true);
+  const [desOneOpen, setDesOneOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [delOpen, setDelOpen] = useState(false);
   const [details, setDetails] = useState();

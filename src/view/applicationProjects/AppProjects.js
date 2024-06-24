@@ -1,9 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import Pagination from "../pagination/Pagination";
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
-
-import { useNavigate, useParams } from "react-router-dom";
-
+import { useLazyQuery, useMutation } from "@apollo/client";
+import { useNavigate } from "react-router-dom";
 import { ALL_APP_PROJECT } from "../../gql/appProject";
 import { UPDATE_POSITION } from "../../gql/appProject";
 import SideBarContext from "../../context/SideBarContext";
@@ -89,7 +87,6 @@ const AppProjects = () => {
     <div>
       <div className="flex justify-between mb-3 ">
         {/* search */}
-
         {/* <div className="w-full md:w-1/3 my-5">
           <form className="flex items-center">
             <label for="simple-search" className="sr-only">
@@ -229,7 +226,7 @@ const AppProjects = () => {
                 <tr
                   key={index}
                   // className={`${
-                  //   index % 2 !== 0 ? "bg-slate-50 " : "border-y-2"
+                  //   index % 2 !s== 0 ? "bg-slate-50 " : "border-y-2"
                   // } hover:bg-slate-100 hover:shadow-md`}
                   className="hover:bg-slate-100 border-y-2 hover:shadow-md"
                 >
